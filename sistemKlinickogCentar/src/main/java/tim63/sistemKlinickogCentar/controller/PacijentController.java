@@ -1,5 +1,7 @@
 package tim63.sistemKlinickogCentar.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import tim63.sistemKlinickogCentar.model.Pacijent;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,21 +11,24 @@ import tim63.sistemKlinickogCentar.service.PacijentService;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 @RequestMapping("/api/pacijenti")
 public class PacijentController {
 
+
+    @Autowired
     private PacijentService pacijentSer;
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Pacijent>> getPacijenti() {
-       // Collection<Pacijent> greetings = pacijentSer.findAll();
-        return new ResponseEntity<>(new ArrayList<>() {{
-            add(new Pacijent("Pacijent1", "Pacijent1", null, null,
-                    null, null, null, null, 0));
-        }}, HttpStatus.OK);
+    public Collection <Pacijent> getPacijenti() {
+        return  this.pacijentSer.findAll();
     }
 
     /*
@@ -31,14 +36,9 @@ public class PacijentController {
      *
      * url: /api/greetings/1 GET
      */
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Pacijent> getPacijenta(@PathVariable("id") Long id) {
-        Pacijent pacijent = pacijentSer.findOne(id);
-
-        if (pacijent == null) {
-            return new ResponseEntity<Pacijent>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<Pacijent>(pacijent, HttpStatus.OK);
+    @RequestMapping(method = GET, value = "/user/{userId}")
+    public Pacijent loadById(@PathVariable Long userId) {
+        return this.pacijentSer.findById(userId);
     }
 
     /*
@@ -52,10 +52,18 @@ public class PacijentController {
      *
      * url: /api/greetings POST
      */
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Pacijent> napraviPacijenta(@RequestBody Pacijent pacijent) throws Exception {
-        Pacijent sacuvanPacijent = pacijentSer.create(pacijent);
-        return new ResponseEntity<Pacijent>(sacuvanPacijent, HttpStatus.CREATED);
+    @RequestMapping(method = POST, value = "/signup")
+    public ResponseEntity<?> addUser(@RequestBody Pacijent userRequest) throws Exception {
+
+        Pacijent existUser = this.pacijentSer.findByEmail(userRequest.getEmail());
+        if (existUser != null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Pacijent user = this.pacijentSer.create(userRequest);
+        HttpHeaders headers = new HttpHeaders();
+        //headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<Pacijent>(user, HttpStatus.CREATED);
     }
 
     /*
@@ -64,15 +72,8 @@ public class PacijentController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Pacijent> izmeniPacijenta(@RequestBody Pacijent pacijent, @PathVariable Long id)
             throws Exception {
-        Pacijent pacijentZaIzmenu = pacijentSer.findOne(id);
-        pacijentZaIzmenu.copyValues(pacijent);
-
-        Pacijent izmenjeniPacijent = pacijentSer.update(pacijentZaIzmenu);
-
-        if (izmenjeniPacijent == null) {
-            return new ResponseEntity<Pacijent>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<Pacijent>(izmenjeniPacijent, HttpStatus.OK);
+        Pacijent p=pacijentSer.update(pacijent);
+        return new ResponseEntity<Pacijent>(p, HttpStatus.CREATED);
     }
 
     /*

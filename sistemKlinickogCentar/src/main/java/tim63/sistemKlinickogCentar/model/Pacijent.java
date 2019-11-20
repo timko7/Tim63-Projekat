@@ -1,15 +1,41 @@
 package tim63.sistemKlinickogCentar.model;
 
+
+import org.springframework.http.HttpStatus;
+
+import javax.persistence.*;
+
+@Entity
 public class Pacijent {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
+
+    @Column(name = "Ime", nullable = false)
     private  String ime;
+
+    @Column(name = "Prezime", nullable = false)
     private  String prezime;
+
+    @Column(name = "Email", nullable = false)
     private String email;
+
+    @Column(name = "Password", nullable = false)
     private String password;
+
+    @Column(name = "Grad", nullable = false)
     private String grad;
+
+    @Column(name = "Drzava", nullable = false)
     private String drzava;
+
+    @Column(name = "Adresa", nullable = false)
     private String adresa;
+
+    @Column(name = "Telefon", nullable = false)
     private  String telefon;
+
+    @Column(name = "Broj_Osiguranika", nullable = false)
     private  int broj_osiguranika;
 
 
@@ -117,5 +143,6 @@ public class Pacijent {
         this.drzava=pacijent.getDrzava();
         this.adresa=pacijent.getAdresa();
         this.telefon=pacijent.getTelefon();
+        this.broj_osiguranika=pacijent.getBroj_osiguranika();
     }
 }

@@ -3,12 +3,15 @@ package tim63.sistemKlinickogCentar.service;
 import tim63.sistemKlinickogCentar.model.Pacijent;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface PacijentInterface {
 
     Collection<Pacijent> findAll();
 
-    Pacijent findOne(Long id);
+    Pacijent findById(Long id);
+
+    Pacijent findByEmail( String username );
 
     Pacijent create(Pacijent pacijent) throws Exception;
 
