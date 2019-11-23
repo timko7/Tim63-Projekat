@@ -1,25 +1,30 @@
 package tim63.sistemKlinickogCentar.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Klinika {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
 
     @Column(name = "Ime", nullable = false)
-    private  String ime;
+    private String ime;
 
     @Column(name = "Adresa", nullable = false)
-    private  String adresa;
+    private String adresa;
 
     @Column(name = "Opis", nullable = false)
-    private  String opis;
+    private String opis;
 
-   // @Column(name = "AdminKlinike", nullable = false)
-   // private  AdminKlinike adminKlinike;
+    @OneToMany(mappedBy = "klinika", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Lekar> lekari = new HashSet<>();
+
+    // @Column(name = "AdminKlinike", nullable = false)
+    // private  AdminKlinike adminKlinike;
 
     public Klinika(String ime, String adresa, String opis) {
         this.ime = ime;
@@ -49,8 +54,8 @@ public class Klinika {
         return opis;
     }
 
-   // public AdminKlinike getAdminKlinike() {
-     //   return adminKlinike;
+    // public AdminKlinike getAdminKlinike() {
+    //   return adminKlinike;
     //}
 
     public void setId(Long id) {
@@ -69,12 +74,21 @@ public class Klinika {
         this.opis = opis;
     }
 
-   // public void setAdminKlinike(AdminKlinike adminKlinike) {
-     //   this.adminKlinike = adminKlinike;
+    // public void setAdminKlinike(AdminKlinike adminKlinike) {
+    //   this.adminKlinike = adminKlinike;
     //}
 
-    public void copyValues (Klinika klinika)  {
-      //  this.adminKlinike = klinika.getAdminKlinike();
+
+    public Set<Lekar> getLekari() {
+        return lekari;
+    }
+
+    public void setLekari(Set<Lekar> lekari) {
+        this.lekari = lekari;
+    }
+
+    public void copyValues(Klinika klinika) {
+        //  this.adminKlinike = klinika.getAdminKlinike();
         this.adresa = klinika.getAdresa();
         this.ime = klinika.getIme();
         this.opis = klinika.getOpis();

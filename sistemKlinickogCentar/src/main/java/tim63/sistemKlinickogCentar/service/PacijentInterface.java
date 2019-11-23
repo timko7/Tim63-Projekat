@@ -3,7 +3,6 @@ package tim63.sistemKlinickogCentar.service;
 import tim63.sistemKlinickogCentar.model.Pacijent;
 
 import java.util.Collection;
-import java.util.Optional;
 
 public interface PacijentInterface {
 
@@ -11,7 +10,7 @@ public interface PacijentInterface {
 
     Pacijent findById(Long id);
 
-    Pacijent findByEmail( String username );
+    Pacijent findByEmail(String username);
 
     Pacijent create(Pacijent pacijent) throws Exception;
 

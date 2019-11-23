@@ -24,7 +24,7 @@ public class KlinikaKontroler {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Klinika> getKlinike() {
-        return  this.klinikaSer.findAll();
+        return this.klinikaSer.findAll();
     }
 
     @RequestMapping(method = GET, value = "/{klinikaId}")
@@ -55,8 +55,6 @@ public class KlinikaKontroler {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Klinika> izmeniKliniku(@RequestBody Klinika klinika, @PathVariable Long id)
             throws Exception {
-        System.out.println("TEST ID:" + id);
-        //System.out.println("Klinika:" + klinika.toString());
         Klinika klinika1 = klinikaSer.update(klinika);
         return new ResponseEntity<Klinika>(klinika1, HttpStatus.CREATED);
     }

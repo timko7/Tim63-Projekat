@@ -6,13 +6,12 @@ import tim63.sistemKlinickogCentar.model.Pacijent;
 import tim63.sistemKlinickogCentar.repository.PacijentRepositoryInterface;
 
 import java.util.Collection;
-import java.util.Optional;
 
 @Service
-public class PacijentService implements  PacijentInterface {
+public class PacijentService implements PacijentInterface {
 
     @Autowired
-    public  PacijentRepositoryInterface pacRep;
+    public PacijentRepositoryInterface pacRep;
 
 
     @Override
@@ -55,10 +54,10 @@ public class PacijentService implements  PacijentInterface {
     @Override
     public Pacijent update(Pacijent pacijent) throws Exception {
 
-            Pacijent pacijentZaIzmenu=findById(pacijent.getId());
-            pacijentZaIzmenu.copyValues(pacijent);
-            pacijentZaIzmenu=pacRep.save(pacijentZaIzmenu);
-            return pacijentZaIzmenu;
+        Pacijent pacijentZaIzmenu = findById(pacijent.getId());
+        pacijentZaIzmenu.copyValues(pacijent);
+        pacijentZaIzmenu = pacRep.save(pacijentZaIzmenu);
+        return pacijentZaIzmenu;
     }
 
     @Override

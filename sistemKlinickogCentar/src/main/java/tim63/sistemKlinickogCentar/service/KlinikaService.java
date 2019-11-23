@@ -24,7 +24,7 @@ public class KlinikaService implements KlinikaInterface {
     }
 
     @Override
-    public Klinika findByIme(String ime){
+    public Klinika findByIme(String ime) {
         Klinika u = repKlinika.findByIme(ime);
         return u;
     }
@@ -34,7 +34,7 @@ public class KlinikaService implements KlinikaInterface {
 
         Klinika klinika1 = new Klinika();
 
-       // klinika1.setAdminKlinike(klinika.getAdminKlinike());
+        // klinika1.setAdminKlinike(klinika.getAdminKlinike());
         klinika1.setAdresa(klinika.getIme());
         klinika1.setIme(klinika.getIme());
         klinika1.setOpis(klinika.getOpis());
@@ -46,9 +46,8 @@ public class KlinikaService implements KlinikaInterface {
 
     @Override
     public Klinika update(Klinika klinika) throws Exception {
-        Klinika klinikaZaIzmenu=findById(klinika.getId());
+        Klinika klinikaZaIzmenu = findById(klinika.getId());
         klinikaZaIzmenu.copyValues(klinika);
-        klinikaZaIzmenu=repKlinika.save(klinikaZaIzmenu);
         return klinikaZaIzmenu;
     }
 
