@@ -1,17 +1,19 @@
 package tim63.sistemKlinickogCentar.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import tim63.sistemKlinickogCentar.model.Pacijent;
 
-import java.util.HashMap;
+import java.util.List;
 
-public interface PacijentRepositoryInterface {
-    HashMap<Long,Pacijent> findAll();
+@Repository
+public interface PacijentRepositoryInterface extends JpaRepository<Pacijent, Long> {
 
-    Pacijent findOne(Long id);
+    List<Pacijent> findAll();
 
-    Pacijent create(Pacijent pacijent) throws Exception;
+    Pacijent findByEmail(String username);
 
-    Pacijent update(Pacijent pacijent) throws Exception;
+    // Pacijent update(Pacijent pacijent) throws Exception;
 
-    void delete(Long id);
+    //void delete(Long id);
 }

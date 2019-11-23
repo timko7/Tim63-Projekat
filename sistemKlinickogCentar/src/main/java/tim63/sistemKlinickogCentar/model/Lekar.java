@@ -1,10 +1,12 @@
 package tim63.sistemKlinickogCentar.model;
 
-
 import javax.persistence.*;
 
+
 @Entity
-public class Pacijent {
+public class Lekar {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,9 +38,11 @@ public class Pacijent {
     @Column(name = "Broj_Osiguranika", nullable = false)
     private int broj_osiguranika;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Klinika klinika;
 
-    public Pacijent(String ime, String prezime, String email, String password, String grad,
-                    String drzava, String adresa, String telefon, int broj_osiguranika) {
+    public Lekar(String ime, String prezime, String email, String password, String grad,
+                 String drzava, String adresa, String telefon, int broj_osiguranika) {
         this.ime = ime;
         this.prezime = prezime;
         this.email = email;
@@ -50,11 +54,7 @@ public class Pacijent {
         this.broj_osiguranika = broj_osiguranika;
     }
 
-    public Pacijent() {
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public Lekar() {
     }
 
     public Long getId() {
@@ -97,6 +97,14 @@ public class Pacijent {
         return broj_osiguranika;
     }
 
+    public Klinika getKlinika() {
+        return klinika;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setIme(String ime) {
         this.ime = ime;
     }
@@ -133,14 +141,20 @@ public class Pacijent {
         this.broj_osiguranika = broj_osiguranika;
     }
 
-    public void copyValues(Pacijent pacijent) {
-        this.ime = pacijent.getIme();
-        this.prezime = pacijent.getPrezime();
-        this.password = pacijent.getPassword();
-        this.grad = pacijent.getGrad();
-        this.drzava = pacijent.getDrzava();
-        this.adresa = pacijent.getAdresa();
-        this.telefon = pacijent.getTelefon();
-        this.broj_osiguranika = pacijent.getBroj_osiguranika();
+    public void setKlinika(Klinika klinika) {
+        this.klinika = klinika;
     }
+
+    public void copyValues(Lekar lekar) {
+        this.ime = lekar.getIme();
+        this.prezime = lekar.getPrezime();
+        this.password = lekar.getPassword();
+        this.grad = lekar.getGrad();
+        this.drzava = lekar.getDrzava();
+        this.adresa = lekar.getAdresa();
+        this.telefon = lekar.getTelefon();
+        this.broj_osiguranika = lekar.getBroj_osiguranika();
+    }
+
+
 }

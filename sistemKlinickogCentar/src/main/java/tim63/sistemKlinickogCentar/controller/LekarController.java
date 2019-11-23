@@ -6,57 +6,53 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tim63.sistemKlinickogCentar.model.Pacijent;
-import tim63.sistemKlinickogCentar.service.PacijentService;
+import tim63.sistemKlinickogCentar.model.Klinika;
+import tim63.sistemKlinickogCentar.model.Lekar;
+import tim63.sistemKlinickogCentar.model.dto.LekarKlinikaDTO;
+import tim63.sistemKlinickogCentar.service.LekarService;
 
 import java.util.Collection;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 
 @RestController
-@RequestMapping("/api/pacijenti")
-public class PacijentController {
-
+@RequestMapping("/api/lekari")
+public class LekarController {
 
     @Autowired
-    private PacijentService pacijentSer;
+    private LekarService lekarSer;
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<Pacijent> getPacijenti() {
-        return this.pacijentSer.findAll();
-    }
-
-    @RequestMapping(method = GET, value = "/login")
-    public Pacijent login(String username) {
-        return this.pacijentSer.findByEmail(username);
+    public Collection<Lekar> getLekari() {
+        return  this.lekarSer.findAll();
     }
 
 
-    @RequestMapping(method = POST, value = "/signup")
+
+    @RequestMapping(method = POST, value = "/dodajLekara")
     //@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addUser(@RequestBody Pacijent userRequest) throws Exception {
+    public ResponseEntity<?> dodajLekara(@RequestBody Lekar lekar) throws Exception {
 
-        Pacijent existUser = this.pacijentSer.findByEmail(userRequest.getEmail());
+        Lekar existUser = this.lekarSer.findByEmail(lekar.getEmail());
         if (existUser != null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Pacijent user = this.pacijentSer.create(userRequest);
+        Lekar user = this.lekarSer.create(lekar);
         HttpHeaders headers = new HttpHeaders();
         //headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<Pacijent>(user, HttpStatus.CREATED);
+        return new ResponseEntity<Lekar>(user, HttpStatus.CREATED);
     }
-
     /*
      * U viticastim zagradama se navodi promenljivi deo putanje.
      *
      * url: /api/greetings/1 GET
      */
-    @RequestMapping(method = GET, value = "/user/{userId}")
-    public Pacijent loadById(@PathVariable Long userId) {
-        return this.pacijentSer.findById(userId);
+    @RequestMapping(method = GET, value = "/lekar/{userId}")
+    public Lekar loadById(@PathVariable Long userId) {
+        return this.lekarSer.findById(userId);
     }
 
     /*
@@ -73,21 +69,28 @@ public class PacijentController {
 
 
     /*
-     * url: /api/pacijenti/{id} PUT
+     * url: /api/greetings/1 PUT
      */
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Pacijent> izmeniPacijenta(@RequestBody Pacijent pacijent, @PathVariable Long id)
+    public ResponseEntity<Lekar> izmeniLekara(@RequestBody Lekar lekar, @PathVariable Long id)
             throws Exception {
-        Pacijent p = pacijentSer.update(pacijent);
-        return new ResponseEntity<Pacijent>(p, HttpStatus.CREATED);
+        Lekar p=lekarSer.update(lekar);
+        return new ResponseEntity<>(p, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(method = PUT, value = "/dopuniLekara")
+    public ResponseEntity<Lekar> dopuniLekara(@RequestBody LekarKlinikaDTO lekarKlinika)
+            throws Exception {
+        lekarKlinika.toString();
+        return null;
     }
 
     /*
      * url: /api/greetings/1 DELETE
      */
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Pacijent> izbrisiPacijenta(@PathVariable("id") Long id) {
-        pacijentSer.delete(id);
-        return new ResponseEntity<Pacijent>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Lekar> izbrisiLekara(@PathVariable("id") Long id) {
+        lekarSer.delete(id);
+        return new ResponseEntity<Lekar>(HttpStatus.NO_CONTENT);
     }
 }

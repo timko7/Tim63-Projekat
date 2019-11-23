@@ -8,11 +8,14 @@ public interface PacijentInterface {
 
     Collection<Pacijent> findAll();
 
-    Pacijent findOne(Long id);
+    Pacijent findById(Long id);
+
+    Pacijent findByEmail(String username);
 
     Pacijent create(Pacijent pacijent) throws Exception;
 
     Pacijent update(Pacijent pacijent) throws Exception;
+
 
     void delete(Long id);
 }
