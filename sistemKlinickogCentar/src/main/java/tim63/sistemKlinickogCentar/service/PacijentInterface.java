@@ -16,6 +16,5 @@ public interface PacijentInterface {
 
     Pacijent update(Pacijent pacijent) throws Exception;
 
-
     void delete(Long id);
 }
