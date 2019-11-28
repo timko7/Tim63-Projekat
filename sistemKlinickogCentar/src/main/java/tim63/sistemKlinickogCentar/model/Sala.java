@@ -13,13 +13,19 @@ public class Sala {
     private String naziv;
 
     //TODO dodaj rezervisana bool ....
-
+    @Column(name = "Slobodna", nullable = false)
+    private boolean slobodna;   // true-slobodna, false-zauzeta
 
     public Sala() {
     }
 
     public Sala(String naziv) {
         this.naziv = naziv;
+    }
+
+    public Sala(String naziv, boolean slobodna) {
+        this.naziv = naziv;
+        this.slobodna = slobodna;
     }
 
     public Long getId() {
@@ -34,12 +40,21 @@ public class Sala {
         return naziv;
     }
 
+    public boolean isSlobodna() {
+        return slobodna;
+    }
+
+    public void setSlobodna(boolean slobodna) {
+        this.slobodna = slobodna;
+    }
+
     public void setNaziv(String naziv) {
         this.naziv = naziv;
     }
 
     public void copyValues(Sala sala) {
         this.naziv = sala.getNaziv();
+        this.slobodna = sala.isSlobodna();
     }
 
 }

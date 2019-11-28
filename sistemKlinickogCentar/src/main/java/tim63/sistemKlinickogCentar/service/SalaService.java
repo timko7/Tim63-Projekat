@@ -32,6 +32,7 @@ public class SalaService implements SalaSetviceInterface {
     @Override
     public Sala create(Sala sala) throws Exception {
         Sala ret = new Sala();
+        sala.setSlobodna(true);
         ret.copyValues(sala);
         ret = repositorySala.save(ret);
         return ret;
