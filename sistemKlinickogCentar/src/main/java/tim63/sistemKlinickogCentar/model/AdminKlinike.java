@@ -32,10 +32,13 @@ public class AdminKlinike {
     @Column(name = "Telefon", nullable = false)
     private String telefon;
 
+    @Column(name = "idKlinike", nullable = false)
+    private Long idKlinike;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Klinika klinika;
 
-    public AdminKlinike(String ime, String prezime, String email, String password, String grad, String drzava, String adresa, String telefon, Klinika klinika) {
+    public AdminKlinike(String ime, String prezime, String email, String password, String grad, String drzava, String adresa, String telefon, Long idKlinike, Klinika klinika) {
         this.ime = ime;
         this.prezime = prezime;
         this.email = email;
@@ -44,6 +47,7 @@ public class AdminKlinike {
         this.drzava = drzava;
         this.adresa = adresa;
         this.telefon = telefon;
+        this.idKlinike = idKlinike;
         this.klinika = klinika;
     }
 
@@ -122,6 +126,14 @@ public class AdminKlinike {
         this.telefon = telefon;
     }
 
+    public Long getIdKlinike() {
+        return idKlinike;
+    }
+
+    public void setIdKlinike(Long idKlinike) {
+        this.idKlinike = idKlinike;
+    }
+
     public Klinika getKlinika() {
         return klinika;
     }
@@ -139,6 +151,7 @@ public class AdminKlinike {
         this.drzava = adminKlinike.getDrzava();
         this.adresa = adminKlinike.getAdresa();
         this.telefon = adminKlinike.getTelefon();
+        this.idKlinike = adminKlinike.getIdKlinike();
         this.klinika = adminKlinike.getKlinika();
     }
 

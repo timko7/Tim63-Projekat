@@ -43,7 +43,7 @@ public class TipPregledaService implements TipPregledaServiceInterface {
         TipPregleda tipZaIzmenu = findById(tipPregleda.getId());
         tipZaIzmenu.copyValues(tipPregleda);
         tipZaIzmenu = repositoryTipPregleda.save(tipZaIzmenu);
-        return null;
+        return tipZaIzmenu;
     }
 
     @Override
