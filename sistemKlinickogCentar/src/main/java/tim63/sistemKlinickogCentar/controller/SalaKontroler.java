@@ -42,7 +42,7 @@ public class SalaKontroler {
 
         for (Sala sala1 : saleUklinici) {
             if(sala1.getNaziv().trim().equals(exist.getNaziv())) {
-                return new ResponseEntity<>("Sala sa nazivom vec postoji u trenutnoj klinici!", HttpStatus.METHOD_NOT_ALLOWED);
+                return new ResponseEntity<>("Neuspesno dodavanje sale! Sala sa nazivom vec postoji u klinici!", HttpStatus.METHOD_NOT_ALLOWED);
             }
         }
         System.out.println("TEST sala: " + sala.getNaziv());
@@ -59,8 +59,18 @@ public class SalaKontroler {
      * url: /api/sale/izmeni/{naziv}
      */
     @PutMapping(value = "/izmeni/{naziv}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Sala> izmeniSalu(@RequestBody Sala sala, @PathVariable("naziv") String naziv)
+    public ResponseEntity<?> izmeniSalu(@RequestBody Sala sala, @PathVariable("naziv") String naziv)
             throws Exception {
+
+        Sala salaZaIzmenu = salaService.findById(sala.getId());
+        Collection<Sala> saleUklinici = salaService.findByIdKlinike(sala.getIdKlinike());
+
+        for (Sala sala1 : saleUklinici) {
+            if(sala1.getNaziv().trim().equals(sala.getNaziv())) {
+                return new ResponseEntity<>("Neuspesna izmena sale! Sala sa nazivom vec postoji u klinici!", HttpStatus.METHOD_NOT_ALLOWED);
+            }
+        }
+
         Sala sala1 = salaService.update(sala);
         return new ResponseEntity<>(sala1, HttpStatus.CREATED);
     }
