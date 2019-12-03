@@ -24,6 +24,11 @@ public class SalaService implements SalaSetviceInterface {
     }
 
     @Override
+    public Collection<Sala> findByIdKlinike(Long id) {
+        return repositorySala.findByIdKlinike(id);
+    }
+
+    @Override
     public Sala findByNaziv(String naziv) {
         Sala sala = repositorySala.findByNaziv(naziv);
         return sala;

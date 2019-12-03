@@ -23,6 +23,11 @@ public class SalaKontroler {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Sala> getSale() { return salaService.findAll(); }
 
+    @RequestMapping(method = GET, value = "{idKlinike}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Sala> getSalePoKlinici(@PathVariable("idKlinike") Long id) {
+        return salaService.findByIdKlinike(id);
+    }
+
     @RequestMapping(method = GET, value = "/sala/{nazivSale}")
     public Sala ucitajPoNazivu(@PathVariable String nazivSale) {
         return salaService.findByNaziv(nazivSale);
@@ -30,11 +35,20 @@ public class SalaKontroler {
 
     @RequestMapping(method = POST, value = "/add")
     public ResponseEntity<?> dodajSalu(@RequestBody Sala sala) throws Exception {
+        sala.setNaziv(sala.getNaziv().trim());
+
+        Collection<Sala> saleUklinici = salaService.findByIdKlinike(sala.getIdKlinike());
         Sala exist = salaService.findByNaziv(sala.getNaziv());
-        System.out.println("TEST sala: " + sala.getNaziv());
-        if (exist != null) {
-            return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+
+        for (Sala sala1 : saleUklinici) {
+            if(sala1.getNaziv().trim().equals(exist.getNaziv())) {
+                return new ResponseEntity<>("Sala sa nazivom vec postoji u trenutnoj klinici!", HttpStatus.METHOD_NOT_ALLOWED);
+            }
         }
+        System.out.println("TEST sala: " + sala.getNaziv());
+        /*if (exist != null) {
+            return new ResponseEntity<>("Sala sa nazivom vec postoji!", HttpStatus.METHOD_NOT_ALLOWED);
+        }*/
 
         Sala salaNew = salaService.create(sala);
 

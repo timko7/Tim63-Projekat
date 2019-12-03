@@ -9,6 +9,8 @@ public interface SalaSetviceInterface {
 
     Sala findById(Long id);
 
+    Collection<Sala> findByIdKlinike(Long id);
+
     Sala findByNaziv(String naziv);
 
     Sala create(Sala sala) throws Exception;
