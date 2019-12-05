@@ -77,9 +77,10 @@ public class SalaKontroler {
     /*
      * url: /api/sale/obrisi/{naziv}
      */
-    @DeleteMapping(value = "/obrisi/{naziv}")
-    public ResponseEntity<Sala> izbiriSalu(@PathVariable("naziv") String naziv) {
-        salaService.deleteByNaziv(naziv);
+    @DeleteMapping(value = "/obrisi/{id}")
+    public ResponseEntity<?> izbiriSaluPoID(@PathVariable("id") Long id) {
+
+        salaService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
