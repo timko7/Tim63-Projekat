@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tim63.sistemKlinickogCentar.model.Klinika;
 import tim63.sistemKlinickogCentar.model.Lekar;
 import tim63.sistemKlinickogCentar.model.dto.LekarKlinikaDTO;
 import tim63.sistemKlinickogCentar.service.LekarService;
@@ -29,21 +28,28 @@ public class LekarController {
         return  this.lekarSer.findAll();
     }
 
-
+    @RequestMapping(method = GET, value = "{idKlinike}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Lekar> getLekarePoKlinici(@PathVariable("idKlinike") Long id) {
+        return lekarSer.findByIdKlinike(id);
+    }
 
     @RequestMapping(method = POST, value = "/dodajLekara")
     //@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> dodajLekara(@RequestBody Lekar lekar) throws Exception {
 
+        Collection<Lekar> lakariUklicini = lekarSer.findByIdKlinike(lekar.getIdKlinike());
         Lekar existUser = this.lekarSer.findByEmail(lekar.getEmail());
-        if (existUser != null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        for (Lekar lekar1 : lakariUklicini) {
+            if(lekar1.getEmail().equals(lekar.getEmail())) {
+                return new ResponseEntity<>("Neuspesno dodavanje lekara! Lekar sa emailom vec postoji u klinici!", HttpStatus.METHOD_NOT_ALLOWED);
+            }
         }
 
         Lekar user = this.lekarSer.create(lekar);
         HttpHeaders headers = new HttpHeaders();
         //headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<Lekar>(user, HttpStatus.CREATED);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
     /*
      * U viticastim zagradama se navodi promenljivi deo putanje.

@@ -38,6 +38,9 @@ public class AdminKlinike {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Klinika klinika;
 
+    @Column(name = "Uloga", nullable = false)
+    private Uloga uloga=Uloga.ADMINKLINIKE;
+
     public AdminKlinike(String ime, String prezime, String email, String password, String grad, String drzava, String adresa, String telefon, Long idKlinike, Klinika klinika) {
         this.ime = ime;
         this.prezime = prezime;
@@ -49,6 +52,7 @@ public class AdminKlinike {
         this.telefon = telefon;
         this.idKlinike = idKlinike;
         this.klinika = klinika;
+        this.uloga = Uloga.ADMINKLINIKE;
     }
 
     public AdminKlinike() {
@@ -142,6 +146,14 @@ public class AdminKlinike {
         this.klinika = klinika;
     }
 
+    public Uloga getUloga() {
+        return uloga;
+    }
+
+    public void setUloga(Uloga uloga) {
+        this.uloga = uloga;
+    }
+
     public void copyValues(AdminKlinike adminKlinike) {
         this.ime = adminKlinike.getIme();
         this.prezime = adminKlinike.getPrezime();
@@ -153,6 +165,7 @@ public class AdminKlinike {
         this.telefon = adminKlinike.getTelefon();
         this.idKlinike = adminKlinike.getIdKlinike();
         this.klinika = adminKlinike.getKlinika();
+        this.uloga = adminKlinike.getUloga();
     }
 
 

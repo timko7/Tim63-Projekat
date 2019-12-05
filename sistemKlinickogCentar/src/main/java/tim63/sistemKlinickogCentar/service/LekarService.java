@@ -27,6 +27,11 @@ public class LekarService implements LekarInterface {
     }
 
     @Override
+    public Collection<Lekar> findByIdKlinike(Long idKlinike) {
+        return lekRep.findByIdKlinike(idKlinike);
+    }
+
+    @Override
     public Lekar findByEmail(String username) {
         Lekar u = lekRep.findByEmail(username);
         return u;
@@ -35,21 +40,11 @@ public class LekarService implements LekarInterface {
     @Override
     public Lekar create(Lekar lekar) throws Exception {
 
-        Lekar u = new Lekar();
-
-        u.setIme(lekar.getIme());
-        u.setPrezime(lekar.getPrezime());
-        u.setEmail(lekar.getEmail());
-        u.setPassword(lekar.getPassword());
-        u.setGrad(lekar.getGrad());
-        u.setDrzava(lekar.getDrzava());
-        u.setAdresa(lekar.getAdresa());
-        u.setTelefon(lekar.getTelefon());
-        u.setBroj_osiguranika(lekar.getBroj_osiguranika());
-        u.setKlinika(lekar.getKlinika());
-
-        u = this.lekRep.save(u);
-        return u;
+        Lekar ret = new Lekar();
+        lekar.setSlobodan(true);
+        ret.copyValues(lekar);
+        ret = lekRep.save(ret);
+        return ret;
     }
 
     @Override
@@ -57,7 +52,7 @@ public class LekarService implements LekarInterface {
 
         Lekar lekarZaIzmenu = findById(lekar.getId());
         lekarZaIzmenu.copyValues(lekar);
-
+        lekarZaIzmenu = lekRep.save(lekarZaIzmenu);
         return lekarZaIzmenu;
     }
 

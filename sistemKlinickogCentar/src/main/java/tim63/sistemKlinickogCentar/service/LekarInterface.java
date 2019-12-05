@@ -11,6 +11,8 @@ public interface LekarInterface {
 
     Lekar findById(Long id);
 
+    Collection<Lekar> findByIdKlinike(Long idKlinike);
+
     Lekar findByEmail(String username);
 
     Lekar create(Lekar lekar) throws Exception;
