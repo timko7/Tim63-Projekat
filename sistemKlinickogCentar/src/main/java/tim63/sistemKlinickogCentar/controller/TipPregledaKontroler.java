@@ -78,10 +78,11 @@ public class TipPregledaKontroler {
     /*
      * url: /api/tipoviPregleda/obrisi/{naziv}
      */
-    @DeleteMapping(value = "/obrisi/{naziv}")
-    public ResponseEntity<TipPregleda> izbrisiAdminKlinike(@PathVariable("naziv") String naziv) {
-        tipPregledaService.deleteByNaziv(naziv);
-        return new ResponseEntity<TipPregleda>(HttpStatus.NO_CONTENT);
+    @DeleteMapping(value = "/obrisi/{id}")
+    public ResponseEntity<?> izbrisiTipPoID(@PathVariable("id") Long id) {
+
+        tipPregledaService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
