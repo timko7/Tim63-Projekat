@@ -12,15 +12,23 @@ public class TipPregleda {
     @Column(name = "NazivTipa", nullable = false)
     private String nazivTipa;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Klinika klinika;
+    @Column(name = "Slobodan", nullable = false)
+    private boolean slobodan;   // true-slobodan tip, false-zauzet tip/ima zakazan pregled
+
+    @Column(name = "IdKlinike", nullable = false)
+    private Long idKlinike;
 
     public TipPregleda() {
     }
 
     public TipPregleda(String nazivTipa, Klinika klinika) {
         this.nazivTipa = nazivTipa;
-        this.klinika = klinika;
+    }
+
+    public TipPregleda(String nazivTipa, boolean slobodan, Long idKlinike) {
+        this.nazivTipa = nazivTipa;
+        this.slobodan = slobodan;
+        this.idKlinike = idKlinike;
     }
 
     public Long getId() {
@@ -39,17 +47,26 @@ public class TipPregleda {
         this.nazivTipa = nazivTipa;
     }
 
-    public Klinika getKlinika() {
-        return klinika;
+    public boolean isSlobodan() {
+        return slobodan;
     }
 
-    public void setKlinika(Klinika klinika) {
-        this.klinika = klinika;
+    public void setSlobodan(boolean slobodan) {
+        this.slobodan = slobodan;
+    }
+
+    public Long getIdKlinike() {
+        return idKlinike;
+    }
+
+    public void setIdKlinike(Long idKlinike) {
+        this.idKlinike = idKlinike;
     }
 
     public void copyValues(TipPregleda tipPregleda) {
-        this.nazivTipa = tipPregleda.nazivTipa;
-        this.klinika = tipPregleda.klinika;
+        this.nazivTipa = tipPregleda.getNazivTipa();
+        this.slobodan = tipPregleda.isSlobodan();
+        this.idKlinike = tipPregleda.getIdKlinike();
     }
 
 
