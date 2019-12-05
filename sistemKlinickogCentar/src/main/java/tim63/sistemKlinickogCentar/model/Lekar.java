@@ -38,11 +38,26 @@ public class Lekar {
     @Column(name = "Broj_Osiguranika", nullable = false)
     private int broj_osiguranika;
 
+    @Column(name = "idKlinike", nullable = false)
+    private Long idKlinike;
+
+    @Column(name = "Uloga", nullable = false)
+    private Uloga uloga=Uloga.LEKAR;
+
+    @Column(name = "Slobodan", nullable = false)
+    private boolean slobodan;   // true-slobodan(nema zakazan termin), false-zauzet
+
+    @Column(name = "RadnoVremeOd", nullable = false)
+    private int radnoVremeOd;
+
+    @Column(name = "RadnoVremeDo", nullable = false)
+    private int radnoVremeDo;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Klinika klinika;
 
     public Lekar(String ime, String prezime, String email, String password, String grad,
-                 String drzava, String adresa, String telefon, int broj_osiguranika) {
+                 String drzava, String adresa, String telefon, int broj_osiguranika, Long idKlinike, boolean slobodan, int radnoVremeOd, int radnoVremeDo) {
         this.ime = ime;
         this.prezime = prezime;
         this.email = email;
@@ -52,6 +67,11 @@ public class Lekar {
         this.adresa = adresa;
         this.telefon = telefon;
         this.broj_osiguranika = broj_osiguranika;
+        this.idKlinike = idKlinike;
+        this.uloga = Uloga.LEKAR;
+        this.slobodan = slobodan;
+        this.radnoVremeOd = radnoVremeOd;
+        this.radnoVremeDo = radnoVremeDo;
     }
 
     public Lekar() {
@@ -145,15 +165,61 @@ public class Lekar {
         this.klinika = klinika;
     }
 
+    public Long getIdKlinike() {
+        return idKlinike;
+    }
+
+    public void setIdKlinike(Long idKlinike) {
+        this.idKlinike = idKlinike;
+    }
+
+    public Uloga getUloga() {
+        return uloga;
+    }
+
+    public void setUloga(Uloga uloga) {
+        this.uloga = uloga;
+    }
+
+    public boolean isSlobodan() {
+        return slobodan;
+    }
+
+    public void setSlobodan(boolean slobodan) {
+        this.slobodan = slobodan;
+    }
+
+    public int getRadnoVremeOd() {
+        return radnoVremeOd;
+    }
+
+    public void setRadnoVremeOd(int radnoVremeOd) {
+        this.radnoVremeOd = radnoVremeOd;
+    }
+
+    public int getRadnoVremeDo() {
+        return radnoVremeDo;
+    }
+
+    public void setRadnoVremeDo(int radnoVremeDo) {
+        this.radnoVremeDo = radnoVremeDo;
+    }
+
     public void copyValues(Lekar lekar) {
         this.ime = lekar.getIme();
         this.prezime = lekar.getPrezime();
+        this.email = lekar.getEmail();
         this.password = lekar.getPassword();
         this.grad = lekar.getGrad();
         this.drzava = lekar.getDrzava();
         this.adresa = lekar.getAdresa();
         this.telefon = lekar.getTelefon();
         this.broj_osiguranika = lekar.getBroj_osiguranika();
+        this.idKlinike = lekar.getIdKlinike();
+        this.uloga = lekar.getUloga();
+        this.slobodan = lekar.isSlobodan();
+        this.radnoVremeOd = lekar.getRadnoVremeOd();
+        this.radnoVremeDo = lekar.getRadnoVremeDo();
     }
 
 

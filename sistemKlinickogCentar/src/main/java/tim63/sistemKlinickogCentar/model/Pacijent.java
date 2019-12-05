@@ -36,6 +36,8 @@ public class Pacijent {
     @Column(name = "Broj_Osiguranika", nullable = false)
     private int broj_osiguranika;
 
+    @Column(name = "Uloga", nullable = false)
+    private Uloga uloga = Uloga.PACIJENT;
 
     public Pacijent(String ime, String prezime, String email, String password, String grad,
                     String drzava, String adresa, String telefon, int broj_osiguranika) {
@@ -48,6 +50,7 @@ public class Pacijent {
         this.adresa = adresa;
         this.telefon = telefon;
         this.broj_osiguranika = broj_osiguranika;
+        this.uloga = Uloga.PACIJENT;
     }
 
     public Pacijent() {
@@ -133,6 +136,14 @@ public class Pacijent {
         this.broj_osiguranika = broj_osiguranika;
     }
 
+    public Uloga getUloga() {
+        return uloga;
+    }
+
+    public void setUloga(Uloga uloga) {
+        this.uloga = uloga;
+    }
+
     public void copyValues(Pacijent pacijent) {
         this.ime = pacijent.getIme();
         this.prezime = pacijent.getPrezime();
@@ -142,5 +153,6 @@ public class Pacijent {
         this.adresa = pacijent.getAdresa();
         this.telefon = pacijent.getTelefon();
         this.broj_osiguranika = pacijent.getBroj_osiguranika();
+        this.uloga = pacijent.getUloga();
     }
 }
