@@ -39,7 +39,6 @@ public class TipPregledaKontroler {
 
     @RequestMapping(method = POST, value = "/add")
     public ResponseEntity<?> dodajTipPregleda(@RequestBody TipPregleda tipPregledaRequest) throws Exception {
-        TipPregleda exist = tipPregledaService.findByNaziv(tipPregledaRequest.getNazivTipa());
         tipPregledaRequest.setNazivTipa(tipPregledaRequest.getNazivTipa().trim());
 
         Collection<TipPregleda> tipoviUklinici = tipPregledaService.findByIdKlinike(tipPregledaRequest.getIdKlinike());
