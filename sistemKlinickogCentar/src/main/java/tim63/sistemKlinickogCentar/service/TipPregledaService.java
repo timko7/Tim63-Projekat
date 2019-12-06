@@ -24,6 +24,11 @@ public class TipPregledaService implements TipPregledaServiceInterface {
     }
 
     @Override
+    public Collection<TipPregleda> findByIdKlinike(Long idKlinike) {
+        return repositoryTipPregleda.findByIdKlinike(idKlinike);
+    }
+
+    @Override
     public TipPregleda findByNaziv(String naziv) {
         TipPregleda tip = repositoryTipPregleda.findByNazivTipa(naziv);
         return tip;
@@ -33,6 +38,7 @@ public class TipPregledaService implements TipPregledaServiceInterface {
     public TipPregleda create(TipPregleda tipPregleda) throws Exception {
 
         TipPregleda ret = new TipPregleda();
+        tipPregleda.setSlobodan(true);
         ret.copyValues(tipPregleda);
         ret = repositoryTipPregleda.save(ret);
         return ret;
@@ -56,6 +62,8 @@ public class TipPregledaService implements TipPregledaServiceInterface {
         TipPregleda tipZaObrisati = findByNaziv(naziv);
         repositoryTipPregleda.deleteById(tipZaObrisati.getId());
     }
+
+
 
 
 }

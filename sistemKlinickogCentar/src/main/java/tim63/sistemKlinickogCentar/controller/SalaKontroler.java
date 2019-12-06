@@ -38,10 +38,9 @@ public class SalaKontroler {
         sala.setNaziv(sala.getNaziv().trim());
 
         Collection<Sala> saleUklinici = salaService.findByIdKlinike(sala.getIdKlinike());
-        Sala exist = salaService.findByNaziv(sala.getNaziv());
 
         for (Sala sala1 : saleUklinici) {
-            if(sala1.getNaziv().trim().equals(exist.getNaziv())) {
+            if(sala1.getNaziv().trim().equals(sala.getNaziv())) {
                 return new ResponseEntity<>("Neuspesno dodavanje sale! Sala sa nazivom vec postoji u klinici!", HttpStatus.METHOD_NOT_ALLOWED);
             }
         }
@@ -78,9 +77,10 @@ public class SalaKontroler {
     /*
      * url: /api/sale/obrisi/{naziv}
      */
-    @DeleteMapping(value = "/obrisi/{naziv}")
-    public ResponseEntity<Sala> izbiriSalu(@PathVariable("naziv") String naziv) {
-        salaService.deleteByNaziv(naziv);
+    @DeleteMapping(value = "/obrisi/{id}")
+    public ResponseEntity<?> izbiriSaluPoID(@PathVariable("id") Long id) {
+
+        salaService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

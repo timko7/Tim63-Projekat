@@ -18,4 +18,6 @@ public interface TipPregledaServiceInterface {
     void delete(Long id);
 
     void deleteByNaziv(String email);
+
+    Collection<TipPregleda> findByIdKlinike(Long idKlinike);
 }
