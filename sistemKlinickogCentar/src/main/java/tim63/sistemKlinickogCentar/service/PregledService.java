@@ -1,11 +1,13 @@
 package tim63.sistemKlinickogCentar.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import tim63.sistemKlinickogCentar.model.Pregled;
 import tim63.sistemKlinickogCentar.repository.PregledRepositoryInterface;
 
 import java.util.Collection;
 
+@Service
 public class PregledService implements PregledServiceInterface {
 
     @Autowired
