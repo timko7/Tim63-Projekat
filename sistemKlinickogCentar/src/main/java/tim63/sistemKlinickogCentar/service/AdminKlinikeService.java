@@ -35,7 +35,7 @@ public class AdminKlinikeService implements AdminKlinikeServiceInterface {
     public AdminKlinike create(AdminKlinike adminKlinike) throws Exception {
         AdminKlinike ret = new AdminKlinike();
 
-        ret.setPrviPutLogovan(true);
+        adminKlinike.setPrviPutLogovan(true);
         ret.copyValues(adminKlinike);
         ret = adminRepository.save(ret);
         return ret;
@@ -47,6 +47,15 @@ public class AdminKlinikeService implements AdminKlinikeServiceInterface {
         adminKlinikeZaIzmenu.copyValues(adminKlinike);
         adminKlinikeZaIzmenu = adminRepository.save(adminKlinikeZaIzmenu);
         return adminKlinikeZaIzmenu;
+    }
+
+    @Override
+    public AdminKlinike promeniLozinku(Long idAdmina, String noviPassword) throws Exception {
+        AdminKlinike adminZaPromenu = findById(idAdmina);
+        adminZaPromenu.setPassword(noviPassword);
+        adminZaPromenu.setPrviPutLogovan(false);
+        adminZaPromenu = adminRepository.save(adminZaPromenu);
+        return adminZaPromenu;
     }
 
     @Override
