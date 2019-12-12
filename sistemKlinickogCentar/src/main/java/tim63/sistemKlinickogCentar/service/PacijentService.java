@@ -37,15 +37,76 @@ public class PacijentService implements PacijentInterface {
 
         Pacijent u = new Pacijent();
 
-        u.setIme(pacijent.getIme());
-        u.setPrezime(pacijent.getPrezime());
-        u.setEmail(pacijent.getEmail());
-        u.setPassword(pacijent.getPassword());
-        u.setGrad(pacijent.getGrad());
-        u.setDrzava(pacijent.getDrzava());
-        u.setAdresa(pacijent.getAdresa());
-        u.setTelefon(pacijent.getTelefon());
-        u.setBroj_osiguranika(pacijent.getBroj_osiguranika());
+        if(pacijent.getIme()==null){
+            return  null;
+        }
+        else
+            u.setIme(pacijent.getIme());
+
+        if(pacijent.getPrezime()==null){
+            return  null;
+        }
+        else
+            u.setPrezime(pacijent.getPrezime());
+
+        if(pacijent.getEmail()==null){
+            return  null;
+        }
+        else
+            u.setEmail(pacijent.getEmail());
+
+        if(pacijent.getPassword()==null){
+            return  null;
+        }
+        else{
+            if(pacijent.getPassword().length()<8){
+                return null;
+            }else
+                u.setPassword(pacijent.getPassword());
+        }
+
+
+        if(pacijent.getGrad()==null){
+            return  null;
+        }
+        else
+            u.setGrad(pacijent.getGrad());
+
+        if(pacijent.getDrzava()==null){
+            return  null;
+        }
+        else
+            u.setDrzava(pacijent.getDrzava());
+
+        if(pacijent.getAdresa()==null){
+            return  null;
+        }
+        else
+            u.setAdresa(pacijent.getAdresa());
+
+        if(pacijent.getTelefon()==null){
+            return  null;
+        }
+        else{
+            //if(!pacijent.getTelefon().contains("[0-9]+")){
+             //   return  null;
+
+           // }
+            // else{
+                if(pacijent.getTelefon().length()<9){
+                    return null;
+                }
+                else
+                    u.setTelefon(pacijent.getTelefon());
+            }
+       //}
+
+
+        if(pacijent.getBroj_osiguranika()==0){
+            return  null;
+        }
+        else
+            u.setBroj_osiguranika(pacijent.getBroj_osiguranika());
 
         u = this.pacRep.save(u);
         return u;
