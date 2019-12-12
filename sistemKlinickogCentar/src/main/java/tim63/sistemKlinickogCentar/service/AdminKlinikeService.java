@@ -35,6 +35,7 @@ public class AdminKlinikeService implements AdminKlinikeServiceInterface {
     public AdminKlinike create(AdminKlinike adminKlinike) throws Exception {
         AdminKlinike ret = new AdminKlinike();
 
+        ret.setPrviPutLogovan(true);
         ret.copyValues(adminKlinike);
         ret = adminRepository.save(ret);
         return ret;

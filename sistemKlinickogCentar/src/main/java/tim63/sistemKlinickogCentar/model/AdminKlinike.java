@@ -41,7 +41,10 @@ public class AdminKlinike {
     @Column(name = "Uloga", nullable = false)
     private Uloga uloga=Uloga.ADMINKLINIKE;
 
-    public AdminKlinike(String ime, String prezime, String email, String password, String grad, String drzava, String adresa, String telefon, Long idKlinike, Klinika klinika) {
+    @Column(name = "PrviPutLogovan", nullable = false)
+    private boolean prviPutLogovan;
+
+    public AdminKlinike(String ime, String prezime, String email, String password, String grad, String drzava, String adresa, String telefon, Long idKlinike, boolean prviPutLogovan, Klinika klinika) {
         this.ime = ime;
         this.prezime = prezime;
         this.email = email;
@@ -53,6 +56,7 @@ public class AdminKlinike {
         this.idKlinike = idKlinike;
         this.klinika = klinika;
         this.uloga = Uloga.ADMINKLINIKE;
+        this.prviPutLogovan = prviPutLogovan;
     }
 
     public AdminKlinike() {
@@ -154,6 +158,14 @@ public class AdminKlinike {
         this.uloga = uloga;
     }
 
+    public boolean isPrviPutLogovan() {
+        return prviPutLogovan;
+    }
+
+    public void setPrviPutLogovan(boolean prviPutLogovan) {
+        this.prviPutLogovan = prviPutLogovan;
+    }
+
     public void copyValues(AdminKlinike adminKlinike) {
         this.ime = adminKlinike.getIme();
         this.prezime = adminKlinike.getPrezime();
@@ -166,6 +178,7 @@ public class AdminKlinike {
         this.idKlinike = adminKlinike.getIdKlinike();
         this.klinika = adminKlinike.getKlinika();
         this.uloga = adminKlinike.getUloga();
+        this.prviPutLogovan = adminKlinike.isPrviPutLogovan();
     }
 
 

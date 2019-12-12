@@ -28,7 +28,7 @@ public class KlinikaKontroler {
     }
 
     @RequestMapping(method = GET, value = "/{klinikaId}")
-    public Klinika loadById(@PathVariable Long userId) {
+    public Klinika loadById(@PathVariable("klinikaId") Long userId) {
         return this.klinikaSer.findById(userId);
     }
 
