@@ -47,8 +47,10 @@ public class PregledKontroler {
 
         Pregled pregledNew = pregledService.create(pregled);
 
+        System.out.println("Datum vreme za dodati: " + datumVreme);
+
         return new ResponseEntity<>(pregledNew, HttpStatus.CREATED);
-    } // TODO: napravi jos i proveru da ne sme datum da bude u proslosti. Uzmi trenutni date i proveri dal je manje,vece sta vec
+    }
 
     /*
      * url: /api/pregledi/obrisi/{id}
