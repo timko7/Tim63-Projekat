@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import tim63.sistemKlinickogCentar.model.Pregled;
 import tim63.sistemKlinickogCentar.service.PregledService;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -34,20 +34,29 @@ public class PregledKontroler {
     @RequestMapping(method = POST, value = "/add")
     public ResponseEntity<?> dodajPregled(@RequestBody Pregled pregled) throws Exception {
         int trajanje = pregled.getTrajanjePregleda();
-        Date datumVreme = pregled.getDatumVreme();
+        LocalDateTime datumVreme = pregled.getDatumVreme();
         double cena = pregled.getCena();
 
-        if (trajanje == 0) {
-            return new ResponseEntity<>("Neuspesno dodavanje pregleda! Trajanje pregleda je 0!", HttpStatus.METHOD_NOT_ALLOWED);
+        if (trajanje < 1) {
+            return new ResponseEntity<>("Neuspesno dodavanje pregleda! Trajanje pregleda je manje od 1!", HttpStatus.METHOD_NOT_ALLOWED);
         }
 
         if (cena < 0) {
             return new ResponseEntity<>("Neuspesno dodavanje pregleda! Cena je manja 0!", HttpStatus.METHOD_NOT_ALLOWED);
         }
 
+        LocalDateTime datumVremeSada = LocalDateTime.now();
+
+        int compareValue = pregled.getDatumVreme().compareTo(datumVremeSada);
+
+        if (compareValue < 0) {
+            return new ResponseEntity<>("Neuspesno dodavanje pregleda! Datum za dodati je u proslosti!", HttpStatus.METHOD_NOT_ALLOWED);
+        }
+
         Pregled pregledNew = pregledService.create(pregled);
 
-        System.out.println("Datum vreme za dodati: " + datumVreme);
+
+        System.out.println("Datum vreme za dodati: " + pregledNew.getDatumVreme());
 
         return new ResponseEntity<>(pregledNew, HttpStatus.CREATED);
     }

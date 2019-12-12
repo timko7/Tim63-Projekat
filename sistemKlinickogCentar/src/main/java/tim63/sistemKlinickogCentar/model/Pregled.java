@@ -1,6 +1,7 @@
 package tim63.sistemKlinickogCentar.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -11,7 +12,7 @@ public class Pregled {
     private Long id;
 
     @Column(name = "DatumVreme", nullable = false)
-    private Date datumVreme;
+    private LocalDateTime datumVreme;
 
     @Column(name = "TrajanjePregleda", nullable = false)
     private int trajanjePregleda; // u minutima
@@ -31,7 +32,7 @@ public class Pregled {
     public Pregled() {
     }
 
-    public Pregled(Date datumVreme, int trajanjePregleda, Long idTipa, Long idSale, Long idLekara, double cena) {
+    public Pregled(LocalDateTime datumVreme, int trajanjePregleda, Long idTipa, Long idSale, Long idLekara, double cena) {
         this.datumVreme = datumVreme;
         this.trajanjePregleda = trajanjePregleda;
         this.idTipa = idTipa;
@@ -48,11 +49,11 @@ public class Pregled {
         this.id = id;
     }
 
-    public Date getDatumVreme() {
+    public LocalDateTime getDatumVreme() {
         return datumVreme;
     }
 
-    public void setDatumVreme(Date datumVreme) {
+    public void setDatumVreme(LocalDateTime datumVreme) {
         this.datumVreme = datumVreme;
     }
 
@@ -104,9 +105,6 @@ public class Pregled {
         this.idLekara = pregled.getIdLekara();
         this.cena = pregled.getCena();
     }
-
-
-
 
 
 }
