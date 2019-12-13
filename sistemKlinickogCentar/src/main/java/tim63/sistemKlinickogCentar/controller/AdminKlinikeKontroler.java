@@ -66,6 +66,17 @@ public class AdminKlinikeKontroler {
     }
 
     /*
+     * url: /api/adminiKlinike/promeniPodatke/
+     */
+    @PutMapping(value = "/promeniPodatke/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AdminKlinike> promeniPodatkeAdmina(@RequestBody AdminKlinike adminKlinike)
+            throws Exception {
+
+        AdminKlinike a = adminKlinikeService.update(adminKlinike);
+        return new ResponseEntity<AdminKlinike>(a, HttpStatus.OK);
+    }
+
+    /*
      * url: /api/adminiKlinike/obrisi/{email}
      */
     @DeleteMapping(value = "/obrisi/{email}")
