@@ -16,6 +16,8 @@ public interface AdminKlinikeServiceInterface {
 
     AdminKlinike update(AdminKlinike adminKlinike) throws Exception;
 
+    public  AdminKlinike promeniLozinku(Long idAdmina, String noviPassword) throws Exception;
+
     void delete(Long id);
 
     void deleteByEmail(String email);
