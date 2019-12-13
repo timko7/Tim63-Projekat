@@ -57,7 +57,7 @@ public class LekarController {
      * url: /api/greetings/1 GET
      */
     @RequestMapping(method = GET, value = "/lekar/{userId}")
-    public Lekar loadById(@PathVariable Long userId) {
+    public Lekar loadById(@PathVariable("userId") Long userId) {
         return this.lekarSer.findById(userId);
     }
 

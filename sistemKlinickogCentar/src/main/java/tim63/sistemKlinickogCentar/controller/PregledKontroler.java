@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tim63.sistemKlinickogCentar.model.Klinika;
 import tim63.sistemKlinickogCentar.model.Pregled;
+import tim63.sistemKlinickogCentar.service.LekarService;
 import tim63.sistemKlinickogCentar.service.PregledService;
 
 import java.time.LocalDateTime;
@@ -29,6 +31,17 @@ public class PregledKontroler {
     @RequestMapping(method = GET, value = "{idPregleda}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Pregled getPregledPoID(@PathVariable("idPregleda") Long id) {
         return pregledService.findById(id);
+    }
+
+    @RequestMapping(method = GET, value = "uzmiPreglede/{idKlinike}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Pregled> getPregledPoIDKlinike(@PathVariable("idKlinike") Long id) {
+
+        return pregledService.findByIdKlinike(id);
+    }
+
+    @RequestMapping(method = GET, value = "vratiPoTipu/{idTipa}")
+    public Collection<Pregled> nadjiPoTipu(@PathVariable("idTipa") Long idTipa) {
+        return this.pregledService.findByIdTipa(idTipa);
     }
 
     @RequestMapping(method = POST, value = "/add")

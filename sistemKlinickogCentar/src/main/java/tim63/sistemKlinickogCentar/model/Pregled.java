@@ -29,16 +29,21 @@ public class Pregled {
     @Column(name = "Cena", nullable = false)
     private double cena;
 
+    @Column(name = "IdKlinike", nullable = false)
+    private Long idKlinike;
+
     public Pregled() {
     }
 
-    public Pregled(LocalDateTime datumVreme, int trajanjePregleda, Long idTipa, Long idSale, Long idLekara, double cena) {
+    public Pregled(LocalDateTime datumVreme, int trajanjePregleda, Long idTipa, Long idSale, Long idLekara, double cena,
+                   Long idKlinike) {
         this.datumVreme = datumVreme;
         this.trajanjePregleda = trajanjePregleda;
         this.idTipa = idTipa;
         this.idSale = idSale;
         this.idLekara = idLekara;
         this.cena = cena;
+        this.idKlinike=idKlinike;
     }
 
     public Long getId() {
@@ -97,6 +102,14 @@ public class Pregled {
         this.cena = cena;
     }
 
+    public Long getIdKlinike() {
+        return idKlinike;
+    }
+
+    public void setIdKlinike(Long idKlinike) {
+        this.idKlinike = idKlinike;
+    }
+
     public void copyValues(Pregled pregled) {
         this.datumVreme = pregled.getDatumVreme();
         this.trajanjePregleda = pregled.getTrajanjePregleda();
@@ -104,6 +117,7 @@ public class Pregled {
         this.idSale = pregled.getIdSale();
         this.idLekara = pregled.getIdLekara();
         this.cena = pregled.getCena();
+        this.idKlinike = pregled.getIdKlinike();
     }
 
 
