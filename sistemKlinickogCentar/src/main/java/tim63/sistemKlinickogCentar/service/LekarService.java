@@ -32,6 +32,11 @@ public class LekarService implements LekarInterface {
     }
 
     @Override
+    public Collection<Lekar> findByIdTipa(Long idTipa) {
+        return lekRep.findByIdTipa(idTipa);
+    }
+
+    @Override
     public Lekar findByEmail(String username) {
         Lekar u = lekRep.findByEmail(username);
         return u;

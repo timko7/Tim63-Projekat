@@ -33,6 +33,11 @@ public class LekarController {
         return lekarSer.findByIdKlinike(id);
     }
 
+    @RequestMapping(method = GET, value = "vratiPoTipu/{idTipa}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Lekar> getLekarePoTipu(@PathVariable("idTipa") Long idTipa) {
+        return lekarSer.findByIdTipa(idTipa);
+    }
+
     @RequestMapping(method = POST, value = "/dodajLekara")
     //@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> dodajLekara(@RequestBody Lekar lekar) throws Exception {

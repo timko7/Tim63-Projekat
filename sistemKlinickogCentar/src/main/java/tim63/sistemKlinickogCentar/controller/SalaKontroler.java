@@ -33,6 +33,11 @@ public class SalaKontroler {
         return salaService.findByNaziv(nazivSale);
     }
 
+    @RequestMapping(method = GET, value = "/uzmiSalu/{idSale}")
+    public Sala ucitajPoId(@PathVariable("idSale") Long idSale) {
+        return salaService.findById(idSale);
+    }
+
     @RequestMapping(method = POST, value = "/add")
     public ResponseEntity<?> dodajSalu(@RequestBody Sala sala) throws Exception {
         sala.setNaziv(sala.getNaziv().trim());

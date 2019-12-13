@@ -37,6 +37,11 @@ public class TipPregledaKontroler {
         return tipPregledaService.findByNaziv(nazivTipa);
     }
 
+    @RequestMapping(method = GET, value = "/tipPoId/{idTipa}")
+    public TipPregleda loadByIdTipa(@PathVariable("idTipa") Long idTipa) {
+        return tipPregledaService.findById(idTipa);
+    }
+
     @RequestMapping(method = POST, value = "/add")
     public ResponseEntity<?> dodajTipPregleda(@RequestBody TipPregleda tipPregledaRequest) throws Exception {
         tipPregledaRequest.setNazivTipa(tipPregledaRequest.getNazivTipa().trim());
