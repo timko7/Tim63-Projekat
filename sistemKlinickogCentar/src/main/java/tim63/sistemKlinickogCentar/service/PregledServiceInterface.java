@@ -8,6 +8,10 @@ public interface PregledServiceInterface {
 
     Collection<Pregled> findAll();
 
+    Collection<Pregled> findByIdKlinike(Long id);
+
+    Collection<Pregled> findByIdTipa(Long id);
+
     Pregled findById(Long id);
 
     Pregled create(Pregled pregled) throws Exception;

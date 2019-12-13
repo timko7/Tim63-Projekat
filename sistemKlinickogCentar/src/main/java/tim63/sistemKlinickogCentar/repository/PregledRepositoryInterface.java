@@ -9,5 +9,6 @@ import java.util.List;
 public interface PregledRepositoryInterface extends JpaRepository<Pregled, Long> {
 
     List<Pregled> findAll();
-
+    List<Pregled> findByIdKlinike(Long idKlinike);
+    List<Pregled> findByIdTipa(Long idTipa);
 }

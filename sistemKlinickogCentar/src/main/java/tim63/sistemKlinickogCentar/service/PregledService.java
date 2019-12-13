@@ -19,6 +19,16 @@ public class PregledService implements PregledServiceInterface {
     }
 
     @Override
+    public Collection<Pregled> findByIdKlinike(Long id) {
+        return repositoryPregled.findByIdKlinike(id);
+    }
+
+    @Override
+    public Collection<Pregled> findByIdTipa(Long id) {
+        return repositoryPregled.findByIdTipa(id);
+    }
+
+    @Override
     public Pregled findById(Long id) {
         return repositoryPregled.findById(id).orElseGet(null);
     }
