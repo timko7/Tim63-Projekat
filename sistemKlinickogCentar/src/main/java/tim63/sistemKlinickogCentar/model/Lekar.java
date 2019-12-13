@@ -41,6 +41,9 @@ public class Lekar {
     @Column(name = "idKlinike", nullable = false)
     private Long idKlinike;
 
+    @Column(name = "idTipa", nullable = false)
+    private Long idTipa;
+
     @Column(name = "Uloga", nullable = false)
     private Uloga uloga=Uloga.LEKAR;
 
@@ -57,7 +60,7 @@ public class Lekar {
     private Klinika klinika;
 
     public Lekar(String ime, String prezime, String email, String password, String grad,
-                 String drzava, String adresa, String telefon, int broj_osiguranika, Long idKlinike, boolean slobodan, int radnoVremeOd, int radnoVremeDo) {
+                 String drzava, String adresa, String telefon, int broj_osiguranika, Long idKlinike,Long idTipa, boolean slobodan, int radnoVremeOd, int radnoVremeDo) {
         this.ime = ime;
         this.prezime = prezime;
         this.email = email;
@@ -68,6 +71,7 @@ public class Lekar {
         this.telefon = telefon;
         this.broj_osiguranika = broj_osiguranika;
         this.idKlinike = idKlinike;
+        this.idTipa= idTipa;
         this.uloga = Uloga.LEKAR;
         this.slobodan = slobodan;
         this.radnoVremeOd = radnoVremeOd;
@@ -205,6 +209,14 @@ public class Lekar {
         this.radnoVremeDo = radnoVremeDo;
     }
 
+    public Long getIdTipa() {
+        return idTipa;
+    }
+
+    public void setIdTipa(Long idTipa) {
+        this.idTipa = idTipa;
+    }
+
     public void copyValues(Lekar lekar) {
         this.ime = lekar.getIme();
         this.prezime = lekar.getPrezime();
@@ -216,6 +228,7 @@ public class Lekar {
         this.telefon = lekar.getTelefon();
         this.broj_osiguranika = lekar.getBroj_osiguranika();
         this.idKlinike = lekar.getIdKlinike();
+        this.idTipa= lekar.getIdTipa();
         this.uloga = lekar.getUloga();
         this.slobodan = lekar.isSlobodan();
         this.radnoVremeOd = lekar.getRadnoVremeOd();
