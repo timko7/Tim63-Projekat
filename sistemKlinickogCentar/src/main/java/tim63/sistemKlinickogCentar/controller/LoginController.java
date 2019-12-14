@@ -52,22 +52,33 @@ public class LoginController {
         AdminKlinike ak=adminKlinikeeSer.findByEmail(zahtev.getEmail());
 
             if (p!=null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("pacijent", p);
+                if(zahtev.getPassword().equals(p.getPassword())) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("pacijent", p);
+                    return new ResponseEntity<Pacijent>(p, HttpStatus.CREATED);
+                } else {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
 
-                return new ResponseEntity<Pacijent>(p, HttpStatus.CREATED);
             }
-            else if(l!=null){
-                HttpSession session = request.getSession();
-                session.setAttribute("lekar", l);
-
-                return new ResponseEntity<Lekar>(l, HttpStatus.CREATED);
+            else if(l!=null) {
+                if(zahtev.getPassword().equals(l.getPassword())) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("lekar", l);
+                    return new ResponseEntity<Lekar>(l, HttpStatus.CREATED);
+                } else {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
             }
-            else if(ak!=null){
-                HttpSession session = request.getSession();
-                session.setAttribute("adminKlinike", ak);
+            else if(ak!=null) {
+                if(zahtev.getPassword().equals(ak.getPassword())) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("adminKlinike", ak);
+                    return new ResponseEntity<AdminKlinike>(ak, HttpStatus.CREATED);
+                } else {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
 
-                return new ResponseEntity<AdminKlinike>(ak, HttpStatus.CREATED);
             }
 
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
