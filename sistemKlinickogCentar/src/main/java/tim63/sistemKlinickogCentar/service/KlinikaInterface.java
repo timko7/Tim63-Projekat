@@ -17,4 +17,6 @@ public interface KlinikaInterface {
     Klinika update(Klinika klinika) throws Exception;
 
     void delete(Long id);
+
+    Klinika izmeniPodatke(String stariNazivKlinike, Klinika klinika);
 }
