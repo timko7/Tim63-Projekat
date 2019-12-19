@@ -55,4 +55,22 @@ public class KlinikaService implements KlinikaInterface {
     public void delete(Long id) {
         this.repKlinika.deleteById(id);
     }
+
+    @Override
+    public Klinika izmeniPodatke(String stariNazivKlinike, Klinika klinika) {
+        Klinika klinikaZaIzmenu = findById(klinika.getId());
+        Collection<Klinika> sveKlinike = findAll();
+
+        if (!klinika.getIme().equals(stariNazivKlinike)) {
+            for (Klinika klinika1 : sveKlinike) {
+                if (klinika.getIme().equals(klinika1.getIme())) {
+                    return null;
+                }
+            }
+        }
+
+        klinikaZaIzmenu.copyValues(klinika);
+        klinikaZaIzmenu = repKlinika.save(klinika);
+        return klinikaZaIzmenu;
+    }
 }

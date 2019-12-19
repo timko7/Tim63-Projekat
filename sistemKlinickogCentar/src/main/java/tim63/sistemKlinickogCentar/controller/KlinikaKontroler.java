@@ -53,11 +53,18 @@ public class KlinikaKontroler {
         return new ResponseEntity<Klinika>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Klinika> izmeniKliniku(@RequestBody Klinika klinika, @PathVariable Long id)
+    @PutMapping(value = "promeniPodatke/{stariNaziv}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> izmeniKliniku(@RequestBody Klinika klinika, @PathVariable("stariNaziv") String stariNazivKlinike)
             throws Exception {
-        Klinika klinika1 = klinikaSer.update(klinika);
-        return new ResponseEntity<Klinika>(klinika1, HttpStatus.CREATED);
+        //Klinika klinika1 = klinikaSer.update(klinika);
+        Klinika klinika1 = klinikaSer.izmeniPodatke(stariNazivKlinike, klinika);
+
+        if (klinika1 != null) {
+            return new ResponseEntity<>(klinika1, HttpStatus.CREATED);
+        }
+        else {
+            return new ResponseEntity<>("Neuspesna izmena podataka klinike. Moguce da naziv vec postoji!", HttpStatus.BAD_REQUEST);
+        }
     }
 
 
