@@ -89,6 +89,14 @@ public class LekarController {
         return new ResponseEntity<>(p, HttpStatus.CREATED);
     }
 
+    @PutMapping(value = "oceniLekara/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Lekar> oceniLekra(@RequestBody Lekar lekar, @PathVariable Long id)
+            throws Exception {
+        Lekar p=lekarSer.update(lekar);
+        p.setBrojacIzvrsenihPregleda(p.getBrojacIzvrsenihPregleda()+1);
+        return new ResponseEntity<>(p, HttpStatus.CREATED);
+    }
+
     @RequestMapping(method = PUT, value = "/dopuniLekara")
     public ResponseEntity<Lekar> dopuniLekara(@RequestBody LekarKlinikaDTO lekarKlinika)
             throws Exception {

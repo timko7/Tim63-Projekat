@@ -55,7 +55,7 @@ public class PacijentController {
      * url: /api/greetings/1 GET
      */
     @RequestMapping(method = GET, value = "/user/{userId}")
-    public Pacijent loadById(@PathVariable Long userId) {
+    public Pacijent loadById(@PathVariable("userId") Long userId) {
         return this.pacijentSer.findById(userId);
     }
 
@@ -81,6 +81,8 @@ public class PacijentController {
         Pacijent p = pacijentSer.update(pacijent);
         return new ResponseEntity<Pacijent>(p, HttpStatus.CREATED);
     }
+
+
 
     /*
      * url: /api/greetings/1 DELETE

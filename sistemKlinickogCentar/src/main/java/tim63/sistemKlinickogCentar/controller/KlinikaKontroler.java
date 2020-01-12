@@ -67,5 +67,13 @@ public class KlinikaKontroler {
         }
     }
 
+    @PutMapping(value = "oceniKliniku/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Klinika> oceniKliniku(@RequestBody Klinika klinika, @PathVariable("id") Long id)
+            throws Exception {
+        Klinika klinika1 = klinikaSer.update(klinika);
+        klinika1.setBrojacPacijenata(klinika1.getBrojacPacijenata()+1);
+        return new ResponseEntity<Klinika>(klinika1, HttpStatus.CREATED);
+    }
+
 
 }

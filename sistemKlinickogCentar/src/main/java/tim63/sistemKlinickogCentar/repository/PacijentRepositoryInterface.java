@@ -9,8 +9,6 @@ import java.util.List;
 @Repository
 public interface PacijentRepositoryInterface extends JpaRepository<Pacijent, Long> {
 
-    List<Pacijent> findAll();
-
     Pacijent findByEmail(String username);
 
     // Pacijent update(Pacijent pacijent) throws Exception;

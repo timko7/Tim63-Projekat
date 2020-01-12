@@ -1,6 +1,8 @@
 package tim63.sistemKlinickogCentar.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 
 
 @Entity
@@ -36,7 +38,7 @@ public class Lekar {
     private String telefon;
 
     @Column(name = "Broj_Osiguranika", nullable = false)
-    private int broj_osiguranika;
+    private String broj_osiguranika;
 
     @Column(name = "idKlinike", nullable = false)
     private Long idKlinike;
@@ -56,11 +58,22 @@ public class Lekar {
     @Column(name = "RadnoVremeDo", nullable = false)
     private int radnoVremeDo;
 
+    @Column(name = "Ocena", nullable = false)
+    private int ocena=0;
+
+    @Column(name = "SrednjaOcena", nullable = false)
+    private double srednjaOcena=0;
+
+    private int brojacIzvrsenihPregleda=0;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Klinika klinika;
 
+    //private HashMap<LocalDateTime, Boolean> kalendar=new HashMap<LocalDateTime, Boolean>();
+
+
     public Lekar(String ime, String prezime, String email, String password, String grad,
-                 String drzava, String adresa, String telefon, int broj_osiguranika, Long idKlinike,Long idTipa, boolean slobodan, int radnoVremeOd, int radnoVremeDo) {
+                 String drzava, String adresa, String telefon, String broj_osiguranika, Long idKlinike,Long idTipa, boolean slobodan, int radnoVremeOd, int radnoVremeDo) {
         this.ime = ime;
         this.prezime = prezime;
         this.email = email;
@@ -76,11 +89,23 @@ public class Lekar {
         this.slobodan = slobodan;
         this.radnoVremeOd = radnoVremeOd;
         this.radnoVremeDo = radnoVremeDo;
+        this.ocena=0;
+        this.srednjaOcena=0;
+       // this.kalendar=napuniKalendar();
     }
 
     public Lekar() {
     }
 
+    private   HashMap<LocalDateTime, Boolean> napuniKalendar(){
+        HashMap<LocalDateTime, Boolean> k=new  HashMap<LocalDateTime, Boolean>();
+        LocalDateTime sad=LocalDateTime.now();
+        k.put(sad,true);
+        for(int i=1;i<=365;i++){
+            k.put(sad.plusDays(i),true);
+        }
+        return k;
+    }
     public Long getId() {
         return id;
     }
@@ -117,7 +142,7 @@ public class Lekar {
         return telefon;
     }
 
-    public int getBroj_osiguranika() {
+    public String getBroj_osiguranika() {
         return broj_osiguranika;
     }
 
@@ -161,7 +186,7 @@ public class Lekar {
         this.telefon = telefon;
     }
 
-    public void setBroj_osiguranika(int broj_osiguranika) {
+    public void setBroj_osiguranika(String broj_osiguranika) {
         this.broj_osiguranika = broj_osiguranika;
     }
 
@@ -217,6 +242,30 @@ public class Lekar {
         this.idTipa = idTipa;
     }
 
+    public int getOcena() {
+        return ocena;
+    }
+
+    public void setOcena(int ocena) {
+        this.ocena = ocena;
+    }
+
+    public double getSrednjaOcena() {
+        return srednjaOcena;
+    }
+
+    public void setSrednjaOcena(double srednjaOcena) {
+        this.srednjaOcena = srednjaOcena;
+    }
+
+    public int getBrojacIzvrsenihPregleda() {
+        return brojacIzvrsenihPregleda;
+    }
+
+    public void setBrojacIzvrsenihPregleda(int brojacIzvrsenihPregleda) {
+        this.brojacIzvrsenihPregleda = brojacIzvrsenihPregleda;
+    }
+
     public void copyValues(Lekar lekar) {
         this.ime = lekar.getIme();
         this.prezime = lekar.getPrezime();
@@ -233,6 +282,8 @@ public class Lekar {
         this.slobodan = lekar.isSlobodan();
         this.radnoVremeOd = lekar.getRadnoVremeOd();
         this.radnoVremeDo = lekar.getRadnoVremeDo();
+        this.ocena=lekar.getOcena();
+        this.srednjaOcena=lekar.getSrednjaOcena();
     }
 
 

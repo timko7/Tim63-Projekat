@@ -16,8 +16,7 @@ public class PacijentService implements PacijentInterface {
 
     @Override
     public Collection<Pacijent> findAll() {
-        Collection<Pacijent> result = pacRep.findAll();
-        return result;
+        return pacRep.findAll();
     }
 
     @Override
@@ -102,7 +101,7 @@ public class PacijentService implements PacijentInterface {
        //}
 
 
-        if(pacijent.getBroj_osiguranika()==0){
+        if(pacijent.getBroj_osiguranika()==null){
             return  null;
         }
         else
