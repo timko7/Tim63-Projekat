@@ -48,6 +48,7 @@ public class KlinikaService implements KlinikaInterface {
     public Klinika update(Klinika klinika) throws Exception {
         Klinika klinikaZaIzmenu = findById(klinika.getId());
         klinikaZaIzmenu.copyValues(klinika);
+        klinikaZaIzmenu=repKlinika.save(klinikaZaIzmenu);
         return klinikaZaIzmenu;
     }
 

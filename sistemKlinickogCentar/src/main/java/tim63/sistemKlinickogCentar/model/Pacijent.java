@@ -34,13 +34,14 @@ public class Pacijent {
     private String telefon;
 
     @Column(name = "Broj_Osiguranika", nullable = false)
-    private int broj_osiguranika;
+    private String broj_osiguranika;
 
     @Column(name = "Uloga", nullable = false)
+    @Enumerated(value = EnumType.ORDINAL)
     private Uloga uloga = Uloga.PACIJENT;
 
     public Pacijent(String ime, String prezime, String email, String password, String grad,
-                    String drzava, String adresa, String telefon, int broj_osiguranika) {
+                    String drzava, String adresa, String telefon, String broj_osiguranika) {
         this.ime = ime;
         this.prezime = prezime;
         this.email = email;
@@ -96,7 +97,7 @@ public class Pacijent {
         return telefon;
     }
 
-    public int getBroj_osiguranika() {
+    public String getBroj_osiguranika() {
         return broj_osiguranika;
     }
 
@@ -132,7 +133,7 @@ public class Pacijent {
         this.telefon = telefon;
     }
 
-    public void setBroj_osiguranika(int broj_osiguranika) {
+    public void setBroj_osiguranika(String broj_osiguranika) {
         this.broj_osiguranika = broj_osiguranika;
     }
 

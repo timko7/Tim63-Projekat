@@ -20,6 +20,14 @@ public class Klinika {
     @Column(name = "Opis", nullable = false)
     private String opis;
 
+    @Column(name = "Ocena", nullable = false)
+    private int ocena=0;
+
+    @Column(name = "SrednjaOcena", nullable = false)
+    private double srednjaOcena=0;
+
+    private int brojacPacijenata;
+
     @OneToMany(mappedBy = "klinika", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Lekar> lekari = new HashSet<>();
 
@@ -30,7 +38,8 @@ public class Klinika {
         this.ime = ime;
         this.adresa = adresa;
         this.opis = opis;
-        //this.adminKlinike = adminKlinike;
+       this.ocena=0;
+       this.srednjaOcena=0;
     }
 
     public Klinika() {
@@ -79,6 +88,30 @@ public class Klinika {
     //}
 
 
+    public int getOcena() {
+        return ocena;
+    }
+
+    public void setOcena(int ocena) {
+        this.ocena = ocena;
+    }
+
+    public double getSrednjaOcena() {
+        return srednjaOcena;
+    }
+
+    public void setSrednjaOcena(double srednjaOcena) {
+        this.srednjaOcena = srednjaOcena;
+    }
+
+    public int getBrojacPacijenata() {
+        return brojacPacijenata;
+    }
+
+    public void setBrojacPacijenata(int brojacPacijenata) {
+        this.brojacPacijenata = brojacPacijenata;
+    }
+
     public Set<Lekar> getLekari() {
         return lekari;
     }
@@ -92,6 +125,8 @@ public class Klinika {
         this.adresa = klinika.getAdresa();
         this.ime = klinika.getIme();
         this.opis = klinika.getOpis();
+        this.ocena=klinika.getOcena();
+        this.srednjaOcena=klinika.getSrednjaOcena();
 
     }
 

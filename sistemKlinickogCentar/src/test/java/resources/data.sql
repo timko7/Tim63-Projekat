@@ -1,0 +1,4 @@
+
+insert into `pacijent` (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`Broj_Osiguranika`,`Uloga`) values ( 'Marko', 'Marković','m@gmail.com','11111111','Grad1','Adresa1','Drzava1','111111111',"3324",0);
+insert into `pacijent` (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`Broj_Osiguranika`,`Uloga`) values ('Milan', 'Milanović','mm@gmail.com','22222222','Grad1','Adresa1','Drzava1','111111111',"344",1);
+insert into `pacijent` (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`Broj_Osiguranika`,`Uloga`) values ( 'Ivana', 'Novaković','i@gmail.com','33333333','Grad1','Adresa1','Drzava1','111111111',"555",2);
