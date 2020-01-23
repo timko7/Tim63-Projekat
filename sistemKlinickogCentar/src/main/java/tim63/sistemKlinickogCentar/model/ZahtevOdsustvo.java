@@ -1,10 +1,12 @@
 package tim63.sistemKlinickogCentar.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-public class ZahtevOdsustvo {
+public class ZahtevOdsustvo implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +29,9 @@ public class ZahtevOdsustvo {
 
     @Column(name = "Prihvacen", nullable = false)
     private boolean prihvacen;  // true - zahtev je prihvacen/odobren
+
+    @Version
+    private Long version;
 
     public ZahtevOdsustvo() {
     }
@@ -96,6 +101,14 @@ public class ZahtevOdsustvo {
         this.prihvacen = prihvacen;
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
     public void copyValues(ZahtevOdsustvo zahtevOdsustvo) {
         this.datumPocetka = zahtevOdsustvo.getDatumPocetka();
         this.datumZavrsetka = zahtevOdsustvo.getDatumZavrsetka();
@@ -105,5 +118,16 @@ public class ZahtevOdsustvo {
         this.prihvacen = zahtevOdsustvo.isPrihvacen();
     }
 
-
+    @Override
+    public String toString() {
+        return "ZahtevOdsustvo{" +
+                "id=" + id +
+                ", datumPocetka=" + datumPocetka +
+                ", datumZavrsetka=" + datumZavrsetka +
+                ", idLekara=" + idLekara +
+                ", idKlinike=" + idKlinike +
+                ", obradjen=" + obradjen +
+                ", prihvacen=" + prihvacen +
+                '}';
+    }
 }

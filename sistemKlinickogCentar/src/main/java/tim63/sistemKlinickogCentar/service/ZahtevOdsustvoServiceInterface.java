@@ -2,6 +2,8 @@ package tim63.sistemKlinickogCentar.service;
 
 import tim63.sistemKlinickogCentar.model.ZahtevOdsustvo;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.Collection;
 
 public interface ZahtevOdsustvoServiceInterface {
@@ -17,5 +19,9 @@ public interface ZahtevOdsustvoServiceInterface {
     ZahtevOdsustvo posaljiZahtev(ZahtevOdsustvo zahtevOdsustvo) throws Exception;
 
     void delete(Long id);
+
+    ZahtevOdsustvo odobriZahtev(ZahtevOdsustvo zahtevOdsustvo) throws IOException, MessagingException;
+
+    ZahtevOdsustvo odbiZahtev(ZahtevOdsustvo zahtevOdsustvo, String razlogOdbijanja) ;
 
 }
