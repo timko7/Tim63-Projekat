@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tim63.sistemKlinickogCentar.model.AdminKlinike;
 import tim63.sistemKlinickogCentar.model.Lekar;
 import tim63.sistemKlinickogCentar.model.dto.LekarKlinikaDTO;
 import tim63.sistemKlinickogCentar.service.LekarService;
@@ -102,6 +103,17 @@ public class LekarController {
             throws Exception {
         lekarKlinika.toString();
         return null;
+    }
+
+    /*
+     * url: /api/lekari/promeniLozinku/{idLekara}
+     */
+    @PutMapping(value = "/promeniLozinku/{idLekara}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> izmeniPassLekara(@RequestBody String noviPassword, @PathVariable("idLekara") Long idLekara)
+            throws Exception {
+
+        Lekar a = lekarSer.promeniLozinku(idLekara, noviPassword);
+        return new ResponseEntity<>(a, HttpStatus.OK);
     }
 
     /*

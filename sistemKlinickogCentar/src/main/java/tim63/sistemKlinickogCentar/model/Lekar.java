@@ -64,6 +64,9 @@ public class Lekar {
     @Column(name = "SrednjaOcena", nullable = false)
     private double srednjaOcena=0;
 
+    @Column(name = "PrviPutLogovan", nullable = false)
+    private boolean prviPutLogovan;
+
     private int brojacIzvrsenihPregleda=0;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -73,7 +76,7 @@ public class Lekar {
 
 
     public Lekar(String ime, String prezime, String email, String password, String grad,
-                 String drzava, String adresa, String telefon, String broj_osiguranika, Long idKlinike,Long idTipa, boolean slobodan, int radnoVremeOd, int radnoVremeDo) {
+                 String drzava, String adresa, String telefon, String broj_osiguranika, Long idKlinike,Long idTipa, boolean slobodan, int radnoVremeOd, int radnoVremeDo, boolean prviPutLogovan) {
         this.ime = ime;
         this.prezime = prezime;
         this.email = email;
@@ -91,6 +94,7 @@ public class Lekar {
         this.radnoVremeDo = radnoVremeDo;
         this.ocena=0;
         this.srednjaOcena=0;
+        this.prviPutLogovan = prviPutLogovan;
        // this.kalendar=napuniKalendar();
     }
 
@@ -266,6 +270,14 @@ public class Lekar {
         this.brojacIzvrsenihPregleda = brojacIzvrsenihPregleda;
     }
 
+    public boolean isPrviPutLogovan() {
+        return prviPutLogovan;
+    }
+
+    public void setPrviPutLogovan(boolean prviPutLogovan) {
+        this.prviPutLogovan = prviPutLogovan;
+    }
+
     public void copyValues(Lekar lekar) {
         this.ime = lekar.getIme();
         this.prezime = lekar.getPrezime();
@@ -284,6 +296,7 @@ public class Lekar {
         this.radnoVremeDo = lekar.getRadnoVremeDo();
         this.ocena=lekar.getOcena();
         this.srednjaOcena=lekar.getSrednjaOcena();
+        this.prviPutLogovan = lekar.isPrviPutLogovan();
     }
 
 
