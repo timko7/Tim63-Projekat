@@ -2,12 +2,15 @@ package tim63.sistemKlinickogCentar.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import tim63.sistemKlinickogCentar.model.Pregled;
 import tim63.sistemKlinickogCentar.repository.PregledRepositoryInterface;
 
 import java.util.Collection;
 
 @Service
+@Transactional(readOnly = true)
 public class PregledService implements PregledServiceInterface {
 
     @Autowired
@@ -29,11 +32,31 @@ public class PregledService implements PregledServiceInterface {
     }
 
     @Override
+    public Collection<Pregled> findByIdLekara(Long id) {
+        return repositoryPregled.findByIdLekara(id);
+    }
+
+    @Override
+    public Collection<Pregled> findByIdPacijenta(Long id) {
+        return repositoryPregled.findByIdPacijenta(id);
+    }
+
+    @Override
     public Pregled findById(Long id) {
         return repositoryPregled.findById(id).orElseGet(null);
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public Pregled update(Pregled pregled) throws Exception {
+        Pregled zaIzmenu = findById(pregled.getId());
+        zaIzmenu.copyValuesZaRezervaciju(pregled);
+        zaIzmenu = repositoryPregled.save(zaIzmenu);
+        return zaIzmenu;
+    }
+
+    @Override
+    @Transactional(readOnly = false)
     public Pregled create(Pregled pregled) throws Exception {
         Pregled ret = new Pregled();
         ret.copyValues(pregled);

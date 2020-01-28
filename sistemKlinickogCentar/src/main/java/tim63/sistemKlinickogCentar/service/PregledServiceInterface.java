@@ -12,8 +12,13 @@ public interface PregledServiceInterface {
 
     Collection<Pregled> findByIdTipa(Long id);
 
+    Collection<Pregled> findByIdLekara(Long id);
+
+    Collection<Pregled> findByIdPacijenta(Long id);
+
     Pregled findById(Long id);
 
+    Pregled update(Pregled pregled) throws Exception;
     Pregled create(Pregled pregled) throws Exception;
 
     void delete(Long id);

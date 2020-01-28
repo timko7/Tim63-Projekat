@@ -11,6 +11,9 @@ public class Pregled {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Version
+    private Long verzija;
+
     @Column(name = "DatumVreme", nullable = false)
     private LocalDateTime datumVreme;
 
@@ -32,6 +35,15 @@ public class Pregled {
     @Column(name = "IdKlinike", nullable = false)
     private Long idKlinike;
 
+    @Column(name = "IdPacijenta", nullable = true)
+    private Long idPacijenta;
+
+    @Column(name = "Odradjen", nullable = false)
+    private boolean odradjen=false;
+
+    @Column(name = "Rezervisan", nullable = false)
+    private boolean rezervisan=false;
+
     public Pregled() {
     }
 
@@ -44,6 +56,8 @@ public class Pregled {
         this.idLekara = idLekara;
         this.cena = cena;
         this.idKlinike=idKlinike;
+        this.odradjen=false;
+        this.rezervisan=false;
     }
 
     public Long getId() {
@@ -110,6 +124,38 @@ public class Pregled {
         this.idKlinike = idKlinike;
     }
 
+    public Long getIdPacijenta() {
+        return idPacijenta;
+    }
+
+    public void setIdPacijenta(Long idPacijenta) {
+        this.idPacijenta = idPacijenta;
+    }
+
+    public boolean isOdradjen() {
+        return odradjen;
+    }
+
+    public void setOdradjen(boolean odradjen) {
+        this.odradjen = odradjen;
+    }
+
+    public boolean isRezervisan() {
+        return rezervisan;
+    }
+
+    public void setRezervisan(boolean rezervisan) {
+        this.rezervisan = rezervisan;
+    }
+
+    public Long getVerzija() {
+        return verzija;
+    }
+
+    public void setVerzija(Long verzija) {
+        this.verzija = verzija;
+    }
+
     public void copyValues(Pregled pregled) {
         this.datumVreme = pregled.getDatumVreme();
         this.trajanjePregleda = pregled.getTrajanjePregleda();
@@ -118,6 +164,20 @@ public class Pregled {
         this.idLekara = pregled.getIdLekara();
         this.cena = pregled.getCena();
         this.idKlinike = pregled.getIdKlinike();
+        this.odradjen=pregled.isOdradjen();
+        this.rezervisan=pregled.isRezervisan();
+    }
+    public void copyValuesZaRezervaciju(Pregled pregled) {
+        this.datumVreme = pregled.getDatumVreme();
+        this.trajanjePregleda = pregled.getTrajanjePregleda();
+        this.idTipa = pregled.getIdTipa();
+        this.idSale = pregled.getIdSale();
+        this.idLekara = pregled.getIdLekara();
+        this.cena = pregled.getCena();
+        this.idKlinike = pregled.getIdKlinike();
+        this.idPacijenta=pregled.getIdPacijenta();
+        this.odradjen=pregled.isOdradjen();
+        this.rezervisan=pregled.isRezervisan();
     }
 
 

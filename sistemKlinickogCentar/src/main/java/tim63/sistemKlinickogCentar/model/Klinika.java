@@ -20,9 +20,6 @@ public class Klinika {
     @Column(name = "Opis", nullable = false)
     private String opis;
 
-    @Column(name = "Ocena", nullable = false)
-    private int ocena=0;
-
     @Column(name = "SrednjaOcena", nullable = false)
     private double srednjaOcena=0;
 
@@ -38,7 +35,6 @@ public class Klinika {
         this.ime = ime;
         this.adresa = adresa;
         this.opis = opis;
-       this.ocena=0;
        this.srednjaOcena=0;
     }
 
@@ -88,14 +84,6 @@ public class Klinika {
     //}
 
 
-    public int getOcena() {
-        return ocena;
-    }
-
-    public void setOcena(int ocena) {
-        this.ocena = ocena;
-    }
-
     public double getSrednjaOcena() {
         return srednjaOcena;
     }
@@ -125,7 +113,6 @@ public class Klinika {
         this.adresa = klinika.getAdresa();
         this.ime = klinika.getIme();
         this.opis = klinika.getOpis();
-        this.ocena=klinika.getOcena();
         this.srednjaOcena=klinika.getSrednjaOcena();
 
     }

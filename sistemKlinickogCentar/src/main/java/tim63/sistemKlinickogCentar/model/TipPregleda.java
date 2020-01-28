@@ -18,6 +18,9 @@ public class TipPregleda {
     @Column(name = "IdKlinike", nullable = false)
     private Long idKlinike;
 
+    @Column(name = "Cena", nullable = false)
+    private double cena;
+
     public TipPregleda() {
     }
 
@@ -25,10 +28,11 @@ public class TipPregleda {
         this.nazivTipa = nazivTipa;
     }
 
-    public TipPregleda(String nazivTipa, boolean slobodan, Long idKlinike) {
+    public TipPregleda(String nazivTipa, boolean slobodan, Long idKlinike,double cena) {
         this.nazivTipa = nazivTipa;
         this.slobodan = slobodan;
         this.idKlinike = idKlinike;
+        this.cena=cena;
     }
 
     public Long getId() {
@@ -63,10 +67,19 @@ public class TipPregleda {
         this.idKlinike = idKlinike;
     }
 
+    public double getCena() {
+        return cena;
+    }
+
+    public void setCena(double cena) {
+        this.cena = cena;
+    }
+
     public void copyValues(TipPregleda tipPregleda) {
         this.nazivTipa = tipPregleda.getNazivTipa();
         this.slobodan = tipPregleda.isSlobodan();
         this.idKlinike = tipPregleda.getIdKlinike();
+        this.cena=tipPregleda.getCena();
     }
 
 

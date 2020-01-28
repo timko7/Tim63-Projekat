@@ -2,6 +2,7 @@ package tim63.sistemKlinickogCentar.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import javax.persistence.Version;
 
 @Entity
 
@@ -20,7 +21,7 @@ public class ZaktaniPregledi {
     @Column(name = "IdTipa", nullable = false)
     private Long idTipa;
 
-    @Column(name = "IdSale", nullable = false)
+    @Column(name = "IdSale", nullable = true)
     private Long idSale;
 
     @Column(name = "IdLekara", nullable = false)
@@ -38,18 +39,26 @@ public class ZaktaniPregledi {
     @Column(name = "Odradjen", nullable = false)
     private boolean odradjen=false;
 
+    @Column(name = "Rezervisan", nullable = false)
+    private boolean rezervisan=false;
 
-    public ZaktaniPregledi(Long id, LocalDateTime datumVreme, int trajanjePregleda, Long idTipa, Long idSale, Long idLekara, double cena, Long idKlinike, Long idPacijenta) {
-        this.id = id;
+    @Column(name = "Odobren", nullable = false)
+    private boolean odobren=false;
+
+
+    public ZaktaniPregledi(LocalDateTime datumVreme,  Long idTipa,  Long idLekara, double cena, Long idKlinike, Long idPacijenta) {
+
         this.datumVreme = datumVreme;
-        this.trajanjePregleda = trajanjePregleda;
+      this.trajanjePregleda = 0;
         this.idTipa = idTipa;
-        this.idSale = idSale;
+        //this.idSale = idSale;
         this.idLekara = idLekara;
         this.cena = cena;
         this.idKlinike = idKlinike;
         this.idPacijenta = idPacijenta;
         this.odradjen = false;
+        this.odobren=false;
+     //   this.rezervisan=false;
     }
 
     public ZaktaniPregledi() {
@@ -136,6 +145,22 @@ public class ZaktaniPregledi {
         this.odradjen = odradjen;
     }
 
+    public boolean isOdobren() {
+        return odobren;
+    }
+
+    public void setOdobren(boolean odobren) {
+        this.odobren = odobren;
+    }
+
+    public boolean isRezervisan() {
+        return rezervisan;
+    }
+
+    public void setRezervisan(boolean rezervisan) {
+        this.rezervisan = rezervisan;
+    }
+
     public void copyValues(ZaktaniPregledi pregled) {
         this.datumVreme = pregled.getDatumVreme();
         this.trajanjePregleda = pregled.getTrajanjePregleda();
@@ -146,5 +171,7 @@ public class ZaktaniPregledi {
         this.idKlinike = pregled.getIdKlinike();
         this.idPacijenta=pregled.getIdPacijenta();
         this.odradjen=pregled.isOdradjen();
+       this.rezervisan=pregled.isRezervisan();
+       this.odobren=pregled.isOdobren();
     }
 }

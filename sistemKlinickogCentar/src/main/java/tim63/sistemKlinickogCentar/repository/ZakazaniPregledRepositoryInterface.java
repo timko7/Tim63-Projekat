@@ -6,7 +6,7 @@ import tim63.sistemKlinickogCentar.model.ZaktaniPregledi;
 
 import java.util.List;
 
-
+@Repository
 public interface ZakazaniPregledRepositoryInterface extends JpaRepository<ZaktaniPregledi, Long> {
 
     List<ZaktaniPregledi> findAll();
@@ -14,5 +14,6 @@ public interface ZakazaniPregledRepositoryInterface extends JpaRepository<Zaktan
     List<ZaktaniPregledi> findByIdLekara(Long idLekara);
 
     List<ZaktaniPregledi> findByIdPacijenta(Long idPcijenta);
+    List<ZaktaniPregledi> findByIdKlinike(Long idKlinike);
 
 }

@@ -2,6 +2,8 @@ package tim63.sistemKlinickogCentar.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import tim63.sistemKlinickogCentar.model.ZaktaniPregledi;
 import tim63.sistemKlinickogCentar.repository.ZakazaniPregledRepositoryInterface;
 
@@ -29,11 +31,15 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
     }
 
     @Override
+    public Collection<ZaktaniPregledi> findByIdKlinike(Long id) {
+        return zpi.findByIdKlinike(id);
+    }
+
+    @Override
     public ZaktaniPregledi findById(Long id)  {
         return zpi.findById(id).orElseGet(null);
     }
 
-    @Override
     public ZaktaniPregledi update(ZaktaniPregledi pacijent) throws Exception {
         ZaktaniPregledi zaIzmenu = findById(pacijent.getId());
         zaIzmenu.copyValues(pacijent);
@@ -41,7 +47,7 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
         return zaIzmenu;
     }
 
-    @Override
+
     public ZaktaniPregledi create(ZaktaniPregledi pregled) throws Exception {
         ZaktaniPregledi ret = new ZaktaniPregledi();
 
@@ -52,7 +58,8 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
         ret.setIdLekara(pregled.getIdLekara());
         ret.setIdTipa(pregled.getIdTipa());
         ret.setIdPacijenta(pregled.getIdPacijenta());
-        ret.setIdSale(pregled.getIdSale());
+      //  ret.setIdSale(pregled.getIdSale());
+        ret.setRezervisan(true);
 
         ret = this.zpi.save(ret);
         return ret;
