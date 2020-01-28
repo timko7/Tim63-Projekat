@@ -11,6 +11,7 @@ public interface ZakazaniPreglediInterface {
     Collection<ZaktaniPregledi> findByIdLekara(Long id);
 
     Collection<ZaktaniPregledi> findByIdPacijenta(Long id);
+    Collection<ZaktaniPregledi> findByIdKlinike(Long id);
 
     ZaktaniPregledi findById(Long id);
 

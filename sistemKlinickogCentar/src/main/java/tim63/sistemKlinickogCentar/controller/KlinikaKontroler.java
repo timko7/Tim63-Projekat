@@ -7,9 +7,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tim63.sistemKlinickogCentar.model.Klinika;
+import tim63.sistemKlinickogCentar.model.OcenaKlinike;
 import tim63.sistemKlinickogCentar.service.KlinikaService;
+import tim63.sistemKlinickogCentar.service.OcenaKlinikeService;
 
+import javax.ws.rs.POST;
 import java.util.Collection;
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -21,6 +25,9 @@ public class KlinikaKontroler {
 
     @Autowired
     private KlinikaService klinikaSer;
+
+    @Autowired
+    private OcenaKlinikeService ocenaKlinikeService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Klinika> getKlinike() {
@@ -67,12 +74,24 @@ public class KlinikaKontroler {
         }
     }
 
-    @PutMapping(value = "oceniKliniku/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Klinika> oceniKliniku(@RequestBody Klinika klinika, @PathVariable("id") Long id)
+    @PostMapping(value = "oceniKliniku/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> oceniKliniku(@RequestBody double ocena, @PathVariable("id") Long id)
             throws Exception {
-        Klinika klinika1 = klinikaSer.update(klinika);
-        klinika1.setBrojacPacijenata(klinika1.getBrojacPacijenata()+1);
-        return new ResponseEntity<Klinika>(klinika1, HttpStatus.CREATED);
+        OcenaKlinike o=new OcenaKlinike();
+        o.setOcena(ocena);
+        o.setIdKlinike(id);
+        o=ocenaKlinikeService.create(o);
+        return new ResponseEntity<>(o, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(method = GET, value = "/srednjaOcenaKlinike/{id}")
+    public double srednjaOcena( @PathVariable("id") Long id) throws Exception {
+        List<OcenaKlinike> oceneLekara=ocenaKlinikeService.findByIdKlinike(id);
+        double zbir=0;
+        for(OcenaKlinike ocena:oceneLekara){
+            zbir+=ocena.getOcena();
+        }
+        return zbir/oceneLekara.size();
     }
 
 

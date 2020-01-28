@@ -1,7 +1,9 @@
 package tim63.sistemKlinickogCentar.model;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 
 
@@ -58,9 +60,6 @@ public class Lekar {
     @Column(name = "RadnoVremeDo", nullable = false)
     private int radnoVremeDo;
 
-    @Column(name = "Ocena", nullable = false)
-    private int ocena=0;
-
     @Column(name = "SrednjaOcena", nullable = false)
     private double srednjaOcena=0;
 
@@ -72,7 +71,7 @@ public class Lekar {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Klinika klinika;
 
-    //private HashMap<LocalDateTime, Boolean> kalendar=new HashMap<LocalDateTime, Boolean>();
+
 
 
     public Lekar(String ime, String prezime, String email, String password, String grad,
@@ -92,24 +91,17 @@ public class Lekar {
         this.slobodan = slobodan;
         this.radnoVremeOd = radnoVremeOd;
         this.radnoVremeDo = radnoVremeDo;
-        this.ocena=0;
         this.srednjaOcena=0;
+
         this.prviPutLogovan = prviPutLogovan;
        // this.kalendar=napuniKalendar();
+
     }
 
     public Lekar() {
     }
 
-    private   HashMap<LocalDateTime, Boolean> napuniKalendar(){
-        HashMap<LocalDateTime, Boolean> k=new  HashMap<LocalDateTime, Boolean>();
-        LocalDateTime sad=LocalDateTime.now();
-        k.put(sad,true);
-        for(int i=1;i<=365;i++){
-            k.put(sad.plusDays(i),true);
-        }
-        return k;
-    }
+
     public Long getId() {
         return id;
     }
@@ -246,13 +238,6 @@ public class Lekar {
         this.idTipa = idTipa;
     }
 
-    public int getOcena() {
-        return ocena;
-    }
-
-    public void setOcena(int ocena) {
-        this.ocena = ocena;
-    }
 
     public double getSrednjaOcena() {
         return srednjaOcena;
@@ -294,7 +279,6 @@ public class Lekar {
         this.slobodan = lekar.isSlobodan();
         this.radnoVremeOd = lekar.getRadnoVremeOd();
         this.radnoVremeDo = lekar.getRadnoVremeDo();
-        this.ocena=lekar.getOcena();
         this.srednjaOcena=lekar.getSrednjaOcena();
         this.prviPutLogovan = lekar.isPrviPutLogovan();
     }

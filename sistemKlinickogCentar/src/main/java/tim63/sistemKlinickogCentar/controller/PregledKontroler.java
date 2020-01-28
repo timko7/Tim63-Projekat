@@ -5,8 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tim63.sistemKlinickogCentar.model.Kalendar;
 import tim63.sistemKlinickogCentar.model.Klinika;
 import tim63.sistemKlinickogCentar.model.Pregled;
+import tim63.sistemKlinickogCentar.service.KalendarService;
 import tim63.sistemKlinickogCentar.service.LekarService;
 import tim63.sistemKlinickogCentar.service.PregledService;
 
@@ -22,6 +24,9 @@ public class PregledKontroler {
 
     @Autowired
     private PregledService pregledService;
+
+    @Autowired
+    private KalendarService kalendarService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Pregled> getPreglede() {
@@ -42,6 +47,17 @@ public class PregledKontroler {
     @RequestMapping(method = GET, value = "vratiPoTipu/{idTipa}")
     public Collection<Pregled> nadjiPoTipu(@PathVariable("idTipa") Long idTipa) {
         return this.pregledService.findByIdTipa(idTipa);
+    }
+
+    @RequestMapping(method = GET, value = "/vratiPoLekaru/{idLekara}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Pregled> getPregledPoIDLekra(@PathVariable("idLekara") Long id) {
+
+        return pregledService.findByIdLekara(id);
+    }
+    @RequestMapping(method = GET, value = "/vratiPoPacijentu/{idPacijenta}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Pregled> getPregledPoIDPacijenta(@PathVariable("idPacijenta") Long id) {
+
+        return pregledService.findByIdPacijenta(id);
     }
 
     @RequestMapping(method = POST, value = "/add")
@@ -83,4 +99,31 @@ public class PregledKontroler {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PutMapping(value = "zakaziPregled/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> izmeniRezervisan(@RequestBody Pregled pregled, @PathVariable("id") Long id)
+            throws Exception {
+
+        Pregled zaIzmenu=pregledService.findById(id);
+
+        if(zaIzmenu.isRezervisan()==true){
+            return new ResponseEntity<>("Pregled vec rezervisan", HttpStatus.METHOD_NOT_ALLOWED);
+        }
+        pregled.setRezervisan(true);
+        Pregled p = pregledService.update(pregled);
+        Kalendar k=kalendarService.create(p);
+        return new ResponseEntity<Pregled>(p, HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "odradiPregled/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> izmeniOdradjen(@RequestBody Pregled pregled, @PathVariable("id") Long id)
+            throws Exception {
+
+        Pregled zaIzmenu=pregledService.findById(id);
+        if(zaIzmenu.isOdradjen()==true){
+            return new ResponseEntity<>("Paijent vec pregledan", HttpStatus.METHOD_NOT_ALLOWED);
+        }
+        pregled.setOdradjen(true);
+        Pregled p = pregledService.update(pregled);
+        return new ResponseEntity<Pregled>(p, HttpStatus.CREATED);
+    }
 }

@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tim63.sistemKlinickogCentar.model.Kalendar;
 import tim63.sistemKlinickogCentar.model.ZaktaniPregledi;
+import tim63.sistemKlinickogCentar.service.KalendarService;
 import tim63.sistemKlinickogCentar.service.ZakazaniPregledService;
 
 import java.time.LocalDateTime;
@@ -20,6 +22,9 @@ public class ZakazaniPregledController {
 
     @Autowired
     private ZakazaniPregledService zp;
+
+    @Autowired
+    private KalendarService kalendarService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<ZaktaniPregledi> getPreglede() {
@@ -37,6 +42,12 @@ public class ZakazaniPregledController {
         return zp.findByIdLekara(id);
     }
 
+    @RequestMapping(method = GET, value = "/uzmiZakazanePoKlinici/{idKlinike}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<ZaktaniPregledi> getPregledPoIDKlinike(@PathVariable("idKlinike") Long id) {
+
+        return zp.findByIdKlinike(id);
+    }
+
     @RequestMapping(method = GET, value = "/uzmiZakazanePacijente/{idPacijenta}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<ZaktaniPregledi> getPregledPoIDPacijenta(@PathVariable("idPacijenta") Long id) {
 
@@ -48,13 +59,22 @@ public class ZakazaniPregledController {
     @RequestMapping(method = POST, value = "/add")
     public ResponseEntity<?> dodajPregled(@RequestBody ZaktaniPregledi pregled) throws Exception {
 
+
+        if(pregled.getId()!=null){
+            return new ResponseEntity<>("Pregled vec rezervisan", HttpStatus.METHOD_NOT_ALLOWED);
+        }
         int trajanje = pregled.getTrajanjePregleda();
         LocalDateTime datumVreme = pregled.getDatumVreme();
         double cena = pregled.getCena();
 
-        if (trajanje < 1) {
-            return new ResponseEntity<>("Neuspesno dodavanje pregleda! Trajanje pregleda je manje od 1!", HttpStatus.METHOD_NOT_ALLOWED);
+
+        if(pregled.isRezervisan()==true){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+       /* if (trajanje < 1) {
+            return new ResponseEntity<>("Neuspesno dodavanje pregleda! Trajanje pregleda je manje od 1!", HttpStatus.METHOD_NOT_ALLOWED);
+        }*/
 
         if (cena < 0) {
             return new ResponseEntity<>("Neuspesno dodavanje pregleda! Cena je manja 0!", HttpStatus.METHOD_NOT_ALLOWED);
@@ -69,7 +89,7 @@ public class ZakazaniPregledController {
         }
 
         ZaktaniPregledi pregledNew = this.zp.create(pregled);
-
+      //   Kalendar kalendar=this.kalendarService.createPrekoPesimistickih(pregledNew);
 
         System.out.println("Datum vreme za dodati: " + pregledNew.getDatumVreme());
 
