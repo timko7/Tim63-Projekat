@@ -2,6 +2,7 @@ package tim63.sistemKlinickogCentar.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tim63.sistemKlinickogCentar.model.AdminKlinike;
 import tim63.sistemKlinickogCentar.model.Klinika;
 import tim63.sistemKlinickogCentar.model.Lekar;
 import tim63.sistemKlinickogCentar.repository.LekarRepositoryInterface;
@@ -47,6 +48,7 @@ public class LekarService implements LekarInterface {
 
         Lekar ret = new Lekar();
         lekar.setSlobodan(true);
+        lekar.setPrviPutLogovan(true);
         ret.copyValues(lekar);
         ret = lekRep.save(ret);
         return ret;
@@ -69,6 +71,15 @@ public class LekarService implements LekarInterface {
         }
         l = this.lekRep.save(l);
         return l;
+    }
+
+    @Override
+    public Lekar promeniLozinku(Long idLekara, String noviPassword) throws Exception {
+        Lekar lekarZaPromenu = findById(idLekara);
+        lekarZaPromenu.setPassword(noviPassword);
+        lekarZaPromenu.setPrviPutLogovan(false);
+        lekarZaPromenu = lekRep.save(lekarZaPromenu);
+        return lekarZaPromenu;
     }
 
 
