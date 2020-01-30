@@ -1,10 +1,14 @@
 package tim63.sistemKlinickogCentar.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tim63.sistemKlinickogCentar.model.Pacijent;
 import tim63.sistemKlinickogCentar.model.Pregled;
+import tim63.sistemKlinickogCentar.repository.PacijentRepositoryInterface;
 import tim63.sistemKlinickogCentar.repository.PregledRepositoryInterface;
 
 import java.util.Collection;
@@ -15,6 +19,12 @@ public class PregledService implements PregledServiceInterface {
 
     @Autowired
     private PregledRepositoryInterface repositoryPregled;
+
+    @Autowired
+    private PacijentRepositoryInterface pacijentRepository;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @Override
     public Collection<Pregled> findAll() {
@@ -49,9 +59,21 @@ public class PregledService implements PregledServiceInterface {
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Pregled update(Pregled pregled) throws Exception {
+        Pacijent p=new Pacijent();
         Pregled zaIzmenu = findById(pregled.getId());
         zaIzmenu.copyValuesZaRezervaciju(pregled);
         zaIzmenu = repositoryPregled.save(zaIzmenu);
+        p=pacijentRepository.findById(zaIzmenu.getIdPacijenta()).orElseGet(null);
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(p.getEmail());
+        //mail.setFrom("isaPSW1@gmail.com");
+        mail.setSubject("Rezervisanje predefinisanih pregleda");
+        mail.setText("Pozdrav" + ",\nUspesno ste rezervisali pregled datuma:"+ zaIzmenu.getDatumVreme());
+        javaMailSender.send(mail);
+        //Transport.send(mail);
+        //posaljiMejl(lekar);
+
         return zaIzmenu;
     }
 
