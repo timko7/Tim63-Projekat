@@ -112,5 +112,12 @@ public class ZakazaniPregledController {
         return new ResponseEntity<ZaktaniPregledi>(p, HttpStatus.CREATED);
     }
 
+    @PutMapping(value = "/odradiZahtev/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> odradiZahtev(@RequestBody ZaktaniPregledi pregled, @PathVariable Long id)
+            throws Exception {
+
+        ZaktaniPregledi p = zp.odradi(id);
+        return new ResponseEntity<ZaktaniPregledi>(p, HttpStatus.CREATED);
+    }
 
 }

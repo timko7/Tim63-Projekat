@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tim63.sistemKlinickogCentar.model.Sala;
+import tim63.sistemKlinickogCentar.model.dto.SalaDatumDTO;
 import tim63.sistemKlinickogCentar.service.SalaService;
 
 import java.util.Collection;
@@ -78,6 +79,31 @@ public class SalaKontroler {
         Sala sala1 = salaService.update(sala);
         return new ResponseEntity<>(sala1, HttpStatus.CREATED);
     }
+
+    /*
+     * url: /api/sale/pretrazi/{idKlinike}/{naziv}/{datum}
+     */
+
+    @RequestMapping(method = GET, value = "/pretrazi/{idKlinike}/{naziv}/{datum}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Sala> pretraziSaleNavivDatum(@PathVariable("idKlinike") Long idKlinike, @PathVariable("naziv") String nazivSale, @PathVariable("datum") String datum) {
+        //return salaService.findByIdKlinike(id);
+        return salaService.pretraziPoNazivuDatumuKlinike(idKlinike, nazivSale, datum);
+    }
+
+    /*
+     * url: /api/sale/prvaSlobodna/{idKlinike}/{datum}
+     */
+
+    @RequestMapping(method = GET, value = "/prvaSlobodna/{idKlinike}/{datum}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public SalaDatumDTO getPrviSledeciSlobodanTermin(@PathVariable("idKlinike") Long idKlinike, @PathVariable("datum") String datum) {
+        //return salaService.findByIdKlinike(id);
+        //return salaService.pretraziPoNazivuDatumuKlinike(idKlinike, nazivSale, datum);
+        return salaService.getPrviSledeciSlobodanTermin(idKlinike, datum);
+    }
+
+
+
+
 
     /*
      * url: /api/sale/obrisi/{naziv}

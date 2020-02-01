@@ -1,6 +1,7 @@
 package tim63.sistemKlinickogCentar.service;
 
 import tim63.sistemKlinickogCentar.model.Sala;
+import tim63.sistemKlinickogCentar.model.dto.SalaDatumDTO;
 
 import java.util.Collection;
 
@@ -20,4 +21,9 @@ public interface SalaSetviceInterface {
     void delete(Long id);
 
     void deleteByNaziv(String naziv);
+
+    Collection<Sala> pretraziPoNazivuDatumuKlinike(Long idKlinike, String nazivSale, String datum);
+
+    SalaDatumDTO getPrviSledeciSlobodanTermin(Long idKlinike, String datum);
 }
+

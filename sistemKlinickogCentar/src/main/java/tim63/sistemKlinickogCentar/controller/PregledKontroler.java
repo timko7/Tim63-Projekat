@@ -6,8 +6,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tim63.sistemKlinickogCentar.model.Kalendar;
+import tim63.sistemKlinickogCentar.model.KalendarSale;
 import tim63.sistemKlinickogCentar.model.Klinika;
 import tim63.sistemKlinickogCentar.model.Pregled;
+import tim63.sistemKlinickogCentar.service.KalendarSaleService;
 import tim63.sistemKlinickogCentar.service.KalendarService;
 import tim63.sistemKlinickogCentar.service.LekarService;
 import tim63.sistemKlinickogCentar.service.PregledService;
@@ -27,6 +29,9 @@ public class PregledKontroler {
 
     @Autowired
     private KalendarService kalendarService;
+
+    @Autowired
+    private KalendarSaleService kalendarSaleService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Pregled> getPreglede() {
@@ -111,6 +116,7 @@ public class PregledKontroler {
         pregled.setRezervisan(true);
         Pregled p = pregledService.update(pregled);
         Kalendar k=kalendarService.create(p);
+        KalendarSale ks = kalendarSaleService.createPoPredefinisanomPregledu(p);
         return new ResponseEntity<Pregled>(p, HttpStatus.CREATED);
     }
 
