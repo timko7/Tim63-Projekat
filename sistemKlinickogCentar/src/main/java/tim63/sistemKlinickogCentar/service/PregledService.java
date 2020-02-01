@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tim63.sistemKlinickogCentar.model.Pregled;
+import tim63.sistemKlinickogCentar.model.Sala;
 import tim63.sistemKlinickogCentar.repository.PregledRepositoryInterface;
+import tim63.sistemKlinickogCentar.repository.SalaRepositoryInterface;
 
 import java.util.Collection;
 
@@ -15,6 +17,9 @@ public class PregledService implements PregledServiceInterface {
 
     @Autowired
     private PregledRepositoryInterface repositoryPregled;
+
+    @Autowired
+    private SalaService salaService;
 
     @Override
     public Collection<Pregled> findAll() {
@@ -59,6 +64,13 @@ public class PregledService implements PregledServiceInterface {
     @Transactional(readOnly = false)
     public Pregled create(Pregled pregled) throws Exception {
         Pregled ret = new Pregled();
+        Sala salaTemp = new Sala();
+
+        salaTemp = salaService.findById(pregled.getIdSale());
+        salaTemp.setSlobodna(false);
+        salaService.update(salaTemp);
+
+
         ret.copyValues(pregled);
         ret = repositoryPregled.save(ret);
         return ret;

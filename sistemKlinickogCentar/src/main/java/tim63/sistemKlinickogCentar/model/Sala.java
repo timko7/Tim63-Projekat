@@ -14,7 +14,7 @@ public class Sala {
 
     //TODO dodaj rezervisana bool ....
     @Column(name = "Slobodna", nullable = false)
-    private boolean slobodna;   // true-slobodna, false-zauzeta
+    private boolean slobodna;   // true-slobodna, false-zauzeta, tj. rezervisana
 
     @Column(name = "IdKlinike", nullable = false)
     private Long idKlinike;

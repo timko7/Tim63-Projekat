@@ -17,6 +17,8 @@ public interface ZakazaniPreglediInterface {
 
     ZaktaniPregledi update(ZaktaniPregledi pacijent) throws Exception;
 
+    ZaktaniPregledi odradi(Long id);
+
     ZaktaniPregledi create(ZaktaniPregledi pregled) throws Exception;
 
     void delete(Long id);

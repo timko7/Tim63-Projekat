@@ -47,6 +47,14 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
         return zaIzmenu;
     }
 
+    @Override
+    public ZaktaniPregledi odradi(Long id) {
+        ZaktaniPregledi zaOdradu = findById(id);
+        zaOdradu.setOdradjen(true);
+        zaOdradu = zpi.save(zaOdradu);
+        return zaOdradu;
+    }
+
 
     public ZaktaniPregledi create(ZaktaniPregledi pregled) throws Exception {
         ZaktaniPregledi ret = new ZaktaniPregledi();
