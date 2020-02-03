@@ -1,13 +1,20 @@
 package tim63.sistemKlinickogCentar.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tim63.sistemKlinickogCentar.model.PregledOdZahteva;
 import tim63.sistemKlinickogCentar.model.ZaktaniPregledi;
+import tim63.sistemKlinickogCentar.model.dto.SalaDatumDTO;
 import tim63.sistemKlinickogCentar.repository.ZakazaniPregledRepositoryInterface;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -15,6 +22,13 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
     @Autowired
     private ZakazaniPregledRepositoryInterface zpi;
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private SalaService salaService;
+
+    @Autowired
+    private PregledOdZahtevaService pregledOdZahtevaService;
 
     @Override
     public Collection<ZaktaniPregledi> findAll() {
@@ -80,4 +94,46 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
 
         zpi.deleteById(id);
     }
+
+
+    /*
+     * Logika se izvrsava sa razmakom izmedju kraja poslednjeg izvrsavanja i pocetka sledeceg.
+     *
+     * 'fixedDelay' se koristi kao indikacija vremena koje treba da prodje izmedju izvrsavanja.
+     * 'initialDelay' se koristi kao indikacija koliko da se saceka posle startovanja aplikacije sa prvim izvrsavanjem metode.
+     */
+    @Scheduled(initialDelayString = "3000", fixedDelayString = "30000")
+    public void automatskiNapraviPregledeOdZahteva() throws Exception {
+        logger.info("> automatskiNapraviPregledeOdZahteva()");
+
+        LocalDateTime trenutnoVreme = LocalDateTime.now();
+        if (trenutnoVreme.getHour() > 22 && trenutnoVreme.getMinute() > 54) {   // todo: promeni proveru na trenutnoVreme.getHour() > 22 && trenutnoVreme.getMinute() > 54
+            System.out.println(trenutnoVreme.toString());
+
+            Collection<ZaktaniPregledi> sviZahtevi =  findAll();
+            for (ZaktaniPregledi zahtevZaPregled : sviZahtevi) {
+                if (!zahtevZaPregled.isOdradjen()) {
+                    PregledOdZahteva newPregled = new PregledOdZahteva();
+                    newPregled.setCena(zahtevZaPregled.getCena());
+                    newPregled.setIdKlinike(zahtevZaPregled.getIdKlinike());
+                    newPregled.setIdLekara(zahtevZaPregled.getIdLekara());
+                    newPregled.setIdPacijenta(zahtevZaPregled.getIdPacijenta());
+                    newPregled.setIdTipa(zahtevZaPregled.getIdTipa());
+                    newPregled.setOdradjen(false);
+                    newPregled.setTrajanjePregleda(zahtevZaPregled.getTrajanjePregleda());
+
+                    SalaDatumDTO salaIDatum = salaService.getPrviSledeciSlobodanTermin(zahtevZaPregled.getIdKlinike(), zahtevZaPregled.getDatumVreme().toString());
+
+                    newPregled.setIdSale(salaIDatum.getSala().getId());
+                    newPregled.setDatumVreme(salaIDatum.getDatum());
+
+                    pregledOdZahtevaService.create(newPregled);
+                }
+            }
+        }
+
+        logger.info("< automatskiNapraviPregledeOdZahteva()");
+    }
+
 }
+
