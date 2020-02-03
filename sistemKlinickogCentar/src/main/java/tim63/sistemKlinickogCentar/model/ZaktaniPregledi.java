@@ -1,12 +1,14 @@
 package tim63.sistemKlinickogCentar.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Version;
 
 @Entity
 
-public class ZaktaniPregledi {
+public class ZaktaniPregledi implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +46,9 @@ public class ZaktaniPregledi {
 
     @Column(name = "Odobren", nullable = false)
     private boolean odobren=false;
+
+    @Version
+    private Long version;
 
 
     public ZaktaniPregledi(LocalDateTime datumVreme,  Long idTipa,  Long idLekara, double cena, Long idKlinike, Long idPacijenta) {
@@ -159,6 +164,14 @@ public class ZaktaniPregledi {
 
     public void setRezervisan(boolean rezervisan) {
         this.rezervisan = rezervisan;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public void copyValues(ZaktaniPregledi pregled) {
