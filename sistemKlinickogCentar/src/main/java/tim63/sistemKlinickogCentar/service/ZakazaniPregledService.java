@@ -10,6 +10,7 @@ import tim63.sistemKlinickogCentar.repository.ZakazaniPregledRepositoryInterface
 import java.util.Collection;
 
 @Service
+@Transactional(readOnly = true)
 public class ZakazaniPregledService implements ZakazaniPreglediInterface {
     @Autowired
     private ZakazaniPregledRepositoryInterface zpi;
@@ -47,6 +48,7 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
         return zaIzmenu;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     @Override
     public ZaktaniPregledi odradi(Long id) {
         ZaktaniPregledi zaOdradu = findById(id);
@@ -55,7 +57,7 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
         return zaOdradu;
     }
 
-
+    @Transactional(readOnly = false)
     public ZaktaniPregledi create(ZaktaniPregledi pregled) throws Exception {
         ZaktaniPregledi ret = new ZaktaniPregledi();
 
