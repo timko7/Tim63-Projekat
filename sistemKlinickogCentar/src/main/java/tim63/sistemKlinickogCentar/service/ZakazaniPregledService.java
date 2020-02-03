@@ -102,12 +102,13 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
      * 'fixedDelay' se koristi kao indikacija vremena koje treba da prodje izmedju izvrsavanja.
      * 'initialDelay' se koristi kao indikacija koliko da se saceka posle startovanja aplikacije sa prvim izvrsavanjem metode.
      */
+    @Transactional(readOnly = false)
     @Scheduled(initialDelayString = "3000", fixedDelayString = "30000")
     public void automatskiNapraviPregledeOdZahteva() throws Exception {
         logger.info("> automatskiNapraviPregledeOdZahteva()");
 
         LocalDateTime trenutnoVreme = LocalDateTime.now();
-        if (trenutnoVreme.getHour() > 22 && trenutnoVreme.getMinute() > 54) {   // todo: promeni proveru na trenutnoVreme.getHour() > 22 && trenutnoVreme.getMinute() > 54
+        if (trenutnoVreme.getHour() > 22 && trenutnoVreme.getMinute() > 54) {
             System.out.println(trenutnoVreme.toString());
 
             Collection<ZaktaniPregledi> sviZahtevi =  findAll();
@@ -128,6 +129,7 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
                     newPregled.setDatumVreme(salaIDatum.getDatum());
 
                     pregledOdZahtevaService.create(newPregled);
+                    odradi(zahtevZaPregled.getId());
                 }
             }
         }
