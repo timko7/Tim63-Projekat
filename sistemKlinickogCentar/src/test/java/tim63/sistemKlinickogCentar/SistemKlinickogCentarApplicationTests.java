@@ -8,6 +8,7 @@ class SistemKlinickogCentarApplicationTests {
 
     @Test
     void contextLoads() {
+        System.out.println("asdfdsdfg");
     }
 
 }

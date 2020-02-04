@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tim63.sistemKlinickogCentar.model.Kalendar;
 import tim63.sistemKlinickogCentar.model.Pregled;
+import tim63.sistemKlinickogCentar.model.PregledOdZahteva;
 import tim63.sistemKlinickogCentar.model.ZaktaniPregledi;
 import tim63.sistemKlinickogCentar.repository.KalendarRepository;
 import tim63.sistemKlinickogCentar.repository.PregledRepositoryInterface;
@@ -51,7 +52,7 @@ public class KalendarService implements KalendarServiceInterface{
     }
 
    @Override
-    public Kalendar createPrekoPesimistickih(ZaktaniPregledi pregled) throws Exception {
+    public Kalendar createPrekoPesimistickih(PregledOdZahteva pregled) throws Exception {
         Kalendar ret = new Kalendar();
         ret.setDatum(pregled.getDatumVreme());
         ret.setOd(pregled.getDatumVreme());

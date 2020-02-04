@@ -102,6 +102,7 @@ public class PregledService implements PregledServiceInterface {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void delete(Long id) {
         repositoryPregled.deleteById(id);
     }

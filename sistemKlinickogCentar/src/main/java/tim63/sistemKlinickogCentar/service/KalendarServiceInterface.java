@@ -2,6 +2,7 @@ package tim63.sistemKlinickogCentar.service;
 
 import tim63.sistemKlinickogCentar.model.Kalendar;
 import tim63.sistemKlinickogCentar.model.Pregled;
+import tim63.sistemKlinickogCentar.model.PregledOdZahteva;
 import tim63.sistemKlinickogCentar.model.ZaktaniPregledi;
 
 import java.util.Collection;
@@ -12,6 +13,6 @@ public interface KalendarServiceInterface {
     List<Kalendar> findByIdLekara(Long id);
    // List<Kalendar> findByIdPacijenta(Long id);
     Kalendar create(Pregled pregled) throws Exception;
-    Kalendar createPrekoPesimistickih(ZaktaniPregledi pregled) throws Exception;
+    Kalendar createPrekoPesimistickih(PregledOdZahteva pregled) throws Exception;
     void delete(Long id);
 }
