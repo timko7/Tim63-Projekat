@@ -40,6 +40,9 @@ public class PregledOdZahteva {
     @Column(name = "Odradjen", nullable = false)
     private boolean odradjen=false;
 
+    @Column(name = "Rezervisan", nullable = false)
+    private boolean rezervisan=false;
+
     public PregledOdZahteva() {
     }
 
@@ -53,6 +56,7 @@ public class PregledOdZahteva {
         this.idKlinike = idKlinike;
         this.idPacijenta = idPacijenta;
         this.odradjen = odradjen;
+        this.rezervisan=false;
     }
 
     public Long getId() {
@@ -143,6 +147,14 @@ public class PregledOdZahteva {
         this.odradjen = odradjen;
     }
 
+    public boolean isRezervisan() {
+        return rezervisan;
+    }
+
+    public void setRezervisan(boolean rezervisan) {
+        this.rezervisan = rezervisan;
+    }
+
     public void copyValues(PregledOdZahteva pregledOdZahteva){
         this.datumVreme = pregledOdZahteva.getDatumVreme();
         this.trajanjePregleda = pregledOdZahteva.getTrajanjePregleda();
@@ -153,6 +165,7 @@ public class PregledOdZahteva {
         this.idKlinike = pregledOdZahteva.getIdKlinike();
         this.idPacijenta = pregledOdZahteva.getIdPacijenta();
         this.odradjen = pregledOdZahteva.isOdradjen();
+        this.rezervisan=pregledOdZahteva.isRezervisan();
     }
 
 

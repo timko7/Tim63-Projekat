@@ -2,26 +2,26 @@ package tim63.sistemKlinickogCentar.controller;
 
 import org.hibernate.engine.transaction.jta.platform.internal.SynchronizationRegistryBasedSynchronizationStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import tim63.sistemKlinickogCentar.model.Kalendar;
+import tim63.sistemKlinickogCentar.model.*;
 
-import tim63.sistemKlinickogCentar.model.AdminKlinike;
-
-import tim63.sistemKlinickogCentar.model.Lekar;
-import tim63.sistemKlinickogCentar.model.Ocena;
-import tim63.sistemKlinickogCentar.model.PretragaKlinike;
 import tim63.sistemKlinickogCentar.model.dto.LekarKlinikaDTO;
 import tim63.sistemKlinickogCentar.service.KalendarService;
 import tim63.sistemKlinickogCentar.service.LekarService;
 import tim63.sistemKlinickogCentar.service.OcenaService;
+import tim63.sistemKlinickogCentar.service.ZahtevOdsustvoService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -37,7 +37,11 @@ public class LekarController {
     @Autowired
     private KalendarService kalendarService;
     @Autowired
+    private ZahtevOdsustvoService odsustvoService;
+
+    @Autowired
     private OcenaService ocenaService;
+
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Lekar> getLekari() {
@@ -157,6 +161,8 @@ public class LekarController {
     @RequestMapping(method =POST, value = "/pretraziLekarePaVratiKlinike")
     public ArrayList<Lekar> pretrazi( @RequestBody PretragaKlinike zahtev) {
 
+        //LocalDateTime datumZahteva= LocalDateTime.parse(zahtev.getTermin().toString());
+        LocalDate d=zahtev.getTermin();
         System.out.println("zahtev vreme "+zahtev.getTermin());
         Collection<Lekar> lekariPoKlinici=lekarSer.findByIdKlinike(zahtev.getIdKlinike());
         System.out.println("lekari klinike"+lekariPoKlinici.size());
@@ -170,25 +176,29 @@ public class LekarController {
             }
         }
 
-        ArrayList<Lekar> zaVracanje=new ArrayList<>();
+        ArrayList<Lekar> bezGodisnjeg=new ArrayList<>();
         for(Lekar l:lekariPoTipu) {
-            List<Kalendar> kalendari = kalendarService.findByIdLekara(l.getId());
-            if (kalendari.isEmpty()) {
+            Collection<ZahtevOdsustvo> odsustva = odsustvoService.findByIdLekara(l.getId());
+            if (odsustva.isEmpty()) {
                 System.out.println("lekar za vracanje " + l.getIme());
-                zaVracanje.add(l);
+                bezGodisnjeg.add(l);
             } else {
-                for (Kalendar kk : kalendari) {
-                    System.out.println("od:  " + kk.getOd());
+                for (ZahtevOdsustvo oo : odsustva) {
+                    System.out.println("od:  " + oo.getDatumPocetka());
+                    System.out.println("od:  " + oo.getDatumZavrsetka());
                     System.out.println("zahtev  " + zahtev.getTermin());
-                    if (kk.getOd().toLocalTime().compareTo(zahtev.getTermin().toLocalTime()) != 0) {
+                    if (!(d.isAfter(oo.getDatumPocetka()) && d.isBefore(oo.getDatumZavrsetka()))) {
                         System.out.println("lekar za vracanje " + l.getIme());
-                        zaVracanje.add(l);
+                        bezGodisnjeg.add(l);
                     }
                 }
             }
         }
 
-        return zaVracanje;
+
+
+
+        return bezGodisnjeg;
     }
     @RequestMapping(method =POST, value = "/pretraziLekare")
     public ArrayList<Lekar> pretraziLekare( @RequestBody PretragaKlinike zahtev) {
@@ -196,7 +206,7 @@ public class LekarController {
         Collection<Lekar> lekariPoKlinici=lekarSer.findByIdKlinike(zahtev.getIdKlinike());
         System.out.println("lekari klinike"+lekariPoKlinici.size());
         ArrayList<Lekar> lekariPoTipu=new ArrayList<>();
-
+        LocalDate d=zahtev.getTermin();
 
         for(Lekar l:lekariPoKlinici){
             if(l.getIdTipa().equals(zahtev.getIdTipa())){
@@ -205,29 +215,94 @@ public class LekarController {
             }
         }
 
-        ArrayList<Lekar> zaVracanje=new ArrayList<>();
+
+        ArrayList<Lekar> bezGodisnjeg=new ArrayList<>();
         for(Lekar l:lekariPoTipu) {
-            List<Kalendar> kalendari = kalendarService.findByIdLekara(l.getId());
-            if (kalendari.isEmpty()) {
-                zaVracanje.add(l);
+            Collection<ZahtevOdsustvo> odsustva = odsustvoService.findByIdLekara(l.getId());
+            if (odsustva.isEmpty()) {
+                System.out.println("lekar za vracanje " + l.getIme());
+                bezGodisnjeg.add(l);
             } else {
-                for (Kalendar kk : kalendari) {
-                    if (kk.getOd().toLocalTime().compareTo(zahtev.getTermin().toLocalTime()) != 0) {
+                for (ZahtevOdsustvo oo : odsustva) {
+                    System.out.println("od:  " + oo.getDatumPocetka());
+                    System.out.println("od:  " + oo.getDatumZavrsetka());
+                    System.out.println("zahtev  " + zahtev.getTermin());
+                    if (!(d.isAfter(oo.getDatumPocetka()) && d.isBefore(oo.getDatumZavrsetka()))) {
                         System.out.println("lekar za vracanje " + l.getIme());
-                        zaVracanje.add(l);
+                        bezGodisnjeg.add(l);
                     }
                 }
             }
         }
+
+
         ArrayList<Lekar> zaKraj=new ArrayList<>();
-        for(Lekar l:zaVracanje){
-            if(l.getIme().equals(zahtev.getIme())){
-                if(l.getPrezime().equals(zahtev.getPrezime())){
+        for(Lekar l:bezGodisnjeg){
+            if(zahtev.getIme()!=null){
+            if(l.getIme().contains(zahtev.getIme())){
+                if(zahtev.getPrezime()!=null){
+                    if(l.getPrezime().contains(zahtev.getPrezime())){
+                        zaKraj.add(l);
+                    }
+                }
+                else {
                     zaKraj.add(l);
                 }
             }
+
+            }else{
+                return bezGodisnjeg;
+            }
         }
+
 
         return zaKraj;
     }
+
+
+    public ArrayList<Integer> vratiTermine( Long idLekara) {
+        ArrayList<Integer>termini=new ArrayList<Integer>();
+        Lekar l=lekarSer.findById(idLekara);
+        for(int i=l.getRadnoVremeOd();i<l.getRadnoVremeDo();i++){
+            termini.add(i);
+        }
+        return  termini;
+    }
+
+    @RequestMapping(method =GET, value = "/vratiTermine/{idLekara}")
+    public ArrayList<Integer> vratiTermineNaFront( @PathVariable("idLekara") Long idLekara,@RequestParam("datum")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate datum) {
+
+
+            List<Kalendar> kalendari = kalendarService.findByIdLekara(idLekara);
+            List<Kalendar> kalendariPoDatumu =new ArrayList<>();
+            ArrayList<Integer> termini=vratiTermine(idLekara);
+            ArrayList<Integer> noviTermini=new ArrayList<>();
+            if (kalendari.isEmpty()) {
+               noviTermini=termini;
+            } else {
+                for (Kalendar kk : kalendari) {
+                    if (kk.getDatum().toLocalDate().equals(datum)) {
+                        kalendariPoDatumu.add(kk);
+                    }
+                }
+            }
+
+                if (!kalendariPoDatumu.isEmpty()){
+                    System.out.println("ubacujem  " + termini);
+                    for(int i=0;i<termini.size();i++){
+                        for (Kalendar kk : kalendariPoDatumu) {
+                            System.out.println("od:  " + kk.getOd());
+                            System.out.println("zahtev  " + termini.get(i));
+                            if (kk.getOd().getHour() != termini.get(i)) {
+                                System.out.println("ubacujem  " + termini.get(i));
+                                noviTermini.add(termini.get(i));
+                            }
+                        }
+                    }
+            }
+
+            return  noviTermini;
+        }
+
 }

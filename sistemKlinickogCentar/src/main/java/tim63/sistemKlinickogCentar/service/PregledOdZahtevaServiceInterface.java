@@ -19,6 +19,7 @@ public interface PregledOdZahtevaServiceInterface {
     PregledOdZahteva findById(Long id);
 
     PregledOdZahteva update(PregledOdZahteva pregledOdZahteva) throws Exception;
+    PregledOdZahteva pregledaj(PregledOdZahteva pregledOdZahteva) throws Exception;
 
     PregledOdZahteva create(PregledOdZahteva pregledOdZahteva) throws Exception;
 

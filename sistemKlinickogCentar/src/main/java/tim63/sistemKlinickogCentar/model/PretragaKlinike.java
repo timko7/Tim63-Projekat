@@ -1,5 +1,6 @@
 package tim63.sistemKlinickogCentar.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class PretragaKlinike {
@@ -7,7 +8,7 @@ public class PretragaKlinike {
     private String adresa;
     private  Long idTipa;
     private  Long idKlinike;
-    private LocalDateTime termin;
+    private LocalDate termin;
 
     private String ime;
     private String prezime;
@@ -36,7 +37,7 @@ public class PretragaKlinike {
         this.idKlinike = idKlinike;
     }
 
-    public LocalDateTime getTermin() {
+    public LocalDate getTermin() {
         return termin;
     }
 
@@ -56,20 +57,20 @@ public class PretragaKlinike {
         this.prezime = prezime;
     }
 
-    public void setTermin(LocalDateTime termin) {
+    public void setTermin(LocalDate termin) {
         this.termin = termin;
     }
 
     public PretragaKlinike() {
     }
 
-    public PretragaKlinike(String adresa, Long idTipa, Long idKlinike, LocalDateTime termin) {
+    public PretragaKlinike(String adresa, Long idTipa, Long idKlinike, LocalDate termin) {
         this.adresa = adresa;
         this.idTipa = idTipa;
         this.idKlinike = idKlinike;
         this.termin = termin;
     }
-    public PretragaKlinike(String ime, String prezime,Long idTipa, Long idKlinike, LocalDateTime termin) {
+    public PretragaKlinike(String ime, String prezime,Long idTipa, Long idKlinike, LocalDate termin) {
         this.ime = ime;
         this.prezime=prezime;
         this.idTipa = idTipa;

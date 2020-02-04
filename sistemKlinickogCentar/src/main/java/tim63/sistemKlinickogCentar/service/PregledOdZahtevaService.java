@@ -77,6 +77,18 @@ public class PregledOdZahtevaService implements PregledOdZahtevaServiceInterface
 
     @Override
     @Transactional(readOnly = false)
+    public PregledOdZahteva pregledaj(PregledOdZahteva pregledOdZahteva) throws Exception {
+        PregledOdZahteva zaIzmenu = findById(pregledOdZahteva.getId());
+        //zaIzmenu.copyValues(pregledOdZahteva);
+        zaIzmenu.setOdradjen(true);
+        zaIzmenu.setTrajanjePregleda(pregledOdZahteva.getTrajanjePregleda());
+        zaIzmenu = pregledOdZahtevaRepository.save(zaIzmenu);
+        return zaIzmenu;
+    }
+
+
+    @Override
+    @Transactional(readOnly = false)
     public PregledOdZahteva create(PregledOdZahteva pregledOdZahteva) throws Exception {
 
         PregledOdZahteva ret = new PregledOdZahteva();

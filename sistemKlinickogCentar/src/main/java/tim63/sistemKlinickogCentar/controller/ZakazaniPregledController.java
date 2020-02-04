@@ -89,7 +89,7 @@ public class ZakazaniPregledController {
         }
 
         ZaktaniPregledi pregledNew = this.zp.create(pregled);
-      //   Kalendar kalendar=this.kalendarService.createPrekoPesimistickih(pregledNew);
+
 
         System.out.println("Datum vreme za dodati: " + pregledNew.getDatumVreme());
 
