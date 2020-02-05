@@ -19,4 +19,6 @@ public interface KlinikaInterface {
     void delete(Long id);
 
     Klinika izmeniPodatke(String stariNazivKlinike, Klinika klinika);
+
+    double getPrihodPoPeriod(Long idKlinike, String pocetak, String kraj);
 }

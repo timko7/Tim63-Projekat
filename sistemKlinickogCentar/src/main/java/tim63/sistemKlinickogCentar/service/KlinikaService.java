@@ -3,8 +3,11 @@ package tim63.sistemKlinickogCentar.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tim63.sistemKlinickogCentar.model.Klinika;
+import tim63.sistemKlinickogCentar.model.Pregled;
+import tim63.sistemKlinickogCentar.model.PregledOdZahteva;
 import tim63.sistemKlinickogCentar.repository.KlinikaRepositoryInterface;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Service
@@ -12,6 +15,12 @@ public class KlinikaService implements KlinikaInterface {
 
     @Autowired
     public KlinikaRepositoryInterface repKlinika;
+
+    @Autowired
+    private PregledService pregledService;
+
+    @Autowired
+    private PregledOdZahtevaService pregledOdZahtevaService;
 
     @Override
     public Collection<Klinika> findAll() {
@@ -73,5 +82,35 @@ public class KlinikaService implements KlinikaInterface {
         klinikaZaIzmenu.copyValues(klinika);
         klinikaZaIzmenu = repKlinika.save(klinika);
         return klinikaZaIzmenu;
+    }
+
+    @Override
+    public double getPrihodPoPeriod(Long idKlinike, String pocetak, String kraj) {
+
+        Collection<Pregled> predefinisaniPregledi = pregledService.findByIdKlinike(idKlinike);
+        Collection<PregledOdZahteva> preglediOdZahteva = pregledOdZahtevaService.findByIdKlinike(idKlinike);
+
+        LocalDateTime datePocetak = LocalDateTime.parse(pocetak);
+        LocalDateTime dateKraj = LocalDateTime.parse(kraj);
+
+        double ukupanPrihod = 0.0;
+
+        for (Pregled pregled : predefinisaniPregledi) {
+            if (pregled.getDatumVreme().isAfter(datePocetak) && pregled.getDatumVreme().isBefore(dateKraj)) {
+                if (pregled.isOdradjen()) {
+                    ukupanPrihod += pregled.getCena();
+                }
+            }
+        }
+
+        for (PregledOdZahteva pregledOdZahteva : preglediOdZahteva) {
+            if (pregledOdZahteva.getDatumVreme().isAfter(datePocetak) && pregledOdZahteva.getDatumVreme().isBefore(dateKraj)) {
+                if (pregledOdZahteva.isOdradjen()) {
+                    ukupanPrihod += pregledOdZahteva.getCena();
+                }
+            }
+        }
+
+        return ukupanPrihod;
     }
 }
