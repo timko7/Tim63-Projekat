@@ -36,10 +36,6 @@ class PregledKontrolerTest {
         Pregled[] countries = responseEntity.getBody();
 
         assertEquals(5, countries.length);
-        assertEquals(500, countries[0].getCena());
-        assertEquals(60, countries[0].getTrajanjePregleda());
-        assertEquals(700, countries[1].getCena());
-        assertEquals(90, countries[1].getTrajanjePregleda());
 
     }
 
@@ -85,7 +81,7 @@ class PregledKontrolerTest {
     @Test
     void getPregledPoIDLekra() {
         ResponseEntity<Pregled[]> responseEntity =
-                restTemplate.getForEntity("/api/pregledi/vratiPoLekaru/1",
+                restTemplate.getForEntity("/api/pregledi/vratiPoLekaru/2",
                         Pregled[].class);
         Pregled[] pregled = responseEntity.getBody();
 
@@ -106,7 +102,7 @@ class PregledKontrolerTest {
     void dodajPregled() {
         int size = pregledService.findAll().size(); // broj slogova pre ubacivanja novog
 
-        String datumUstringu="2020-06-28T13:00:00";
+        String datumUstringu="2020-06-27T13:00:00";
         LocalDateTime datum=LocalDateTime.parse(datumUstringu);
         ResponseEntity<Pregled> responseEntity =
                 restTemplate.postForEntity("/api/pregledi/add",
@@ -167,20 +163,20 @@ class PregledKontrolerTest {
         Pregled pregledNovi = responseEntity.getBody();
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertNotNull(pregledNovi);
-        assertEquals(Long.valueOf(8L), pregledNovi.getId());
+        assertEquals(Long.valueOf(pregled.getId()), pregledNovi.getId());
         assertEquals(true, pregledNovi.isRezervisan());
         assertEquals(1, pregledNovi.getIdSale().intValue());
         assertEquals(1, pregledNovi.getIdPacijenta().intValue());
 
 
         // provera da li je izmenjen slog u bazi
-        Pregled dbCountry = pregledService.findById(8L);
-        assertEquals(Long.valueOf(8L), dbCountry.getId());
+        Pregled dbCountry = pregledService.findById(pregledNovi.getId());
+        assertEquals(Long.valueOf(pregledNovi.getId()), dbCountry.getId());
         assertEquals(true, dbCountry.isRezervisan());
         assertEquals(1, dbCountry.getIdSale().intValue());
         assertEquals(1, dbCountry.getIdPacijenta().intValue());
 
-        pregledService.delete(8L);
+        pregledService.delete(dbCountry.getId());
 
 
     }
@@ -201,19 +197,19 @@ class PregledKontrolerTest {
         Pregled pregledNovi = responseEntity.getBody();
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertNotNull(pregledNovi);
-        assertEquals(Long.valueOf(7L), pregledNovi.getId());
+        assertEquals(Long.valueOf(pregled.getId()), pregledNovi.getId());
         assertEquals(true, pregledNovi.isRezervisan());
         assertEquals(true, pregledNovi.isOdradjen());
         assertEquals(1, pregledNovi.getIdPacijenta().intValue());
 
 
         // provera da li je izmenjen slog u bazi
-        Pregled dbCountry = pregledService.findById(7L);
-        assertEquals(Long.valueOf(7L), dbCountry.getId());
+        Pregled dbCountry = pregledService.findById(pregledNovi.getId());
+        assertEquals(Long.valueOf(pregledNovi.getId()), dbCountry.getId());
         assertEquals(true, dbCountry.isRezervisan());
         assertEquals(true, dbCountry.isOdradjen());
         assertEquals(1, dbCountry.getIdPacijenta().intValue());
 
-        pregledService.delete(7L);
+        pregledService.delete(dbCountry.getId());
     }
 }
