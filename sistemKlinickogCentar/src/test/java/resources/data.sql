@@ -3,6 +3,7 @@ insert into `pacijent` (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Dr
 insert into `pacijent` (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`Broj_Osiguranika`,`Uloga`) values ('Milan', 'Milanović','mglukicy@gmail.com','22222222','Grad1','Adresa1','Drzava1','111111111','344',0);
 insert into `pacijent` (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`Broj_Osiguranika`,`Uloga`) values ( 'Ivana', 'Novaković','i@gmail.com','33333333','Grad1','Adresa1','Drzava1','111111111','555',0);
 
+insert into `tipPregleda` (`id`,`NazivTipa`, `Slobodan`,`IdKlinike`,`Cena`) values (1L,'S1',true,1L,600);
 
 insert into `pregled` ( `Id`, `Cena` , `DatumVreme`, `TrajanjePregleda`, `IdTipa`, `IdSale` , `IdLekara`, `IdKlinike` , `IdPacijenta`, `Odradjen`, `Rezervisan`, `verzija`) values (1L,500,'2020-02-28T00:00:00',60,1L,1L,1L,1L,null,false,false,0L);
 insert into `pregled` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`, `verzija`) values (2L,700,'2020-03-28T13:00:00',90,1L,1L,1L,1L,null,false,false,0L);
@@ -11,6 +12,7 @@ insert into `pregled` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`Id
 insert into `pregled` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`,`verzija`) values (5L,3000,'2020-06-28T16:00:00',60,2L,3L,2L,2L,2L,false,true,0L);
 
 insert into `sala` (`id`,`Naziv`, `Slobodna`,`IdKlinike`) values (1L,'S1',true,1L);
+
 
 insert into `zaktaniPregledi` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`,`Odobren`,`version`) values (1L,500,'2020-06-28T16:00:00',60,2L,null,1L,2L,2L,false,false,false,0L);
 insert into `zaktaniPregledi` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`,`Odobren`,`version`) values (2L,700,'2020-06-28T16:00:00',60,2L,null,1L,2L,2L,false,false,false,0L);
