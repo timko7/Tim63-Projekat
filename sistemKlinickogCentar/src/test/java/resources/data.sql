@@ -12,6 +12,10 @@ insert into `pregled` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`Id
 insert into `pregled` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`,`verzija`) values (5L,3000,'2020-06-28T16:00:00',60,2L,3L,2L,2L,2L,false,true,0L);
 
 insert into `sala` (`id`,`Naziv`, `Slobodna`,`IdKlinike`) values (1L,'S1',true,1L);
+insert into `sala` (`id`,`Naziv`, `Slobodna`,`IdKlinike`) values (2L,'Sala2',true,1L);
+insert into `sala` (`id`,`Naziv`, `Slobodna`,`IdKlinike`) values (3L,'Operaciona1',true,1L);
+insert into `sala` (`id`,`Naziv`, `Slobodna`,`IdKlinike`) values (4L,'Sala1',true,1L);
+insert into `sala` (`id`,`Naziv`, `Slobodna`,`IdKlinike`) values (5L,'Sala1',true,2L);
 
 
 insert into `zaktaniPregledi` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`,`Odobren`,`version`) values (1L,500,'2020-06-28T16:00:00',60,2L,null,1L,2L,2L,false,false,false,0L);
@@ -40,3 +44,18 @@ insert into `ocena` ( `Id`,`Ocena`, `IdLekara`) values (2L,3,1L);
 insert into `ocena` ( `Id`,`Ocena`, `IdLekara`) values (3L,5,1L);
 insert into `ocena` ( `Id`,`Ocena`, `IdLekara`) values (4L,5,2L);
 insert into `ocena` ( `Id`,`Ocena`, `IdLekara`) values (5L,4,2L);
+
+
+insert into `kalendarSale` ( `Id`, `IdSale`, `DatumOd`, `DatumDo` ) values (1L, 1L, '2020-03-03 11:00:00', '2020-03-03 12:00:00');
+
+
+insert into `pregledOdZahteva` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`,`verzija`) values (1L,500,'2020-02-28T00:00:00',60,1L,1L,1L,1L,1L,false,false,0L);
+insert into `pregledOdZahteva` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`,`verzija`) values (2L,700,'2020-03-28T13:00:00',90,1L,1L,1L,1L,1L,false,false,0L);
+insert into `pregledOdZahteva` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`,`verzija`) values (3L,1500,'2020-04-28T14:00:00',120,2L,2L,2L,2L,1L,false,false,0L);
+insert into `pregledOdZahteva` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`,`verzija`) values (4L,2000,'2020-05-28T15:00:00',30,3L,3L,3L,1L,1L,false,false,0L);
+insert into `pregledOdZahteva` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`,`verzija`) values (5L,3000,'2020-06-28T16:00:00',60,2L,3L,2L,2L,1L,false,false,0L);
+
+
+
+
+

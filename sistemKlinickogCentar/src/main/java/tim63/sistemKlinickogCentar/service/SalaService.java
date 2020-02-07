@@ -80,7 +80,14 @@ public class SalaService implements SalaSetviceInterface {
         }
 
         //Sala sala = findByNaziv(nazivSale);
-        LocalDateTime datumZaPregled = LocalDateTime.parse(datum);
+
+        LocalDateTime datumZaPregled = null;
+        try {
+            datumZaPregled = LocalDateTime.parse(datum);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return vrati;
+        }
 
         if (!isNadjena) {
             return vrati;
@@ -113,8 +120,15 @@ public class SalaService implements SalaSetviceInterface {
     public SalaDatumDTO getPrviSledeciSlobodanTermin(Long idKlinike, String datum) {
 
         Collection<Sala> saleKlinike = findByIdKlinike(idKlinike);
+        System.out.println("Sale klinike::: " + saleKlinike.size());
         Sala salaNadjena = new Sala();
-        LocalDateTime datumZaNaci = LocalDateTime.parse(datum);
+        LocalDateTime datumZaNaci = null;
+        try {
+            datumZaNaci = LocalDateTime.parse(datum);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new SalaDatumDTO();
+        }
         datumZaNaci = datumZaNaci.plusMinutes(1);
         Collection<KalendarSale> kalendarSaleSve = kalendarSaleService.findAll();
 
@@ -125,15 +139,19 @@ public class SalaService implements SalaSetviceInterface {
         while (!kraj) {
             for (Sala sala : saleKlinike) {
                 Collection<KalendarSale> kalendarSale = kalendarSaleService.findByIdSale(sala.getId());
-                for (KalendarSale zauzeceSale1 : kalendarSale) {
-                    if (datumZaNaci.isAfter(zauzeceSale1.getDatumOd()) && datumZaNaci.isBefore(zauzeceSale1.getDatumDo())) {
-                        //System.out.println("Pronasao izmedju!!");
-                        nasoSalu = false;
-                        break;
-                    } else {
-                        //System.out.println("NIje izmedju!!");
-                        nasoSalu = true;
+                if (kalendarSale.size() != 0) {
+                    for (KalendarSale zauzeceSale1 : kalendarSale) {
+                        if (datumZaNaci.isAfter(zauzeceSale1.getDatumOd()) && datumZaNaci.isBefore(zauzeceSale1.getDatumDo())) {
+                            //System.out.println("Pronasao izmedju!!");
+                            nasoSalu = false;
+                            break;
+                        } else {
+                            //System.out.println("NIje izmedju!!");
+                            nasoSalu = true;
+                        }
                     }
+                } else {
+                    nasoSalu = true;
                 }
                 if (nasoSalu) {
                     salaNadjena = sala;
