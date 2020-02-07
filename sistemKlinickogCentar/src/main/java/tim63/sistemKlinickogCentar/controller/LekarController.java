@@ -162,7 +162,7 @@ public class LekarController {
     public ArrayList<Lekar> pretrazi( @RequestBody PretragaKlinike zahtev) {
 
         //LocalDateTime datumZahteva= LocalDateTime.parse(zahtev.getTermin().toString());
-        LocalDate d=zahtev.getTermin();
+      /*  LocalDate d=zahtev.getTermin();
         System.out.println("zahtev vreme "+zahtev.getTermin());
         Collection<Lekar> lekariPoKlinici=lekarSer.findByIdKlinike(zahtev.getIdKlinike());
         System.out.println("lekari klinike"+lekariPoKlinici.size());
@@ -195,15 +195,15 @@ public class LekarController {
             }
         }
 
+*/
 
 
-
-        return bezGodisnjeg;
+        return lekarSer.pretrazi(zahtev);
     }
     @RequestMapping(method =POST, value = "/pretraziLekare")
     public ArrayList<Lekar> pretraziLekare( @RequestBody PretragaKlinike zahtev) {
 
-        Collection<Lekar> lekariPoKlinici=lekarSer.findByIdKlinike(zahtev.getIdKlinike());
+     /*   Collection<Lekar> lekariPoKlinici=lekarSer.findByIdKlinike(zahtev.getIdKlinike());
         System.out.println("lekari klinike"+lekariPoKlinici.size());
         ArrayList<Lekar> lekariPoTipu=new ArrayList<>();
         LocalDate d=zahtev.getTermin();
@@ -254,13 +254,13 @@ public class LekarController {
                 return bezGodisnjeg;
             }
         }
+*/
 
-
-        return zaKraj;
+        return lekarSer.pretraziLekre(zahtev);
     }
 
 
-    public ArrayList<Integer> vratiTermine( Long idLekara) {
+  /*  public ArrayList<Integer> vratiTermine( Long idLekara) {
         ArrayList<Integer>termini=new ArrayList<Integer>();
         Lekar l=lekarSer.findById(idLekara);
         for(int i=l.getRadnoVremeOd();i<l.getRadnoVremeDo();i++){
@@ -268,13 +268,13 @@ public class LekarController {
         }
         return  termini;
     }
-
+*/
     @RequestMapping(method =GET, value = "/vratiTermine/{idLekara}")
     public ArrayList<Integer> vratiTermineNaFront( @PathVariable("idLekara") Long idLekara,@RequestParam("datum")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate datum) {
 
 
-            List<Kalendar> kalendari = kalendarService.findByIdLekara(idLekara);
+         /*   List<Kalendar> kalendari = kalendarService.findByIdLekara(idLekara);
             List<Kalendar> kalendariPoDatumu =new ArrayList<>();
             ArrayList<Integer> termini=vratiTermine(idLekara);
             ArrayList<Integer> noviTermini=new ArrayList<>();
@@ -300,9 +300,10 @@ public class LekarController {
                             }
                         }
                     }
-            }
+            }*/
 
-            return  noviTermini;
+
+            return  lekarSer.vratiTermineNaFront(idLekara,datum);
         }
 
 }
