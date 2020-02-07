@@ -80,7 +80,14 @@ public class SalaService implements SalaSetviceInterface {
         }
 
         //Sala sala = findByNaziv(nazivSale);
-        LocalDateTime datumZaPregled = LocalDateTime.parse(datum);
+
+        LocalDateTime datumZaPregled = null;
+        try {
+            datumZaPregled = LocalDateTime.parse(datum);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return vrati;
+        }
 
         if (!isNadjena) {
             return vrati;
@@ -114,7 +121,13 @@ public class SalaService implements SalaSetviceInterface {
 
         Collection<Sala> saleKlinike = findByIdKlinike(idKlinike);
         Sala salaNadjena = new Sala();
-        LocalDateTime datumZaNaci = LocalDateTime.parse(datum);
+        LocalDateTime datumZaNaci = null;
+        try {
+            datumZaNaci = LocalDateTime.parse(datum);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new SalaDatumDTO();
+        }
         datumZaNaci = datumZaNaci.plusMinutes(1);
         Collection<KalendarSale> kalendarSaleSve = kalendarSaleService.findAll();
 
