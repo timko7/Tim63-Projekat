@@ -5,14 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tim63.sistemKlinickogCentar.model.Kalendar;
-import tim63.sistemKlinickogCentar.model.KalendarSale;
-import tim63.sistemKlinickogCentar.model.Klinika;
-import tim63.sistemKlinickogCentar.model.Pregled;
-import tim63.sistemKlinickogCentar.service.KalendarSaleService;
-import tim63.sistemKlinickogCentar.service.KalendarService;
-import tim63.sistemKlinickogCentar.service.LekarService;
-import tim63.sistemKlinickogCentar.service.PregledService;
+import tim63.sistemKlinickogCentar.model.*;
+import tim63.sistemKlinickogCentar.service.*;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -32,6 +26,9 @@ public class PregledKontroler {
 
     @Autowired
     private KalendarSaleService kalendarSaleService;
+
+    @Autowired
+    private ZahtevOdsustvoService zahtevOdsustvoService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Pregled> getPreglede() {
@@ -86,7 +83,22 @@ public class PregledKontroler {
         if (compareValue < 0) {
             return new ResponseEntity<>("Neuspesno dodavanje pregleda! Datum za dodati je u proslosti!", HttpStatus.METHOD_NOT_ALLOWED);
         }
+
 */
+
+
+        Collection<ZahtevOdsustvo> zahteviLekra = zahtevOdsustvoService.findByIdLekara(pregled.getIdLekara());
+
+        if (!zahteviLekra.isEmpty()) {
+            for (ZahtevOdsustvo zahtevOdsustvo : zahteviLekra) {
+                if (pregled.getDatumVreme().isAfter(zahtevOdsustvo.getDatumPocetka().atStartOfDay())
+                        && pregled.getDatumVreme().isBefore(zahtevOdsustvo.getDatumZavrsetka().atStartOfDay())) {
+                    return new ResponseEntity<>("Nije moguce napraviti predefinisani pregled. Lekar je na odsustvu za odabrani datum.", HttpStatus.METHOD_NOT_ALLOWED);
+                }
+            }
+        }
+
+
         Pregled pregledNew = pregledService.create(pregled);
         if(pregled==null){
             return new ResponseEntity<>("Neuspesno dodavanje pregleda!!", HttpStatus.METHOD_NOT_ALLOWED);

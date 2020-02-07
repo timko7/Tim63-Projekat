@@ -13,6 +13,7 @@ import tim63.sistemKlinickogCentar.model.Pregled;
 
 import tim63.sistemKlinickogCentar.model.Sala;
 
+import tim63.sistemKlinickogCentar.model.TipPregleda;
 import tim63.sistemKlinickogCentar.repository.PacijentRepositoryInterface;
 
 import tim63.sistemKlinickogCentar.repository.PregledRepositoryInterface;
@@ -30,6 +31,9 @@ public class PregledService implements PregledServiceInterface {
 
     @Autowired
     private SalaService salaService;
+
+    @Autowired
+    private TipPregledaService tipPregledaService;
 
     @Autowired
     private PacijentRepositoryInterface pacijentRepository;
@@ -96,6 +100,7 @@ public class PregledService implements PregledServiceInterface {
     public Pregled create(Pregled pregled) throws Exception {
         Pregled ret = new Pregled();
         Sala salaTemp = new Sala();
+        TipPregleda tipTemp;
 
         int trajanje = pregled.getTrajanjePregleda();
         LocalDateTime datumVreme = pregled.getDatumVreme();
@@ -124,6 +129,9 @@ public class PregledService implements PregledServiceInterface {
         salaTemp.setSlobodna(false);
         salaService.update(salaTemp);
 
+        tipTemp = tipPregledaService.findById(pregled.getIdTipa());
+        tipTemp.setSlobodan(false);
+        tipPregledaService.update(tipTemp);
 
         ret.copyValues(pregled);
         ret = repositoryPregled.save(ret);

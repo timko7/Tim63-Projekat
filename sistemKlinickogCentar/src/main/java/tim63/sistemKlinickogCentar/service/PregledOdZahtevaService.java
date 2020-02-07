@@ -6,10 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import tim63.sistemKlinickogCentar.model.Lekar;
-import tim63.sistemKlinickogCentar.model.Pacijent;
-import tim63.sistemKlinickogCentar.model.PregledOdZahteva;
-import tim63.sistemKlinickogCentar.model.Sala;
+import tim63.sistemKlinickogCentar.model.*;
 import tim63.sistemKlinickogCentar.repository.PregledOdZahtevaRepository;
 
 import java.util.Collection;
@@ -32,6 +29,9 @@ public class PregledOdZahtevaService implements PregledOdZahtevaServiceInterface
 
     @Autowired
     private LekarService lekarService;
+
+    @Autowired
+    private TipPregledaService tipPregledaService;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -93,13 +93,18 @@ public class PregledOdZahtevaService implements PregledOdZahtevaServiceInterface
 
         PregledOdZahteva ret = new PregledOdZahteva();
         Sala salaTemp;
+        TipPregleda tipTemp = tipPregledaService.findById(pregledOdZahteva.getIdTipa());;
 
+        ret.setCena(tipTemp.getCena());
         ret.copyValues(pregledOdZahteva);
         ret = pregledOdZahtevaRepository.save(ret);
 
         salaTemp = salaService.findById(pregledOdZahteva.getIdSale());
         salaTemp.setSlobodna(false);
         salaService.update(salaTemp);
+
+        tipTemp.setSlobodan(false);
+        tipPregledaService.update(tipTemp);
 
         kalendarSaleService.createPoPregleduOdZahteva(pregledOdZahteva);
 

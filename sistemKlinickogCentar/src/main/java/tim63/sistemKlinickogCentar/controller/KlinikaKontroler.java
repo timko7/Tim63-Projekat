@@ -94,5 +94,11 @@ public class KlinikaKontroler {
         return zbir/oceneLekara.size();
     }
 
+    @RequestMapping(method = GET, value = "/prihod/{idKlinike}/{pocetak}/{kraj}")
+    public double getPrihodPoPeriodu( @PathVariable("idKlinike") Long idKlinike, @PathVariable("pocetak") String pocetak, @PathVariable("kraj") String kraj) throws Exception {
+
+        return klinikaSer.getPrihodPoPeriod(idKlinike, pocetak, kraj);
+    }
+
 
 }
