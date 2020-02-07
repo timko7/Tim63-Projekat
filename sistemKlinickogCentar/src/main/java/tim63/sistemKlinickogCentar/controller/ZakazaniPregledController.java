@@ -60,7 +60,7 @@ public class ZakazaniPregledController {
     public ResponseEntity<?> dodajPregled(@RequestBody ZaktaniPregledi pregled) throws Exception {
 
 
-        if(pregled.getId()!=null){
+      /*  if(pregled.getId()!=null){
             return new ResponseEntity<>("Pregled vec rezervisan", HttpStatus.METHOD_NOT_ALLOWED);
         }
         int trajanje = pregled.getTrajanjePregleda();
@@ -75,7 +75,7 @@ public class ZakazaniPregledController {
        /* if (trajanje < 1) {
             return new ResponseEntity<>("Neuspesno dodavanje pregleda! Trajanje pregleda je manje od 1!", HttpStatus.METHOD_NOT_ALLOWED);
         }*/
-
+/*
         if (cena < 0) {
             return new ResponseEntity<>("Neuspesno dodavanje pregleda! Cena je manja 0!", HttpStatus.METHOD_NOT_ALLOWED);
         }
@@ -87,30 +87,32 @@ public class ZakazaniPregledController {
         if (compareValue < 0) {
             return new ResponseEntity<>("Neuspesno dodavanje pregleda! Datum za dodati je u proslosti!", HttpStatus.METHOD_NOT_ALLOWED);
         }
+        */
 
         ZaktaniPregledi pregledNew = this.zp.create(pregled);
 
+        if(pregledNew==null){
+            return new ResponseEntity<>("Neuspesno pravljenje zahteva!!", HttpStatus.METHOD_NOT_ALLOWED);
+        }
 
-        System.out.println("Datum vreme za dodati: " + pregledNew.getDatumVreme());
+       // System.out.println("Datum vreme za dodati: " + pregledNew.getDatumVreme());
 
         return new ResponseEntity<>(pregledNew, HttpStatus.CREATED);
     }
 
-    /*
-     * url: /api/pregledi/obrisi/{id}
-     */
-    @DeleteMapping(value = "/obrisi/{id}")
-    public ResponseEntity<?> izbiriPregledPoID(@PathVariable("id") Long id) {
+
+    @DeleteMapping(value = "/obrisi/{idPregleda}")
+    public ResponseEntity<ZaktaniPregledi> izbiriPregledPoID(@PathVariable("idPregleda") Long id) {
         zp.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<ZaktaniPregledi>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(value = "zakaziPregled/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+ /*   @PutMapping(value = "zakaziPregled/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ZaktaniPregledi> izmeniOdradjen(@RequestBody ZaktaniPregledi pregled, @PathVariable Long id)
             throws Exception {
         ZaktaniPregledi p = zp.update(pregled);
         return new ResponseEntity<ZaktaniPregledi>(p, HttpStatus.CREATED);
-    }
+    }*/
 
     @PutMapping(value = "/odradiZahtev/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> odradiZahtev(@RequestBody ZaktaniPregledi pregled, @PathVariable Long id)

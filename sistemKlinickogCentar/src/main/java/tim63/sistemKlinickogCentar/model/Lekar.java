@@ -66,7 +66,7 @@ public class Lekar {
     @Column(name = "PrviPutLogovan", nullable = false)
     private boolean prviPutLogovan;
 
-    private int brojacIzvrsenihPregleda=0;
+
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Klinika klinika;
@@ -247,13 +247,7 @@ public class Lekar {
         this.srednjaOcena = srednjaOcena;
     }
 
-    public int getBrojacIzvrsenihPregleda() {
-        return brojacIzvrsenihPregleda;
-    }
 
-    public void setBrojacIzvrsenihPregleda(int brojacIzvrsenihPregleda) {
-        this.brojacIzvrsenihPregleda = brojacIzvrsenihPregleda;
-    }
 
     public boolean isPrviPutLogovan() {
         return prviPutLogovan;

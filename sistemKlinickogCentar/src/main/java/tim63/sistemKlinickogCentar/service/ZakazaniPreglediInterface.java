@@ -13,9 +13,9 @@ public interface ZakazaniPreglediInterface {
     Collection<ZaktaniPregledi> findByIdPacijenta(Long id);
     Collection<ZaktaniPregledi> findByIdKlinike(Long id);
 
-    ZaktaniPregledi findById(Long id);
+   ZaktaniPregledi findById(Long id);
 
-    ZaktaniPregledi update(ZaktaniPregledi pacijent) throws Exception;
+   // ZaktaniPregledi update(ZaktaniPregledi pacijent) throws Exception;
 
     ZaktaniPregledi odradi(Long id);
 

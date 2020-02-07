@@ -67,7 +67,7 @@ public class PregledKontroler {
 
     @RequestMapping(method = POST, value = "/add")
     public ResponseEntity<?> dodajPregled(@RequestBody Pregled pregled) throws Exception {
-        int trajanje = pregled.getTrajanjePregleda();
+        /*int trajanje = pregled.getTrajanjePregleda();
         LocalDateTime datumVreme = pregled.getDatumVreme();
         double cena = pregled.getCena();
 
@@ -86,11 +86,14 @@ public class PregledKontroler {
         if (compareValue < 0) {
             return new ResponseEntity<>("Neuspesno dodavanje pregleda! Datum za dodati je u proslosti!", HttpStatus.METHOD_NOT_ALLOWED);
         }
-
+*/
         Pregled pregledNew = pregledService.create(pregled);
+        if(pregled==null){
+            return new ResponseEntity<>("Neuspesno dodavanje pregleda!!", HttpStatus.METHOD_NOT_ALLOWED);
+        }
 
 
-        System.out.println("Datum vreme za dodati: " + pregledNew.getDatumVreme());
+        //System.out.println("Datum vreme za dodati: " + pregledNew.getDatumVreme());
 
         return new ResponseEntity<>(pregledNew, HttpStatus.CREATED);
     }

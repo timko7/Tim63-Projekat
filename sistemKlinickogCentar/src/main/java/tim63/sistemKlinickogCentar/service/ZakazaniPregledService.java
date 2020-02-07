@@ -55,12 +55,14 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
         return zpi.findById(id).orElseGet(null);
     }
 
+
+   /* @Override
     public ZaktaniPregledi update(ZaktaniPregledi pacijent) throws Exception {
         ZaktaniPregledi zaIzmenu = findById(pacijent.getId());
         zaIzmenu.copyValues(pacijent);
         zaIzmenu = zpi.save(zaIzmenu);
         return zaIzmenu;
-    }
+    }*/
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     @Override
@@ -75,9 +77,36 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
     public ZaktaniPregledi create(ZaktaniPregledi pregled) throws Exception {
         ZaktaniPregledi ret = new ZaktaniPregledi();
 
+
+       // int trajanje = pregled.getTrajanjePregleda();
+        LocalDateTime datumVreme = pregled.getDatumVreme();
+        double cena = pregled.getCena();
+
+
+       /*if (trajanje < 1) {
+            return null;
+        }
+*/
+        if (cena < 0) {
+            return null;
+        }
+        if(pregled.getIdKlinike()==null || pregled.getIdLekara()==null || pregled.getIdPacijenta()==null || pregled.getIdTipa()==null){
+            return null;
+        }
+
+        if(pregled.getDatumVreme()==null){
+            return null;
+        }
+        LocalDateTime datumVremeSada = LocalDateTime.now();
+
+        int compareValue = pregled.getDatumVreme().compareTo(datumVremeSada);
+
+        if (compareValue < 0) {
+            return null;
+        }
         ret.setDatumVreme(pregled.getDatumVreme());
        ret.setCena(pregled.getCena());
-       ret.setTrajanjePregleda(pregled.getTrajanjePregleda());
+      // ret.setTrajanjePregleda(pregled.getTrajanjePregleda());
         ret.setIdKlinike(pregled.getIdKlinike());
         ret.setIdLekara(pregled.getIdLekara());
         ret.setIdTipa(pregled.getIdTipa());
@@ -90,6 +119,7 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public void delete(Long id) {
 
         zpi.deleteById(id);

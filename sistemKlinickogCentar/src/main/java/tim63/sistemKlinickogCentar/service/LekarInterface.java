@@ -3,8 +3,12 @@ package tim63.sistemKlinickogCentar.service;
 import tim63.sistemKlinickogCentar.model.AdminKlinike;
 import tim63.sistemKlinickogCentar.model.Klinika;
 import tim63.sistemKlinickogCentar.model.Lekar;
+import tim63.sistemKlinickogCentar.model.PretragaKlinike;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public interface LekarInterface {
 
@@ -16,6 +20,10 @@ public interface LekarInterface {
 
     Collection<Lekar> findByIdTipa(Long idTipa);
 
+    ArrayList<Lekar> pretrazi(PretragaKlinike zahtev);
+    ArrayList<Lekar> pretraziLekre(PretragaKlinike zahtev);
+    ArrayList<Integer> vratiTermineNaFront(Long idLekara, LocalDate datum);
+    ArrayList<Integer> vratiTermine(Long idLekara);
 
     Lekar findByEmail(String username);
 
@@ -23,7 +31,7 @@ public interface LekarInterface {
 
     Lekar update(Lekar lekar) throws Exception;
 
-    Lekar dobuniLekara(Lekar lekar, Klinika klinika) throws Exception;//ako radi prebacicemo u admistrator klinike
+   // Lekar dobuniLekara(Lekar lekar, Klinika klinika) throws Exception;//ako radi prebacicemo u admistrator klinike
 
     Lekar promeniLozinku(Long idLekara, String noviPassword) throws Exception;
 

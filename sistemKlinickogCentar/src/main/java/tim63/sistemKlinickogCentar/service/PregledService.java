@@ -1,8 +1,10 @@
 package tim63.sistemKlinickogCentar.service;
 
+import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import tim63.sistemKlinickogCentar.repository.PacijentRepositoryInterface;
 import tim63.sistemKlinickogCentar.repository.PregledRepositoryInterface;
 import tim63.sistemKlinickogCentar.repository.SalaRepositoryInterface;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Service
@@ -70,6 +73,9 @@ public class PregledService implements PregledServiceInterface {
         Pacijent p=new Pacijent();
         Pregled zaIzmenu = findById(pregled.getId());
         zaIzmenu.copyValuesZaRezervaciju(pregled);
+        if(!pregled.getVerzija().equals(zaIzmenu.getVerzija())){
+            throw new ObjectOptimisticLockingFailureException("Neko pre vas je vec menjao",true);
+        }
         zaIzmenu = repositoryPregled.save(zaIzmenu);
         p=pacijentRepository.findById(zaIzmenu.getIdPacijenta()).orElseGet(null);
 
@@ -86,10 +92,33 @@ public class PregledService implements PregledServiceInterface {
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRES_NEW)
     public Pregled create(Pregled pregled) throws Exception {
         Pregled ret = new Pregled();
         Sala salaTemp = new Sala();
+
+        int trajanje = pregled.getTrajanjePregleda();
+        LocalDateTime datumVreme = pregled.getDatumVreme();
+        double cena = pregled.getCena();
+
+        if (trajanje < 1) {
+            return  null;
+        }
+
+        if (cena < 0) {
+            return null;
+        }
+
+        LocalDateTime datumVremeSada = LocalDateTime.now();
+
+        int compareValue = pregled.getDatumVreme().compareTo(datumVremeSada);
+
+        if (compareValue < 0) {
+            return null;
+        }
+        if(pregled.getIdSale()==null || pregled.getIdLekara()==null || pregled.getIdKlinike()==null || pregled.getIdTipa()==null){
+            return null;
+        }
 
         salaTemp = salaService.findById(pregled.getIdSale());
         salaTemp.setSlobodna(false);
