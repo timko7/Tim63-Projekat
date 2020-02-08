@@ -8,12 +8,8 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import tim63.sistemKlinickogCentar.model.Pacijent;
-import tim63.sistemKlinickogCentar.model.Pregled;
+import tim63.sistemKlinickogCentar.model.*;
 
-import tim63.sistemKlinickogCentar.model.Sala;
-
-import tim63.sistemKlinickogCentar.model.TipPregleda;
 import tim63.sistemKlinickogCentar.repository.PacijentRepositoryInterface;
 
 import tim63.sistemKlinickogCentar.repository.PregledRepositoryInterface;
@@ -34,6 +30,9 @@ public class PregledService implements PregledServiceInterface {
 
     @Autowired
     private TipPregledaService tipPregledaService;
+
+    @Autowired
+    private LekarService lekarService;
 
     @Autowired
     private PacijentRepositoryInterface pacijentRepository;
@@ -132,6 +131,10 @@ public class PregledService implements PregledServiceInterface {
         tipTemp = tipPregledaService.findById(pregled.getIdTipa());
         tipTemp.setSlobodan(false);
         tipPregledaService.update(tipTemp);
+
+        Lekar lekarTmp = lekarService.findById(pregled.getIdLekara());
+        lekarTmp.setSlobodan(false);
+        lekarService.update(lekarTmp);
 
         ret.copyValues(pregled);
         ret = repositoryPregled.save(ret);

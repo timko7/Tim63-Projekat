@@ -111,6 +111,9 @@ public class PregledOdZahtevaService implements PregledOdZahtevaServiceInterface
         Pacijent pacijent = pacijentService.findById(pregledOdZahteva.getIdPacijenta());
         Lekar lekar = lekarService.findById(pregledOdZahteva.getIdLekara());
 
+        lekar.setSlobodan(false);
+        lekarService.update(lekar);
+
         SimpleMailMessage mailP = new SimpleMailMessage();
         mailP.setTo(pacijent.getEmail());
         //mail.setFrom("isaPSW1@gmail.com");
