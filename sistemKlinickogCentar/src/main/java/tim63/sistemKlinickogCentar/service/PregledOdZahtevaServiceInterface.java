@@ -23,6 +23,7 @@ public interface PregledOdZahtevaServiceInterface {
 
     PregledOdZahteva create(PregledOdZahteva pregledOdZahteva) throws Exception;
 
+    boolean okaziPregled(Long id);
     void delete(Long id);
 
 }

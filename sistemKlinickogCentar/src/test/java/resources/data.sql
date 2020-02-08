@@ -1,6 +1,6 @@
 
 insert into `pacijent` (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`Broj_Osiguranika`,`Uloga`) values ( 'Marko', 'Marković','m@gmail.com','11111111','Grad1','Adresa1','Drzava1','111111111','3324',0);
-insert into `pacijent` (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`Broj_Osiguranika`,`Uloga`) values ('Milan', 'Milanović','mglukicy@gmail.com','22222222','Grad1','Adresa1','Drzava1','111111111','344',0);
+insert into `pacijent` (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`Broj_Osiguranika`,`Uloga`) values ('Milan', 'Milanović','mglukic@gmail.com','22222222','Grad1','Adresa1','Drzava1','111111111','344',0);
 insert into `pacijent` (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`Broj_Osiguranika`,`Uloga`) values ( 'Ivana', 'Novaković','i@gmail.com','33333333','Grad1','Adresa1','Drzava1','111111111','555',0);
 
 insert into `tipPregleda` (`id`,`NazivTipa`, `Slobodan`,`IdKlinike`,`Cena`) values (1L,'S1',true,1L,600);
@@ -13,6 +13,7 @@ insert into `pregled` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`Id
 
 insert into `sala` (`id`,`Naziv`, `Slobodna`,`IdKlinike`) values (1L,'S1',true,1L);
 
+insert into `adminKlinike` (`Id`, `Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`Uloga`,`IdKlinike`,`PrviPutLogovan`) values (1L,'Aca', 'Acic','ak@gmail.com','33333333','Grad1','Adresa1','Drzava1','111111111',2,1L,true);
 
 insert into `zaktaniPregledi` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`,`Odobren`,`version`) values (1L,500,'2020-06-28T16:00:00',60,2L,null,1L,2L,2L,false,false,false,0L);
 insert into `zaktaniPregledi` (`Id`,`Cena`, `DatumVreme`,`TrajanjePregleda`,`IdTipa`,`IdSale`,`IdLekara`,`IdKlinike`,`IdPacijenta`,`Odradjen`,`Rezervisan`,`Odobren`,`version`) values (2L,700,'2020-06-28T16:00:00',60,2L,null,1L,2L,2L,false,false,false,0L);

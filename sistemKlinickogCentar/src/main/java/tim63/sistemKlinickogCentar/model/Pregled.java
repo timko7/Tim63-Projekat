@@ -59,6 +59,20 @@ public class Pregled {
         this.odradjen=false;
         this.rezervisan=false;
     }
+    public Pregled(Long id,LocalDateTime datumVreme, int trajanjePregleda, Long idTipa, Long idSale, Long idLekara, double cena,
+                   Long idKlinike,Long verzija) {
+        this.id=id;
+        this.datumVreme = datumVreme;
+        this.trajanjePregleda = trajanjePregleda;
+        this.idTipa = idTipa;
+        this.idSale = idSale;
+        this.idLekara = idLekara;
+        this.cena = cena;
+        this.idKlinike=idKlinike;
+        this.odradjen=false;
+        this.rezervisan=false;
+        this.verzija=verzija;
+    }
 
     public Long getId() {
         return id;

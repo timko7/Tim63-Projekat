@@ -8,18 +8,16 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import tim63.sistemKlinickogCentar.model.Pacijent;
-import tim63.sistemKlinickogCentar.model.Pregled;
+import tim63.sistemKlinickogCentar.model.*;
 
-import tim63.sistemKlinickogCentar.model.Sala;
-
-import tim63.sistemKlinickogCentar.model.TipPregleda;
 import tim63.sistemKlinickogCentar.repository.PacijentRepositoryInterface;
 
 import tim63.sistemKlinickogCentar.repository.PregledRepositoryInterface;
 import tim63.sistemKlinickogCentar.repository.SalaRepositoryInterface;
 
+import javax.persistence.OptimisticLockException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
@@ -31,6 +29,12 @@ public class PregledService implements PregledServiceInterface {
 
     @Autowired
     private SalaService salaService;
+
+    @Autowired
+    private KalendarService kalendarService;
+
+    @Autowired
+    private KalendarSaleService kalendarSaleService;
 
     @Autowired
     private TipPregledaService tipPregledaService;
@@ -77,10 +81,12 @@ public class PregledService implements PregledServiceInterface {
         Pacijent p=new Pacijent();
         Pregled zaIzmenu = findById(pregled.getId());
         zaIzmenu.copyValuesZaRezervaciju(pregled);
+
         if(!pregled.getVerzija().equals(zaIzmenu.getVerzija())){
-            throw new ObjectOptimisticLockingFailureException("Neko pre vas je vec menjao",true);
+            throw new OptimisticLockException("Neko pre vas je vec menjao");
         }
         zaIzmenu = repositoryPregled.save(zaIzmenu);
+        System.out.println(zaIzmenu);
         p=pacijentRepository.findById(zaIzmenu.getIdPacijenta()).orElseGet(null);
 
         SimpleMailMessage mail = new SimpleMailMessage();
@@ -136,6 +142,35 @@ public class PregledService implements PregledServiceInterface {
         ret.copyValues(pregled);
         ret = repositoryPregled.save(ret);
         return ret;
+    }
+
+    @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRES_NEW)
+    public Pregled otkaziPregled(Long idPregleda) throws Exception {
+
+        LocalDateTime datumVremeSada=LocalDateTime.now();
+        Pregled zaIzmenu=repositoryPregled.findById(idPregleda).orElse(null);
+
+        if(!datumVremeSada.isBefore(zaIzmenu.getDatumVreme())){
+            return null;
+        }
+
+        zaIzmenu.setIdPacijenta(null);
+        zaIzmenu.setRezervisan(false);
+        Collection<Kalendar>kalendari=kalendarService.findAll();
+        for(Kalendar k:kalendari){
+            if(k.getDatum().isEqual(zaIzmenu.getDatumVreme())){
+                kalendarService.delete(k.getId());
+            }
+        }
+        Collection<KalendarSale>kalendariSale=kalendarSaleService.findAll();
+        for(KalendarSale k:kalendariSale){
+            if(k.getDatumOd().isEqual(zaIzmenu.getDatumVreme())){
+                kalendarSaleService.delete(k.getId());
+            }
+        }
+
+       return zaIzmenu;
     }
 
     @Override

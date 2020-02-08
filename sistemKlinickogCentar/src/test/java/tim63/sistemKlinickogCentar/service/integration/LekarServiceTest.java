@@ -181,7 +181,7 @@ class LekarServiceTest {
         assertEquals(pacijenti.size(), dbSizeBeforeAdd+1);
 
         dbStudent = pacijenti.get(pacijenti.size() - 1); //get last student
-        assertEquals(dbStudent.getId(),9L);
+        assertEquals(dbStudent.getId(),5L);
         assertEquals(dbStudent.getIme(),"Milica");
         assertEquals(dbStudent.getPrezime(),"Lukic");
         assertEquals(dbStudent.getPassword(),"88888888");

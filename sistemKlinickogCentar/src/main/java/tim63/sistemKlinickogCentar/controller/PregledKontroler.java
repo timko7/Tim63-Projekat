@@ -147,4 +147,14 @@ public class PregledKontroler {
         Pregled p = pregledService.update(pregled);
         return new ResponseEntity<Pregled>(p, HttpStatus.CREATED);
     }
+    @PutMapping(value = "/otkaziPregled/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> otkaziPregled( @RequestBody Pregled pregled,@PathVariable("id") Long id)
+            throws Exception {
+
+        Pregled p=pregledService.otkaziPregled(id);
+        if(p==null){
+            return new ResponseEntity<>("Proslo vreme za otkazivanje", HttpStatus.METHOD_NOT_ALLOWED);
+        }
+        return new ResponseEntity<Pregled>(p, HttpStatus.CREATED);
+    }
 }

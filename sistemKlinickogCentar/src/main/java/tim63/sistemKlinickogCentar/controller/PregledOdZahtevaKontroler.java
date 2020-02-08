@@ -13,8 +13,7 @@ import tim63.sistemKlinickogCentar.service.PregledOdZahtevaService;
 
 import java.util.Collection;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/api/preglediOdZahteva")
@@ -63,6 +62,16 @@ public class PregledOdZahtevaKontroler {
        // pregled.setOdradjen(true);
         PregledOdZahteva p = pregledOdZahtevaService.pregledaj(pregled);
         return new ResponseEntity<>(p, HttpStatus.CREATED);
+    }
+    @RequestMapping(method = DELETE,value = "/otkaziPregled/{id}")
+    public ResponseEntity<?> otkaziPregled(@PathVariable("id") Long id)
+            throws Exception {
+
+      boolean pom=pregledOdZahtevaService.okaziPregled(id);
+      if(pom==false){
+          return  new ResponseEntity<>("Proslo vreme za otkazivanje", HttpStatus.METHOD_NOT_ALLOWED);
+      }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

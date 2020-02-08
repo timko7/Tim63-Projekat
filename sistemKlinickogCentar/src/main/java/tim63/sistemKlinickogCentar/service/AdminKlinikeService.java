@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tim63.sistemKlinickogCentar.model.AdminKlinike;
 import tim63.sistemKlinickogCentar.repository.AdminKlinikeRepositoryInterface;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
@@ -17,6 +18,11 @@ public class AdminKlinikeService implements AdminKlinikeServiceInterface {
     public Collection<AdminKlinike> findAll() {
         Collection<AdminKlinike> result = adminRepository.findAll();
         return result;
+    }
+
+    @Override
+    public ArrayList<AdminKlinike> findByIdKlinike(Long idKlinike) {
+        return adminRepository.findByIdKlinike(idKlinike);
     }
 
     @Override
