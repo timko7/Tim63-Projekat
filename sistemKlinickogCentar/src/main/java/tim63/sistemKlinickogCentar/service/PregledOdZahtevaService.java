@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tim63.sistemKlinickogCentar.model.*;
 import tim63.sistemKlinickogCentar.repository.PregledOdZahtevaRepository;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Service
@@ -20,6 +21,9 @@ public class PregledOdZahtevaService implements PregledOdZahtevaServiceInterface
 
     @Autowired
     private SalaService salaService;
+
+    @Autowired
+    private KalendarService kalendarService;
 
     @Autowired
     private KalendarSaleService kalendarSaleService;
@@ -129,6 +133,34 @@ public class PregledOdZahtevaService implements PregledOdZahtevaServiceInterface
         javaMailSender.send(mailL);
 
         return ret;
+    }
+
+    @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRES_NEW)
+    public boolean okaziPregled(Long id) {
+        LocalDateTime datumVremeSada=LocalDateTime.now();
+        PregledOdZahteva zaIzmenu=this.findById(id);
+
+        if(!datumVremeSada.isBefore(zaIzmenu.getDatumVreme())){
+           return false;
+        }
+
+
+        Collection<Kalendar>kalendari=kalendarService.findAll();
+        for(Kalendar k:kalendari){
+            if(k.getDatum().isEqual(zaIzmenu.getDatumVreme())){
+                kalendarService.delete(k.getId());
+            }
+        }
+        Collection<KalendarSale>kalendariSale=kalendarSaleService.findAll();
+        for(KalendarSale k:kalendariSale){
+            if(k.getDatumOd().isEqual(zaIzmenu.getDatumVreme())){
+                kalendarSaleService.delete(k.getId());
+            }
+        }
+        this.delete(id);
+
+        return true;
     }
 
 

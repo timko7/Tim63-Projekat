@@ -1,11 +1,9 @@
 package tim63.sistemKlinickogCentar.service.integration;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,17 +13,16 @@ import tim63.sistemKlinickogCentar.service.PregledOdZahtevaService;
 import tim63.sistemKlinickogCentar.service.SalaService;
 import tim63.sistemKlinickogCentar.service.ZakazaniPregledService;
 
-import javax.validation.ConstraintViolationException;
+import javax.persistence.OptimisticLockException;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ZakazaniPregledServiceTest {
-
     @Autowired
     private ZakazaniPregledRepositoryInterface zpi;
 
@@ -113,7 +110,7 @@ class ZakazaniPregledServiceTest {
         pregled.setIdSale(null);
         pregled.setIdTipa(1L);
         pregled.setOdradjen(false);
-       // pregled.setRezervisan(false);
+        // pregled.setRezervisan(false);
         //pregled.setVerzija(0L);
 
         int dbSizeBeforeAdd = zakazaniPregledService.findAll().size();
@@ -131,7 +128,7 @@ class ZakazaniPregledServiceTest {
         assertEquals(pregledi.size(), dbSizeBeforeAdd+1);
 
         dbStudent = pregledi.get(pregledi.size() - 1); //get last student
-       // assertEquals(dbStudent.getId(),6L);
+        // assertEquals(dbStudent.getId(),6L);
         assertEquals(dbStudent.getDatumVreme(),datum);
         assertEquals(dbStudent.getCena(),1000);
         assertEquals(dbStudent.getTrajanjePregleda(),50);
@@ -175,7 +172,7 @@ class ZakazaniPregledServiceTest {
         // pregled.setRezervisan(false);
         //pregled.setVerzija(0L);
 
-     assertEquals(zakazaniPregledService.create(pregled),null);
+        assertEquals(zakazaniPregledService.create(pregled),null);
 
     }
 
@@ -228,18 +225,40 @@ class ZakazaniPregledServiceTest {
     @Transactional
     @Rollback
     @Test
-    void odradiAkoJeNekoVecOdobrio() {
-        ZaktaniPregledi zaOdradu1 =zakazaniPregledService.findById(2L);
-        ZaktaniPregledi zaOdradu2 =zakazaniPregledService.findById(2L);
-        zaOdradu1.setOdradjen(true);
-        zaOdradu2.setOdradjen(true);
-        zaOdradu1 = zpi.save(zaOdradu1);
-        Exception exception = assertThrows(ObjectOptimisticLockingFailureException.class, () -> {
-            zpi.save(zaOdradu2);});
-        String expectedMessage = "Neko je vec menjao";
-        String actualMessage = exception.getMessage();
+    public void testPessimisticLockingScenario() {
+        final CountDownLatch latch = new CountDownLatch(2);
+        Runnable r1 = () -> {
+            String datumUstringu="2020-06-29T16:00:00";
+            LocalDateTime datum=LocalDateTime.parse(datumUstringu);
+            ZaktaniPregledi zNovi=zakazaniPregledService.create(new ZaktaniPregledi(datum,  1L,  1L, 1500, 1L, 2L));
+            latch.countDown();
+        };
 
-        assertTrue(actualMessage.contains(expectedMessage));
+        Runnable r2 = () -> {
+            try { Thread.sleep(30); } catch (InterruptedException e) { }
+
+            try {
+                String datumUstringu="2020-06-29T16:00:00";
+                LocalDateTime datum=LocalDateTime.parse(datumUstringu);
+                ZaktaniPregledi zNovi=zakazaniPregledService.create(new ZaktaniPregledi(datum,  1L,  1L, 1500, 1L, 2L));
+                //fail();
+            }catch(Exception e) {
+                String datumUstringu="2020-06-29T16:00:00";
+                LocalDateTime datum=LocalDateTime.parse(datumUstringu);
+                assertTrue(e instanceof RuntimeException);
+                assertEquals("Zahtev je vec kreiran u trazenom terminu,osvezite stranicu",zakazaniPregledService.create(new ZaktaniPregledi(datum,  1L,  1L, 1500, 1L, 2L)));
+            }
+
+            latch.countDown();
+        };
+
+        new Thread(r1).start();
+        new Thread(r2).start();
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -34,9 +34,9 @@ public class AdminKlinike {
 
     @Column(name = "idKlinike", nullable = false)
     private Long idKlinike;
-
+/*
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Klinika klinika;
+    private Klinika klinika;*/
 
     @Column(name = "Uloga", nullable = false)
     private Uloga uloga=Uloga.ADMINKLINIKE;
@@ -44,7 +44,7 @@ public class AdminKlinike {
     @Column(name = "PrviPutLogovan", nullable = false)
     private boolean prviPutLogovan;
 
-    public AdminKlinike(String ime, String prezime, String email, String password, String grad, String drzava, String adresa, String telefon, Long idKlinike, boolean prviPutLogovan, Klinika klinika) {
+    public AdminKlinike(String ime, String prezime, String email, String password, String grad, String drzava, String adresa, String telefon, Long idKlinike, boolean prviPutLogovan) {
         this.ime = ime;
         this.prezime = prezime;
         this.email = email;
@@ -54,7 +54,7 @@ public class AdminKlinike {
         this.adresa = adresa;
         this.telefon = telefon;
         this.idKlinike = idKlinike;
-        this.klinika = klinika;
+        //this.klinika = klinika;
         this.uloga = Uloga.ADMINKLINIKE;
         this.prviPutLogovan = prviPutLogovan;
     }
@@ -142,13 +142,13 @@ public class AdminKlinike {
         this.idKlinike = idKlinike;
     }
 
-    public Klinika getKlinika() {
+ /*   public Klinika getKlinika() {
         return klinika;
     }
 
     public void setKlinika(Klinika klinika) {
         this.klinika = klinika;
-    }
+    }*/
 
     public Uloga getUloga() {
         return uloga;
@@ -176,7 +176,7 @@ public class AdminKlinike {
         this.adresa = adminKlinike.getAdresa();
         this.telefon = adminKlinike.getTelefon();
         this.idKlinike = adminKlinike.getIdKlinike();
-        this.klinika = adminKlinike.getKlinika();
+        //this.klinika = adminKlinike.getKlinika();
         this.uloga = adminKlinike.getUloga();
         this.prviPutLogovan = adminKlinike.isPrviPutLogovan();
     }

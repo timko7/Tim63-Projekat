@@ -3,16 +3,20 @@ package tim63.sistemKlinickogCentar.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tim63.sistemKlinickogCentar.model.AdminKlinike;
 import tim63.sistemKlinickogCentar.model.PregledOdZahteva;
 import tim63.sistemKlinickogCentar.model.ZaktaniPregledi;
 import tim63.sistemKlinickogCentar.model.dto.SalaDatumDTO;
 import tim63.sistemKlinickogCentar.repository.ZakazaniPregledRepositoryInterface;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,6 +30,12 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
 
     @Autowired
     private SalaService salaService;
+
+    @Autowired
+    private AdminKlinikeService adminKlinikeService;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @Autowired
     private PregledOdZahtevaService pregledOdZahtevaService;
@@ -73,13 +83,15 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
         return zaOdradu;
     }
 
-    @Transactional(readOnly = false)
-    public ZaktaniPregledi create(ZaktaniPregledi pregled) throws Exception {
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRES_NEW)
+    public ZaktaniPregledi create(ZaktaniPregledi pregled)  {
         ZaktaniPregledi ret = new ZaktaniPregledi();
 
-
+        System.out.println(pregled);
        // int trajanje = pregled.getTrajanjePregleda();
         LocalDateTime datumVreme = pregled.getDatumVreme();
+        ArrayList<AdminKlinike>admini=new ArrayList<>();
+
         double cena = pregled.getCena();
 
 
@@ -114,7 +126,27 @@ public class ZakazaniPregledService implements ZakazaniPreglediInterface {
       //  ret.setIdSale(pregled.getIdSale());
         ret.setRezervisan(true);
 
-        ret = this.zpi.save(ret);
+        try{
+            ZaktaniPregledi zp=zpi.zauzeto(datumVreme);
+            if(zp!=null) throw new RuntimeException("Zahtev vec kreiran");
+            else
+                ret = this.zpi.save(ret);
+        }catch (Exception e){
+            throw new RuntimeException("Zahtev je vec kreiran u trazenom terminu,osvezite stranicu");
+        }
+
+
+        System.out.println(ret);
+        admini=adminKlinikeService.findByIdKlinike(ret.getIdKlinike());
+
+        for(AdminKlinike a:admini) {
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo(a.getEmail());
+            //mail.setFrom("isaPSW1@gmail.com");
+            mail.setSubject("Zahtev za pregledom/rezervacijom");
+            mail.setText("Pozdrav" + ",\nZeleo bih da zakazem pregled u Vasoj klinici:" + ret.getDatumVreme());
+            javaMailSender.send(mail);
+        }
         return ret;
     }
 

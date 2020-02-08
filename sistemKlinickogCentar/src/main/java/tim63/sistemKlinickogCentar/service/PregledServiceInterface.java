@@ -20,6 +20,7 @@ public interface PregledServiceInterface {
 
     Pregled update(Pregled pregled) throws Exception;
     Pregled create(Pregled pregled) throws Exception;
+    Pregled otkaziPregled(Long idPregleda) throws Exception;
 
     void delete(Long id);
 }

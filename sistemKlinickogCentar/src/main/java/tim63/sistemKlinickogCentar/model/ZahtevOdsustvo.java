@@ -45,6 +45,16 @@ public class ZahtevOdsustvo implements Serializable {
         this.prihvacen = prihvacen;
     }
 
+    public ZahtevOdsustvo(Long id,LocalDate datumPocetka, LocalDate datumZavrsetka, Long idLekara, Long idKlinike, boolean prihvacen, boolean obradjen) {
+        this.id=id;
+        this.datumPocetka = datumPocetka;
+        this.datumZavrsetka = datumZavrsetka;
+        this.idLekara = idLekara;
+        this.idKlinike = idKlinike;
+        this.obradjen = obradjen;
+        this.prihvacen = prihvacen;
+    }
+
     public Long getId() {
         return id;
     }

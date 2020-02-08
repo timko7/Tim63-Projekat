@@ -14,6 +14,7 @@ import tim63.sistemKlinickogCentar.repository.PregledRepositoryInterface;
 import tim63.sistemKlinickogCentar.service.PregledService;
 import tim63.sistemKlinickogCentar.service.SalaService;
 
+import javax.persistence.OptimisticLockException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -183,30 +184,22 @@ class PregledServiceTest {
    // @Rollback
     @Test
     void updateKadaZelisDaRezervises() throws Exception {
+
         Pregled pregled1 = pregledService.findById(4L);
         Pregled pregled2 = pregledService.findById(4L);
 
-        //modifikovanje istog objekta
         pregled1.setIdPacijenta(3L);
         pregled1.setRezervisan(true);
 
+        pregledService.update(pregled1);
+
         pregled2.setIdPacijenta(2L);
         pregled1.setRezervisan(true);
-
-        //verzija oba objekta je 0
-        assertEquals(0, pregled1.getVerzija().intValue());
-        assertEquals(0, pregled2.getVerzija().intValue());
-
-        //pokusaj cuvanja prvog objekta
-        repositoryPregled.save(pregled1);
-
-        System.out.println(pregled1.getVerzija().intValue());
-        System.out.println(pregled2.getVerzija().intValue());
-        //pokusaj cuvanja prvog objekta
-        Exception exception = assertThrows(ObjectOptimisticLockingFailureException.class, () -> {
-            repositoryPregled.save(pregled2);});
+        Exception exception = assertThrows(OptimisticLockException.class, () -> {
+            pregledService.update(pregled2);});
 
         assertEquals("Neko pre vas je vec menjao", exception.getMessage());
+
 
     }
 
