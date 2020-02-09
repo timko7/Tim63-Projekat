@@ -100,6 +100,7 @@ public class PregledOdZahtevaService implements PregledOdZahtevaServiceInterface
         TipPregleda tipTemp = tipPregledaService.findById(pregledOdZahteva.getIdTipa());;
 
         pregledOdZahteva.setCena(tipTemp.getCena());
+        pregledOdZahteva.setRezervisan(true);
         ret.copyValues(pregledOdZahteva);
 
         try{
