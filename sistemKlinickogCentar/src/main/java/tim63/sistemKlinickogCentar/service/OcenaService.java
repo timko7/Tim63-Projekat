@@ -37,6 +37,8 @@ public class OcenaService implements OcenaInterface {
         System.out.println("Ocena: ocena->" + ret.getOcena() + " idLekara->" + ret.getIdLekara());
         Lekar lekar = lekarService.findById(pregled.getIdLekara());
 
+        ret = repositoryOcena.save(ret);
+
         List<Ocena> oceneLekara = findByIdLekara(lekar.getId());
         double zbir = 0;
         for(Ocena ocena : oceneLekara){
@@ -45,7 +47,7 @@ public class OcenaService implements OcenaInterface {
         lekar.setSrednjaOcena(zbir / oceneLekara.size());
         lekarService.update(lekar);
 
-        ret = repositoryOcena.save(ret);
+
         return ret;
     }
 }
