@@ -23,7 +23,6 @@ public class Klinika {
     @Column(name = "SrednjaOcena", nullable = false)
     private double srednjaOcena=0;
 
-    private int brojacPacijenata;
 
     @OneToMany(mappedBy = "klinika", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Lekar> lekari = new HashSet<>();
@@ -92,13 +91,7 @@ public class Klinika {
         this.srednjaOcena = srednjaOcena;
     }
 
-    public int getBrojacPacijenata() {
-        return brojacPacijenata;
-    }
 
-    public void setBrojacPacijenata(int brojacPacijenata) {
-        this.brojacPacijenata = brojacPacijenata;
-    }
 
     public Set<Lekar> getLekari() {
         return lekari;
