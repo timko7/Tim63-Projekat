@@ -1,15 +1,15 @@
 
 
-insert into klinika ( ime, adresa, opis, brojac_pacijenata, srednja_ocena) values ('Klinika1', 'Adresa1', 'Klinika opsteg karaktera', 0,0);
-insert into klinika ( ime, adresa, opis, brojac_pacijenata, srednja_ocena) values ('Klinika2', 'Adresa2', 'Specijalizovana klinika', 0,0);
-insert into klinika ( ime, adresa, opis, brojac_pacijenata, srednja_ocena) values ('Klinika3', 'Adresa3', 'Klinika se nalazi u Novom Sadu', 0,0);
+insert into klinika (id, ime, adresa, opis, brojac_pacijenata, srednja_ocena) values (1, 'Klinika1', 'Adresa1', 'Klinika opsteg karaktera', 0,0);
+insert into klinika (id, ime, adresa, opis, brojac_pacijenata, srednja_ocena) values (2, 'Klinika2', 'Adresa2', 'Specijalizovana klinika', 0,0);
+insert into klinika (id, ime, adresa, opis, brojac_pacijenata, srednja_ocena) values (3, 'Klinika3', 'Adresa3', 'Klinika se nalazi u Novom Sadu', 0,0);
 
 insert into admin_klinike (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`idKlinike`,`Uloga`,`PrviPutLogovan`) values ('Marko', 'Marković','m@gmail.com','11111111','Grad1','Adresa1','Drzava1','111111111',1L,2,true);
 insert into admin_klinike (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`idKlinike`,`Uloga`,`PrviPutLogovan`) values ('Pera', 'Peric','p@gmail.com','22222222','Grad1','Adresa1','Drzava1','222222222',1L,2,true);
 insert into admin_klinike (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`idKlinike`,`Uloga`,`PrviPutLogovan`) values ('Zika', 'Zikic','z@gmail.com','33333333','Grad1','Adresa1','Drzava1','222222222',2L,2,true);
 insert into admin_klinike (`Ime`, `Prezime`, `Email`,`Password`,`Grad`,`Adresa`,`Drzava`,`Telefon`,`idKlinike`,`Uloga`,`PrviPutLogovan`) values ('Mika', 'Mikic','mm@gmail.com','44444444','Grad1','Adresa1','Drzava1','222222222',3L,2,true);
 
-insert into sala (Naziv, slobodna, idKlinike) values ('Sala1',true,1L);
+insert into sala (Naziv, slobodna, idKlinike) values ('Sala1', true,1L);
 insert into sala (Naziv, slobodna, idKlinike) values ('Sala2',true,1L);
 insert into sala (Naziv, slobodna, idKlinike) values ('Sala3',true,1L);
 insert into sala (Naziv, slobodna, idKlinike) values ('Sala4',true,2L);

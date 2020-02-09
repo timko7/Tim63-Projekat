@@ -38,10 +38,14 @@ class PregledServiceUnitTest {
     @BeforeEach
     void setUp() {
 
+        Pregled pregled = new Pregled(LocalDateTime.parse("2020-03-28T13:00:00"), 90, 1L, 1L, 1L, 700,1L);
+        pregled.setId(2L);
+        pregled.setVerzija(0L);
+        pregled.setIdPacijenta(2L);
         when(
                 pregledRepositoryInterface.findById(2L)
         ).thenReturn(
-                Optional.of(new Pregled(LocalDateTime.parse("2020-03-28T13:00:00"), 90, 1L, 1L, 1L, 700,1L))
+                Optional.of(pregled)
         );
         when(
                 pacijentRepositoryInterface.findById(2L)
@@ -49,12 +53,8 @@ class PregledServiceUnitTest {
                 Optional.of(new Pacijent("Milan", "Milanović","mglukic@gmail.com","22222222","Grad1","Adresa1","Drzava1","111111111","344"))
         );
 
-        when(
-                pregledRepositoryInterface.findById(2L)
-        ).thenReturn(
-                Optional.empty()
-        );
         Pregled p=new Pregled(2L,LocalDateTime.parse("2020-03-28T13:00:00"), 90, 1L, 1L, 1L, 700,1L,0L);
+        p.setIdPacijenta(2L);
         when(
                pregledRepositoryInterface.save(any(Pregled.class))
        ).thenReturn(p);

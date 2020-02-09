@@ -41,16 +41,21 @@ class LekarServiceUnitTest {
 
     @BeforeEach
     void setUp() {
+
+        Lekar l1 = new Lekar("Ivana", "Novakovic","i@gmail.com","33333333","Grad1","Adresa1","Drzava1","111111111","555",1L,1L,true,1,7,true);
+        l1.setId(1L);
         when(
                 lekarRepositoryInterface.findById(1L)
         ).thenReturn(
-                Optional.of(new Lekar("Ivana", "Novakovic","i@gmail.com","33333333","Grad1","Adresa1","Drzava1","111111111","555",1L,1L,true,1,7,true))
+                Optional.of(l1)
         );
 
+        Lekar l2 = new Lekar("Mika", "Novakovic","i@gmail.com","33333333","Grad1","Adresa1","Drzava1","111111111","555",1L,1L,true,12,20,true);
+        l2.setId(2L);
         when(
                 lekarRepositoryInterface.findById(2L)
         ).thenReturn(
-                Optional.of(new Lekar("Mika", "Novakovic","i@gmail.com","33333333","Grad1","Adresa1","Drzava1","111111111","555",1L,1L,true,12,20,true))
+                Optional.of(l2)
         );
 
         when(
@@ -100,7 +105,7 @@ class LekarServiceUnitTest {
                 zahteviPrvogLekara
         );
         List<ZahtevOdsustvo> zahteviDrugogLekara = new ArrayList<>(1);
-        zahteviDrugogLekara.add(new ZahtevOdsustvo(2L,LocalDate.parse("2020-06-20"), LocalDate.parse("2020-06-25"), 1L, 1L, true, true));
+        zahteviDrugogLekara.add(new ZahtevOdsustvo(2L,LocalDate.parse("2020-06-19"), LocalDate.parse("2020-06-25"), 2L, 1L, true, true));
         when(
                 zahtevOdsustvoRepositoryInterface.findByIdLekara(2L)
         ).thenReturn(
