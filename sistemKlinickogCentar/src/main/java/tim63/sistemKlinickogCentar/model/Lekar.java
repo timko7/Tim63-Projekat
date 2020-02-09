@@ -66,7 +66,8 @@ public class Lekar {
     @Column(name = "PrviPutLogovan", nullable = false)
     private boolean prviPutLogovan;
 
-
+   /* @Version
+    private Long verzija;*/
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Klinika klinika;
@@ -256,6 +257,14 @@ public class Lekar {
     public void setPrviPutLogovan(boolean prviPutLogovan) {
         this.prviPutLogovan = prviPutLogovan;
     }
+
+  /*  public Long getVerzija() {
+        return verzija;
+    }
+
+    public void setVerzija(Long verzija) {
+        this.verzija = verzija;
+    }*/
 
     public void copyValues(Lekar lekar) {
         this.ime = lekar.getIme();
