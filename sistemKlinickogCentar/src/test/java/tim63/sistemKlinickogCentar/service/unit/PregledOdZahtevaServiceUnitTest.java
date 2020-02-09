@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.PessimisticLockingFailureException;
 import tim63.sistemKlinickogCentar.model.*;
 import tim63.sistemKlinickogCentar.repository.*;
 import tim63.sistemKlinickogCentar.service.PregledOdZahtevaService;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -164,6 +166,47 @@ public class PregledOdZahtevaServiceUnitTest {
         assertFalse(dbPregledOdZahteva.isOdradjen());
         assertEquals(tipTemp.getCena(), dbPregledOdZahteva.getCena());
 
+    }
+
+    @Test
+    public void testPessimisticLockingScenario() {
+        final CountDownLatch latch = new CountDownLatch(2);
+        Runnable r1 = () -> {
+            String datumUstringu="2020-06-27T13:00";
+            LocalDateTime datum=LocalDateTime.parse(datumUstringu);
+            try {
+                PregledOdZahteva zNovi=pregledOdZahtevaService.create(new PregledOdZahteva(datum, 45, 1L, 1L, 1L, 1600, 1L, 1L, false));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch.countDown();
+        };
+
+        Runnable r2 = () -> {
+            try { Thread.sleep(30); } catch (InterruptedException e) { }
+
+            try {
+                String datumUstringu="2020-06-29T16:00:00";
+                LocalDateTime datum=LocalDateTime.parse(datumUstringu);
+                PregledOdZahteva zNovi=pregledOdZahtevaService.create(new PregledOdZahteva(datum, 45, 1L, 1L, 1L, 1600, 1L, 1L, false));
+                //fail();
+            }catch(Exception e) {
+                String datumUstringu="2020-06-29T16:00:00";
+                LocalDateTime datum=LocalDateTime.parse(datumUstringu);
+                assertTrue(e instanceof PessimisticLockingFailureException);
+                //assertEquals("Zahtev je vec kreiran u trazenom terminu,osvezite stranicu",pregledOdZahtevaService.create(new PregledOdZahteva(datum, 45, 1L, 1L, 1L, 1600, 1L, 1L, false)));
+            }
+
+            latch.countDown();
+        };
+
+        new Thread(r1).start();
+        new Thread(r2).start();
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

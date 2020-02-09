@@ -101,7 +101,16 @@ public class PregledOdZahtevaService implements PregledOdZahtevaServiceInterface
 
         pregledOdZahteva.setCena(tipTemp.getCena());
         ret.copyValues(pregledOdZahteva);
-        ret = pregledOdZahtevaRepository.save(ret);
+
+        try{
+            PregledOdZahteva zp=pregledOdZahtevaRepository.zauzeto(pregledOdZahteva.getId());
+            if(zp!=null) throw new RuntimeException("Pregled vec kreiran");
+            else
+                ret = this.pregledOdZahtevaRepository.save(ret);
+        }catch (Exception e){
+            throw new RuntimeException("Pregled je vec kreiran u trazenom terminu,osvezite stranicu");
+        }
+       // ret = pregledOdZahtevaRepository.save(ret);
 
         salaTemp = salaService.findById(pregledOdZahteva.getIdSale());
         salaTemp.setSlobodna(false);

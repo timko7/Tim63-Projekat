@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import tim63.sistemKlinickogCentar.model.*;
 import tim63.sistemKlinickogCentar.repository.LekarRepositoryInterface;
 
+import javax.persistence.OptimisticLockException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -93,6 +94,7 @@ public class LekarService implements LekarInterface {
             throw new DataIntegrityViolationException("Ne moze bez datuma/IdTipa");
         }
         Collection<Lekar> lekariPoKlinici=this.findByIdKlinike(zahtev.getIdKlinike());
+
         System.out.println("lekari klinike"+lekariPoKlinici.size());
         ArrayList<Lekar> lekariPoTipu=new ArrayList<>();
         LocalDate d=zahtev.getTermin();
